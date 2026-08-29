@@ -117,6 +117,15 @@
       "path": "new/index.html",
       "url": "/new/",
       "system": false
+    },
+    {
+      "id": "new",
+      "title": "1",
+      "description": "1",
+      "menuTitle": "1",
+      "path": "new/index.html",
+      "url": "/new/",
+      "system": false
     }
   ]
 }

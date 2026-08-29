@@ -28,6 +28,12 @@
           "title": "1",
           "href": "/new/",
           "icon": "•"
+        },
+        {
+          "id": "new",
+          "title": "1",
+          "href": "/new/",
+          "icon": "•"
         }
       ]
     },
