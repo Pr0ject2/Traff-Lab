@@ -28415,3 +28415,73 @@ html body .diagnostic-seo-links a b{display:block!important;margin-bottom:5px!im
 html body .diagnostic-seo-links a span{display:block!important;font-size:13px!important;line-height:1.52!important;}
 html body.theme-dark .diagnostic-seo-inner,html body.theme-dark .diagnostic-seo-links a{border-color:#303b46!important;}
 @media(max-width:800px){html body .diagnostic-seo-inner{padding:20px 18px!important;}html body .diagnostic-seo-links{grid-template-columns:1fr!important;}}
+
+/* v440 publication polish */
+html body .source-tool-card{
+  position:relative!important;
+  padding-left:84px!important;
+}
+html body .source-tool-card .source-tool-mark{
+  position:absolute!important;
+  left:14px!important;
+  top:36px!important;
+  width:52px!important;
+  height:52px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:13px!important;
+  background:#edf5f1!important;
+  border:1px solid #cfe0d8!important;
+  overflow:hidden!important;
+}
+html body .source-tool-card .source-tool-mark img{
+  width:40px!important;
+  height:40px!important;
+  display:block!important;
+}
+html body .source-tool-card .source-tool-mark.is-fallback::before,
+html body .service-mark.is-fallback::before,
+html body .rail-tool-mark.is-fallback::before{
+  content:attr(data-fallback)!important;
+  font:700 16px/1 Arial,sans-serif!important;
+  color:#1f6b59!important;
+  letter-spacing:.02em!important;
+}
+html body .playbook-card-top{
+  align-items:flex-start!important;
+  min-height:88px!important;
+  padding-right:92px!important;
+}
+html body .playbook-card-top .playbook-hero-art,
+html body.reference-ui-v99 .playbook-card-top .playbook-hero-art{
+  top:50%!important;
+  bottom:auto!important;
+  transform:translateY(-50%)!important;
+  right:14px!important;
+  width:66px!important;
+  height:66px!important;
+  min-width:66px!important;
+  padding:8px!important;
+  background-size:42px 42px!important;
+  border-radius:15px!important;
+}
+html body .playbook-card-top .playbook-hero-art::before{
+  inset:10px 12px!important;
+  border-radius:9px!important;
+}
+@media (max-width:900px){
+  html body .source-tool-card{padding-left:78px!important}
+  html body .source-tool-card .source-tool-mark{left:13px!important;top:34px!important;width:48px!important;height:48px!important}
+  html body .source-tool-card .source-tool-mark img{width:36px!important;height:36px!important}
+  html body .playbook-card-top{min-height:78px!important;padding-right:80px!important}
+  html body .playbook-card-top .playbook-hero-art,
+  html body.reference-ui-v99 .playbook-card-top .playbook-hero-art{width:58px!important;height:58px!important;min-width:58px!important;background-size:36px 36px!important;right:12px!important}
+}
+@media (max-width:430px){
+  html body .source-tool-card{padding-left:72px!important}
+  html body .source-tool-card .source-tool-mark{left:12px!important;top:32px!important;width:44px!important;height:44px!important}
+  html body .source-tool-card .source-tool-mark img{width:32px!important;height:32px!important}
+  html body .playbook-card-top{padding-right:72px!important}
+  html body .playbook-card-top .playbook-hero-art,
+  html body.reference-ui-v99 .playbook-card-top .playbook-hero-art{width:52px!important;height:52px!important;min-width:52px!important;background-size:32px 32px!important;right:10px!important}
+}

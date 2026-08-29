@@ -1725,7 +1725,22 @@
         ['Журнал тестов',base+'notes/','pen-square'],['История',base+'history/','history']
       ]}
     ];
-    const navIcon=(name)=>`<svg class="ref-nav-icon-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true" focusable="false"><use href="${base}assets/icons/nav.svg?v=20260826-3821#${name}"></use></svg>`;
+    const navIconShapes={
+      compass:'<path d="m15.2 8.8-2.7 8.1-8.1 2.7 2.7-8.1 8.1-2.7Z"/><circle cx="12" cy="12" r="8.8"/>',
+      route:'<circle cx="6" cy="18" r="2.5"/><path d="M8.5 18h7.6a3.2 3.2 0 0 0 0-6.4H7.3a3.2 3.2 0 0 1 0-6.4H15"/><circle cx="18" cy="5.2" r="2.5"/>',
+      scaling:'<path d="M5 19h14a1.5 1.5 0 0 0 1.5-1.5V5"/><path d="M9 15h4v-4"/><path d="M19 5h-5"/><path d="M19 5 9 15"/>',
+      'book-open':'<path d="M12 7v12"/><path d="M4 17V5a1 1 0 0 1 1-1h4a4 4 0 0 1 3 1.3A4 4 0 0 1 15 4h4a1 1 0 0 1 1 1v12h-5a3.5 3.5 0 0 0-3 1.5A3.5 3.5 0 0 0 9 17Z"/>',
+      'package-2':'<path d="M12 3.8v5.4"/><path d="M7.4 4.2h9.2a2 2 0 0 1 1.8 1l2.2 4.4a2 2 0 0 1 .2.9v8.1a2 2 0 0 1-2 2H5.2a2 2 0 0 1-2-2v-8a2 2 0 0 1 .2-.9l2.2-4.5a2 2 0 0 1 1.8-1Z"/><path d="M3.3 10.1h17.4"/>',
+      'line-chart':'<path d="M4 4v13.5A2.5 2.5 0 0 0 6.5 20H20"/><path d="m18 8-4.5 4.5-3.5-3.5L7 12"/>',
+      'circle-alert':'<circle cx="12" cy="12" r="8.8"/><path d="M12 8.3v4.2"/><circle cx="12" cy="15.8" r=".9" fill="currentColor" stroke="none"/>',
+      calculator:'<rect x="5" y="3.5" width="14" height="17" rx="2.2"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01M16 15v4"/>',
+      'layout-template':'<rect x="4" y="4" width="16" height="6" rx="1.4"/><rect x="4" y="14" width="8" height="6" rx="1.4"/><rect x="15" y="14" width="5" height="6" rx="1.4"/>',
+      map:'<path d="M9 4.5 4.5 6.7v12.8L9 17.3l6 2.2 4.5-2.2V4.5L15 6.7Z"/><path d="M9 4.5v12.8M15 6.7v12.8"/>',
+      'whole-word':'<circle cx="7" cy="12" r="2.8"/><path d="M10.2 9v6"/><circle cx="17" cy="12" r="2.8"/><path d="M14 7.5v8.5"/><path d="M21 17v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-1"/>',
+      'pen-square':'<path d="M12 4H5.8A1.8 1.8 0 0 0 4 5.8v12.4A1.8 1.8 0 0 0 5.8 20h12.4a1.8 1.8 0 0 0 1.8-1.8V12"/><path d="M16.5 4.5a1.4 1.4 0 0 1 2 2L10.9 14a2 2 0 0 1-.8.5l-2.7.8.8-2.7a2 2 0 0 1 .5-.8Z"/>',
+      history:'<path d="M4 12a8 8 0 1 0 2.7-5.9L4 8.8"/><path d="M4 4v4.8h4.8"/><path d="M12 8.2v4.8l3.6 2"/>'
+    };
+    const navIcon=(name)=>`<svg class="ref-nav-icon-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true" focusable="false">${navIconShapes[name]||navIconShapes['layout-template']}</svg>`;
     const pathMatches=(href)=>{
       if(href===base) return currentPath===base || currentPath===base+'index.html';
       return currentPath===href || currentPath===href+'index.html' || currentPath.startsWith(href);
@@ -1748,7 +1763,7 @@
             <nav>${g.links.map(([label,href,icon])=>`<a href="${href}" class="${active(href)?'is-active':''}"${active(href)?' aria-current="page"':''}><span class="ref-nav-icon">${navIcon(icon)}</span><span>${label}</span></a>`).join('')}</nav>
           </section>`
         }).join('')}</div>
-        <a class="ref-partner-card" href="${base}guides/partner-program-rules/"><b>Партнёрская программа для первого теста</b><span>Условия, GEO, выплаты и первый запуск в одном понятном маршруте.</span><em>Посмотреть условия <span>→</span></em></a>`;
+        <a class="ref-partner-card" href="${base}go/partner/?from=ref-sidebar" rel="sponsored nofollow noopener noreferrer" target="_blank"><b>Партнёрская программа для первого теста</b><span>Прямой переход в партнёрский кабинет, который можно использовать для первого запуска.</span><em>Открыть кабинет <span>→</span></em></a>`;
 
       sidebar.querySelectorAll('.ref-nav-heading').forEach(btn=>btn.addEventListener('click',()=>{
         const group=btn.closest('.ref-nav-group');
@@ -1927,14 +1942,14 @@
     return '';
   };
   const iconUrl={
-    multilogin:'https://www.google.com/s2/favicons?domain=multilogin.com&sz=128',
-    proxys:'https://www.google.com/s2/favicons?domain=proxys.io&sz=128',
-    ruvds:'https://www.google.com/s2/favicons?domain=ruvds.com&sz=128',
-    adsbridge:'https://www.google.com/s2/favicons?domain=adsbridge.com&sz=128',
-    onlinesim:'https://www.google.com/s2/favicons?domain=onlinesim.io&sz=128',
-    spyhouse:'https://www.google.com/s2/favicons?domain=spy.house&sz=128',
-    darkstore:'https://www.google.com/s2/favicons?domain=dark.shopping&sz=128',
-    profitads:'https://www.google.com/s2/favicons?domain=profitads.ru&sz=128'
+    multilogin:'/assets/tool-logos/multilogin.svg',
+    proxys:'/assets/tool-logos/proxys.svg',
+    ruvds:'/assets/tool-logos/ruvds.svg',
+    adsbridge:'/assets/tool-logos/adsbridge.svg',
+    onlinesim:'/assets/tool-logos/onlinesim.svg',
+    spyhouse:'/assets/tool-logos/spyhouse.svg',
+    darkstore:'/assets/tool-logos/darkstore.svg',
+    profitads:'/assets/tool-logos/profitads.svg'
   };
   const iconFallback={multilogin:'ML',proxys:'PX',ruvds:'RV',adsbridge:'AB',onlinesim:'OS',spyhouse:'SH',darkstore:'DS',profitads:'PA'};
   const decorate = () => {
@@ -1943,7 +1958,14 @@
       const key = toolKey(title);
       if(!key) return;
       el.dataset.tool = key;
-      const mark = el.querySelector('.rail-tool-mark, .service-mark');
+      let mark = el.querySelector('.rail-tool-mark, .service-mark, .source-tool-mark');
+      if(!mark && el.classList.contains('source-tool-card')){
+        mark=document.createElement('span');
+        mark.className='source-tool-mark';
+        const top=el.querySelector('.source-tool-card-top');
+        if(top) top.insertAdjacentElement('afterend', mark);
+        else el.insertAdjacentElement('afterbegin', mark);
+      }
       if(mark){
         mark.classList.add('tool-mark--'+key);
         mark.dataset.tool = key;
@@ -1956,9 +1978,8 @@
         img.setAttribute('aria-hidden','true');
         img.loading='lazy';
         img.decoding='async';
-        img.width=32;
-        img.height=32;
-        img.referrerPolicy='no-referrer';
+        img.width=40;
+        img.height=40;
         img.addEventListener('error',()=>{img.hidden=true;mark.classList.add('is-fallback')},{once:true});
         mark.appendChild(img);
       }

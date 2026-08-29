@@ -2,23 +2,23 @@
   "version": 1,
   "groups": [
     {
-      "id": "group-1",
+      "id": "0",
       "title": "Начать",
       "items": [
         {
-          "id": "с-чего-начать-0",
+          "id": "start",
           "title": "С чего начать",
           "href": "/start/",
           "icon": "○"
         },
         {
-          "id": "источники-трафика-1",
+          "id": "traffic",
           "title": "Источники трафика",
           "href": "/traffic/",
           "icon": "↗"
         },
         {
-          "id": "сравнение-источников-2",
+          "id": "compare",
           "title": "Сравнение источников",
           "href": "/traffic/compare/",
           "icon": "≡"
@@ -26,35 +26,35 @@
       ]
     },
     {
-      "id": "group-2",
+      "id": "1",
       "title": "Работа",
       "items": [
         {
-          "id": "практические-гайды-0",
+          "id": "practice",
           "title": "Практические гайды",
           "href": "/practice/",
           "icon": "✓"
         },
         {
-          "id": "диагностика-и-ошибки-1",
+          "id": "diagnostics",
           "title": "Диагностика и ошибки",
           "href": "/diagnostics/",
           "icon": "?"
         },
         {
-          "id": "аналитика-2",
+          "id": "analytics",
           "title": "Аналитика",
           "href": "/analytics/",
           "icon": "⌁"
         },
         {
-          "id": "калькуляторы-3",
+          "id": "tools",
           "title": "Калькуляторы",
           "href": "/tools/",
           "icon": "▦"
         },
         {
-          "id": "сервисы-4",
+          "id": "services",
           "title": "Сервисы",
           "href": "/services/",
           "icon": "□"
@@ -62,23 +62,23 @@
       ]
     },
     {
-      "id": "group-3",
+      "id": "2",
       "title": "Библиотека",
       "items": [
         {
-          "id": "статьи-0",
+          "id": "library",
           "title": "Статьи",
           "href": "/guides/",
           "icon": "▤"
         },
         {
-          "id": "обзоры-1",
+          "id": "basics",
           "title": "Обзоры",
           "href": "/basics/",
           "icon": "◫"
         },
         {
-          "id": "словарь-терминов-2",
+          "id": "glossary",
           "title": "Словарь терминов",
           "href": "/glossary/",
           "icon": "ab"
@@ -86,17 +86,17 @@
       ]
     },
     {
-      "id": "group-4",
+      "id": "3",
       "title": "Личное",
       "items": [
         {
-          "id": "журнал-тестов-0",
+          "id": "notes",
           "title": "Журнал тестов",
           "href": "/notes/",
           "icon": "✎"
         },
         {
-          "id": "история-1",
+          "id": "history",
           "title": "История",
           "href": "/history/",
           "icon": "↺"
