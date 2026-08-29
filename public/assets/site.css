@@ -28833,3 +28833,37 @@ html body.reference-ui-v99 main.source-playbook-page .source-playbook-article .s
     max-height:38px!important;
   }
 }
+
+/* ======================================================================
+   v449 — mobile drawer geometry
+   Remove the thin strip below the header and keep the drawer genuinely
+   narrow on phones. Applies identically to light and dark themes.
+   ====================================================================== */
+@media (max-width:650px){
+  html body .global-sidebar,
+  html body.reference-ui-v99 .global-sidebar,
+  html body:not(.theme-dark) .global-sidebar,
+  html body.reference-ui-v99:not(.theme-dark) .global-sidebar,
+  html body.theme-dark .global-sidebar,
+  html body.reference-ui-v99.theme-dark .global-sidebar{
+    top:62px!important;
+    width:min(340px,calc(100vw - 36px))!important;
+    max-width:min(340px,calc(100vw - 36px))!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Keep the backdrop starting at the header edge while the drawer itself
+     overlaps it by a few pixels, so no canvas-colored seam can appear. */
+  html body .mobile-nav-overlay,
+  html body.reference-ui-v99 .mobile-nav-overlay{
+    inset:68px 0 0!important;
+  }
+}
+
+@media (max-width:380px){
+  html body .global-sidebar,
+  html body.reference-ui-v99 .global-sidebar{
+    width:calc(100vw - 28px)!important;
+    max-width:calc(100vw - 28px)!important;
+  }
+}
