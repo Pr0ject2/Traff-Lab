@@ -28867,3 +28867,62 @@ html body.reference-ui-v99 main.source-playbook-page .source-playbook-article .s
     max-width:calc(100vw - 28px)!important;
   }
 }
+
+/* ======================================================================
+   v450 — polished sidebar icons for the three primary navigation items
+   Clean outline pictograms, no font-glyph dependence. Both themes inherit
+   the menu's current icon color automatically.
+   ====================================================================== */
+html body .global-sidebar .sidebar-menu a[data-nav="start"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="start"]:before,
+html body .global-sidebar .sidebar-menu a[data-nav="traffic"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="traffic"]:before,
+html body .global-sidebar .sidebar-menu a[data-nav="compare"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="compare"]:before{
+  content:""!important;
+  width:19px!important;
+  height:19px!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:currentColor!important;
+  background-image:none!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  box-shadow:none!important;
+  opacity:.88!important;
+  font-size:0!important;
+  line-height:0!important;
+  -webkit-mask-repeat:no-repeat!important;
+  mask-repeat:no-repeat!important;
+  -webkit-mask-position:center!important;
+  mask-position:center!important;
+  -webkit-mask-size:19px 19px!important;
+  mask-size:19px 19px!important;
+}
+
+/* Start: a small compass, conveying orientation / first step. */
+html body .global-sidebar .sidebar-menu a[data-nav="start"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="start"]:before{
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.8'/%3E%3Cpath d='m15.8 8.2-2.3 5.3-5.3 2.3 2.3-5.3 5.3-2.3Z'/%3E%3C/g%3E%3C/svg%3E")!important;
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.8'/%3E%3Cpath d='m15.8 8.2-2.3 5.3-5.3 2.3 2.3-5.3 5.3-2.3Z'/%3E%3C/g%3E%3C/svg%3E")!important;
+}
+
+/* Traffic sources: one origin splitting into several channels. */
+html body .global-sidebar .sidebar-menu a[data-nav="traffic"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="traffic"]:before{
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='6' cy='12' r='2.2'/%3E%3Ccircle cx='18' cy='6' r='2.2'/%3E%3Ccircle cx='18' cy='18' r='2.2'/%3E%3Cpath d='M8.2 12h3.1c2.1 0 2.5-2.2 4.5-4.2M11.3 12c2.1 0 2.5 2.2 4.5 4.2'/%3E%3C/g%3E%3C/svg%3E")!important;
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='6' cy='12' r='2.2'/%3E%3Ccircle cx='18' cy='6' r='2.2'/%3E%3Ccircle cx='18' cy='18' r='2.2'/%3E%3Cpath d='M8.2 12h3.1c2.1 0 2.5-2.2 4.5-4.2M11.3 12c2.1 0 2.5 2.2 4.5 4.2'/%3E%3C/g%3E%3C/svg%3E")!important;
+}
+
+/* Compare: two aligned bars with opposing arrows, clearly reads as comparison. */
+html body .global-sidebar .sidebar-menu a[data-nav="compare"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="compare"]:before{
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8h12M14 5l3 3-3 3M19 16H7M10 13l-3 3 3 3'/%3E%3C/g%3E%3C/svg%3E")!important;
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8h12M14 5l3 3-3 3M19 16H7M10 13l-3 3 3 3'/%3E%3C/g%3E%3C/svg%3E")!important;
+}
+
+html body .global-sidebar .sidebar-menu a[data-nav="start"]:is(.active,.is-active,[aria-current="page"]):before,
+html body .global-sidebar .sidebar-menu a[data-nav="traffic"]:is(.active,.is-active,[aria-current="page"]):before,
+html body .global-sidebar .sidebar-menu a[data-nav="compare"]:is(.active,.is-active,[aria-current="page"]):before{
+  opacity:1!important;
+}
