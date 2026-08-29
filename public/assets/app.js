@@ -1070,8 +1070,19 @@
  const get=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(f))}catch(e){return f}};
  const set=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
  const safeLocalPath=(value)=>{try{const u=new URL(String(value||''),location.origin);if(u.origin!==location.origin)return '';if(!u.pathname.startsWith('/'))return '';return u.pathname+u.search+u.hash}catch(_e){return ''}};
- const cleanNoteText=(value,max)=>String(value??'').replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,max);
- const readNotes=()=>{const raw=get(KEY,[]);if(!Array.isArray(raw))return [];return raw.slice(0,100).filter(x=>x&&typeof x==='object').map(x=>({id:cleanNoteText(x.id,80),title:cleanNoteText(x.title,90),body:cleanNoteText(x.body,2000),url:safeLocalPath(x.url),sourceTitle:cleanNoteText(x.sourceTitle,120),ts:Number.isFinite(Number(x.ts))?Number(x.ts):0})).filter(x=>x.id&&x.title&&x.body)};
+ const cleanNoteText=(value,max)=>String(value??'').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g,' ').replace(/\r\n?/g,'\n').trim().slice(0,max);
+ const cleanNoteSingleLine=(value,max)=>cleanNoteText(value,max).replace(/[\n\t]+/g,' ').replace(/ {2,}/g,' ').trim();
+ const restoreLegacyTemplateFormatting=(value)=>{
+  let text=cleanNoteText(value,2000);
+  if(text.includes('\n'))return text;
+  const labels=['Источник трафика:','Площадка или формат:','Страна / GEO:','Партнёрская программа или предложение:','Метка ссылки:','Период или лимит теста:','Что проверяю:','Показы / просмотры:','Клики:','Регистрации:','Первые депозиты (FTD):','Расход:','Вывод:','Что изменяю в следующем тесте:'];
+  const hits=labels.reduce((n,label)=>n+(text.includes(label)?1:0),0);
+  if(hits<4)return text;
+  labels.slice(1).forEach(label=>{text=text.replace(new RegExp('\\s*'+label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'),'\n'+label)});
+  text=text.replace(/\n(Показы \/ просмотры:)/,'\n\n$1').replace(/\n(Вывод:)/,'\n\n$1');
+  return text;
+ };
+ const readNotes=()=>{const raw=get(KEY,[]);if(!Array.isArray(raw))return [];return raw.slice(0,100).filter(x=>x&&typeof x==='object').map(x=>({id:cleanNoteSingleLine(x.id,80),title:cleanNoteSingleLine(x.title,90),body:restoreLegacyTemplateFormatting(x.body),url:safeLocalPath(x.url),sourceTitle:cleanNoteSingleLine(x.sourceTitle,120),ts:Number.isFinite(Number(x.ts))?Number(x.ts):0})).filter(x=>x.id&&x.title&&x.body)};
  const form=document.querySelector('[data-note-form]');
  if(!form)return;
  const titleInput=form.querySelector('[data-note-title]');
@@ -1110,7 +1121,7 @@
  form.addEventListener('submit',e=>{
   e.preventDefault();
   const title=titleInput.value.trim(),body=bodyInput.value.trim();if(!title||!body)return;
-  const notes=readNotes();notes.unshift({id:String(Date.now())+'-'+Math.random().toString(36).slice(2,7),title:cleanNoteText(title,90),body:cleanNoteText(body,2000),url:context?.url||'',sourceTitle:context?.title||'',ts:Date.now()});set(KEY,notes.slice(0,100));
+  const notes=readNotes();notes.unshift({id:String(Date.now())+'-'+Math.random().toString(36).slice(2,7),title:cleanNoteSingleLine(title,90),body:cleanNoteText(body,2000),url:context?.url||'',sourceTitle:context?.title||'',ts:Date.now()});set(KEY,notes.slice(0,100));
   form.reset();render();titleInput.focus();
  });
  document.addEventListener('click',e=>{const btn=e.target.closest('[data-remove-note]');if(!btn)return;set(KEY,readNotes().filter(x=>x.id!==btn.dataset.removeNote));render()});
