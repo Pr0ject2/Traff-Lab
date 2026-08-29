@@ -1942,14 +1942,14 @@
     return '';
   };
   const iconUrl={
-    multilogin:'/assets/tool-logos/multilogin.svg',
-    proxys:'/assets/tool-logos/proxys.svg',
-    ruvds:'/assets/tool-logos/ruvds.svg',
-    adsbridge:'/assets/tool-logos/adsbridge.svg',
-    onlinesim:'/assets/tool-logos/onlinesim.svg',
-    spyhouse:'/assets/tool-logos/spyhouse.svg',
-    darkstore:'/assets/tool-logos/darkstore.svg',
-    profitads:'/assets/tool-logos/profitads.svg'
+    multilogin:'https://www.google.com/s2/favicons?domain=multilogin.com&sz=128',
+    proxys:'https://www.google.com/s2/favicons?domain=proxys.io&sz=128',
+    ruvds:'https://www.google.com/s2/favicons?domain=ruvds.com&sz=128',
+    adsbridge:'https://www.google.com/s2/favicons?domain=adsbridge.com&sz=128',
+    onlinesim:'https://www.google.com/s2/favicons?domain=onlinesim.io&sz=128',
+    spyhouse:'https://www.google.com/s2/favicons?domain=spy.house&sz=128',
+    darkstore:'https://www.google.com/s2/favicons?domain=dark.shopping&sz=128',
+    profitads:'https://www.google.com/s2/favicons?domain=profitads.ru&sz=128'
   };
   const iconFallback={multilogin:'ML',proxys:'PX',ruvds:'RV',adsbridge:'AB',onlinesim:'OS',spyhouse:'SH',darkstore:'DS',profitads:'PA'};
   const decorate = () => {
@@ -1980,6 +1980,7 @@
         img.decoding='async';
         img.width=40;
         img.height=40;
+        img.referrerPolicy='no-referrer';
         img.addEventListener('error',()=>{img.hidden=true;mark.classList.add('is-fallback')},{once:true});
         mark.appendChild(img);
       }
