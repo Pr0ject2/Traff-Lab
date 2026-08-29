@@ -1953,16 +1953,16 @@
     return '';
   };
   const iconUrl={
-    multilogin:'https://www.google.com/s2/favicons?domain=multilogin.com&sz=128',
-    proxys:'https://www.google.com/s2/favicons?domain=proxys.io&sz=128',
-    ruvds:'https://www.google.com/s2/favicons?domain=ruvds.com&sz=128',
-    adsbridge:'https://www.google.com/s2/favicons?domain=adsbridge.com&sz=128',
-    onlinesim:'https://www.google.com/s2/favicons?domain=onlinesim.io&sz=128',
-    spyhouse:'https://www.google.com/s2/favicons?domain=spy.house&sz=128',
-    darkstore:'https://www.google.com/s2/favicons?domain=dark.shopping&sz=128',
-    profitads:'https://www.google.com/s2/favicons?domain=profitads.ru&sz=128'
+    multilogin:['https://multilogin.com/favicon.ico','https://www.google.com/s2/favicons?domain=multilogin.com&sz=128'],
+    proxys:['https://proxys.io/favicon.ico','https://www.google.com/s2/favicons?domain=proxys.io&sz=128'],
+    ruvds:['https://ruvds.com/favicon.ico','https://www.google.com/s2/favicons?domain=ruvds.com&sz=128'],
+    adsbridge:['https://www.adsbridge.com/favicon.ico','https://www.google.com/s2/favicons?domain=adsbridge.com&sz=128'],
+    onlinesim:['https://onlinesim.io/favicon.ico','https://www.google.com/s2/favicons?domain=onlinesim.io&sz=128'],
+    spyhouse:['https://spy.house/favicon.ico','https://www.google.com/s2/favicons?domain=spy.house&sz=128'],
+    darkstore:['https://dark.shopping/favicon.ico','https://www.google.com/s2/favicons?domain=dark.shopping&sz=128'],
+    profitads:['https://profitads.ru/favicon.ico','https://www.google.com/s2/favicons?domain=profitads.ru&sz=128']
   };
-  const iconFallback={multilogin:'ML',proxys:'PX',ruvds:'RV',adsbridge:'AB',onlinesim:'OS',spyhouse:'SH',darkstore:'DS',profitads:'PA'};
+  const iconFallback={multilogin:'',proxys:'',ruvds:'',adsbridge:'',onlinesim:'',spyhouse:'',darkstore:'',profitads:''};
   const decorate = () => {
     document.querySelectorAll('.rail-tools a:not(.rail-all-tools), .service-tool, .source-tool-card').forEach(el=>{
       const title = (el.querySelector('h3,b')?.textContent || '').trim();
@@ -1984,7 +1984,9 @@
         mark.setAttribute('aria-label', title);
         mark.textContent = '';
         const img=document.createElement('img');
-        img.src=iconUrl[key];
+        const iconCandidates=Array.isArray(iconUrl[key])?iconUrl[key]:[iconUrl[key]];
+        let iconCandidateIndex=0;
+        img.src=iconCandidates[iconCandidateIndex];
         img.alt='';
         img.setAttribute('aria-hidden','true');
         img.loading='lazy';
@@ -1992,7 +1994,12 @@
         img.width=40;
         img.height=40;
         img.referrerPolicy='no-referrer';
-        img.addEventListener('error',()=>{img.hidden=true;mark.classList.add('is-fallback')},{once:true});
+        img.addEventListener('error',()=>{
+          iconCandidateIndex+=1;
+          if(iconCandidateIndex<iconCandidates.length){img.src=iconCandidates[iconCandidateIndex];return;}
+          img.hidden=true;
+          mark.classList.remove('is-fallback');
+        });
         mark.appendChild(img);
       }
     });
