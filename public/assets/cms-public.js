@@ -5,6 +5,8 @@ const j=(u)=>fetch(u,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.sta
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function safeInternalHref(value,fallback=BASE){try{const raw=String(value||'').trim();if(raw.startsWith('#'))return raw;const u=new URL(raw,location.origin);if(u.origin!==location.origin||!u.pathname.startsWith(BASE))return fallback;return u.pathname+u.search+u.hash}catch{return fallback}}
 function currentPath(){let p=location.pathname;return p.endsWith('/')?p:p+'/'}
+const CORE_NAV_IDS=new Set(['start','traffic','compare','practice','diagnostics','analytics','tools','services','library','basics','glossary','notes','history','saved','about','help','privacy','terms','path','economics']);
+function cleanNavigation(data,sectionsData){if(!data?.groups||!sectionsData?.sections)return data;const validIds=new Set(sectionsData.sections.map(s=>String(s.id||'')));const groups=data.groups.map(g=>({...g,items:(g.items||[]).filter(it=>{const id=String(it.id||'');if(CORE_NAV_IDS.has(id)||validIds.has(id))return true;const href=safeInternalHref(it.href,'');if(!href)return true;let parts=[];try{parts=new URL(href,location.origin).pathname.split('/').filter(Boolean).map(decodeURIComponent)}catch{return true}return !(parts.length===1&&parts[0]===id)})}));return {...data,groups}}
 function renderNav(data){
   const sidebar=document.querySelector('.global-sidebar'); if(!sidebar||!data?.groups)return;
   const path=currentPath();
@@ -83,6 +85,6 @@ function setupLibrary(data){
 }
 function installStyle(){const st=document.createElement('style');st.textContent='.global-sidebar .sidebar-menu a.cms-nav-item[data-cms-icon]::before{content:attr(data-cms-icon)!important}.cms-runtime-error{display:none!important}';document.head.appendChild(st)}
 function setupPartnerRedirect(){if(!document.body?.hasAttribute('data-partner-redirect'))return;const p=new URLSearchParams(location.search);try{localStorage.setItem('al-last-affiliate-click',JSON.stringify({from:(p.get('from')||'unknown').slice(0,160),ts:Date.now()}))}catch{}setTimeout(()=>location.replace('https://1w.run/?p=4o8v'),350)}
-async function init(){setupPartnerRedirect();installStyle();const [nav,articles]=await Promise.allSettled([j(BASE+'content/navigation.json?v='+Date.now()),j(BASE+'content/articles.json?v='+Date.now())]);if(nav.status==='fulfilled')renderNav(nav.value);if(articles.status==='fulfilled')setupLibrary(articles.value)}
+async function init(){setupPartnerRedirect();installStyle();const [nav,articles,sections]=await Promise.allSettled([j(BASE+'content/navigation.json?v='+Date.now()),j(BASE+'content/articles.json?v='+Date.now()),j(BASE+'content/sections.json?v='+Date.now())]);if(nav.status==='fulfilled')renderNav(cleanNavigation(nav.value,sections.status==='fulfilled'?sections.value:null));if(articles.status==='fulfilled')setupLibrary(articles.value)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init().catch(()=>{}));else init().catch(()=>{});
 })();
