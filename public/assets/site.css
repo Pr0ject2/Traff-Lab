@@ -28926,3 +28926,65 @@ html body .global-sidebar .sidebar-menu a[data-nav="traffic"]:is(.active,.is-act
 html body .global-sidebar .sidebar-menu a[data-nav="compare"]:is(.active,.is-active,[aria-current="page"]):before{
   opacity:1!important;
 }
+
+/* ======================================================================
+   v451 — robust primary sidebar icons
+   Use SVG background images directly instead of CSS mask so the pictograms
+   render consistently in mobile Chrome/WebView and desktop browsers.
+   ====================================================================== */
+html body .global-sidebar .sidebar-menu a[data-nav="start"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="start"]:before,
+html body .global-sidebar .sidebar-menu a[data-nav="traffic"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="traffic"]:before,
+html body .global-sidebar .sidebar-menu a[data-nav="compare"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="compare"]:before{
+  content:""!important;
+  display:block!important;
+  width:20px!important;
+  height:20px!important;
+  min-width:20px!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:20px 20px!important;
+  box-shadow:none!important;
+  opacity:.95!important;
+  font-size:0!important;
+  line-height:0!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+}
+
+/* С чего начать — compass/route marker. */
+html body .global-sidebar .sidebar-menu a[data-nav="start"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="start"]:before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Ccircle cx='12' cy='12' r='8.7' stroke='%23B7D4CA' stroke-width='1.8'/%3E%3Cpath d='M15.9 8.1l-2.25 5.55L8.1 15.9l2.25-5.55L15.9 8.1Z' stroke='%23B7D4CA' stroke-width='1.8' stroke-linejoin='round'/%3E%3Ccircle cx='12' cy='12' r='1.05' fill='%23B7D4CA'/%3E%3C/svg%3E")!important;
+}
+
+/* Источники трафика — one source branching into channels. */
+html body .global-sidebar .sidebar-menu a[data-nav="traffic"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="traffic"]:before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Ccircle cx='5.7' cy='12' r='2.15' stroke='%23B7D4CA' stroke-width='1.8'/%3E%3Ccircle cx='18.2' cy='6.1' r='2.15' stroke='%23B7D4CA' stroke-width='1.8'/%3E%3Ccircle cx='18.2' cy='17.9' r='2.15' stroke='%23B7D4CA' stroke-width='1.8'/%3E%3Cpath d='M7.85 12h2.7c2.55 0 3.15-2.65 5.5-4.5M10.55 12c2.55 0 3.15 2.65 5.5 4.5' stroke='%23B7D4CA' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E")!important;
+}
+
+/* Сравнение источников — two opposing horizontal arrows. */
+html body .global-sidebar .sidebar-menu a[data-nav="compare"]:before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a[data-nav="compare"]:before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M5 8h12.2M14.2 5.2 17.2 8l-3 2.8M19 16H6.8M9.8 13.2 6.8 16l3 2.8' stroke='%23B7D4CA' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
+}
+
+/* Light mobile/sidebar palette. */
+html body:not(.theme-dark) .global-sidebar .sidebar-menu a[data-nav="start"]:before,
+html body:not(.theme-dark) .global-sidebar .sidebar-menu a[data-nav="traffic"]:before,
+html body:not(.theme-dark) .global-sidebar .sidebar-menu a[data-nav="compare"]:before{
+  filter:brightness(.72) saturate(.78)!important;
+}
+
+html body .global-sidebar .sidebar-menu a[data-nav="start"]:is(.active,.is-active,[aria-current="page"]):before,
+html body .global-sidebar .sidebar-menu a[data-nav="traffic"]:is(.active,.is-active,[aria-current="page"]):before,
+html body .global-sidebar .sidebar-menu a[data-nav="compare"]:is(.active,.is-active,[aria-current="page"]):before{
+  opacity:1!important;
+  filter:none!important;
+}
