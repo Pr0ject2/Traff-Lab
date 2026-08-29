@@ -28485,3 +28485,189 @@ html body .playbook-card-top .playbook-hero-art::before{
   html body .playbook-card-top .playbook-hero-art,
   html body.reference-ui-v99 .playbook-card-top .playbook-hero-art{width:52px!important;height:52px!important;min-width:52px!important;background-size:32px 32px!important;right:10px!important}
 }
+
+/* v441 — lower source cards icons and keep article images inside the frame */
+html body .traffic-hub-page .playbook-catalog-grid .playbook-card,
+html body.reference-ui-v99 .traffic-hub-page .playbook-catalog-grid .playbook-card{
+  overflow:hidden!important;
+  padding-top:24px!important;
+}
+html body .traffic-hub-page .playbook-catalog-grid .playbook-card-top,
+html body.reference-ui-v99 .traffic-hub-page .playbook-catalog-grid .playbook-card-top{
+  align-items:flex-start!important;
+}
+html body .traffic-hub-page .playbook-catalog-grid .playbook-card-top .playbook-hero-art,
+html body.reference-ui-v99 .traffic-hub-page .playbook-catalog-grid .playbook-card-top .playbook-hero-art{
+  position:relative!important;
+  inset:auto!important;
+  top:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  left:auto!important;
+  transform:none!important;
+  align-self:flex-start!important;
+  margin-top:8px!important;
+}
+
+html body :is(.article-page,.source-playbook-page) :is(.article-figure,.guide-v101-media,.source-journey-card.article-figure,.source-visual-pair .article-figure,.source-visual-wide.article-figure),
+html body.reference-ui-v99 :is(.article-page,.source-playbook-page) :is(.article-figure,.guide-v101-media,.source-journey-card.article-figure,.source-visual-pair .article-figure,.source-visual-wide.article-figure){
+  max-width:100%!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+html body :is(.article-page,.source-playbook-page) :is(.article-figure,.guide-v101-media,.source-journey-card.article-figure,.source-visual-pair .article-figure,.source-visual-wide.article-figure) :is(img,picture,svg,canvas),
+html body.reference-ui-v99 :is(.article-page,.source-playbook-page) :is(.article-figure,.guide-v101-media,.source-journey-card.article-figure,.source-visual-pair .article-figure,.source-visual-wide.article-figure) :is(img,picture,svg,canvas){
+  display:block!important;
+  max-width:100%!important;
+  width:100%!important;
+  height:auto!important;
+  box-sizing:border-box!important;
+}
+@media (max-width:900px){
+  html body .traffic-hub-page .playbook-catalog-grid .playbook-card,
+  html body.reference-ui-v99 .traffic-hub-page .playbook-catalog-grid .playbook-card{
+    padding-top:20px!important;
+  }
+  html body .traffic-hub-page .playbook-catalog-grid .playbook-card-top .playbook-hero-art,
+  html body.reference-ui-v99 .traffic-hub-page .playbook-catalog-grid .playbook-card-top .playbook-hero-art{
+    margin-top:6px!important;
+  }
+}
+
+/* v442 — footer text without pill backgrounds + wider padding inside compare note */
+html body .site-footer .footer-link-group,
+html body.reference-ui-v99 .site-footer .footer-link-group,
+html body .site-footer .footer-links a,
+html body.reference-ui-v99 .site-footer .footer-links a,
+html body .site-footer .footer-links a span,
+html body.reference-ui-v99 .site-footer .footer-links a span,
+html body .site-footer .footer-bottom span,
+html body.reference-ui-v99 .site-footer .footer-bottom span,
+html body .site-footer .footer-bottom small,
+html body.reference-ui-v99 .site-footer .footer-bottom small{
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+  border:0!important;
+  border-radius:0!important;
+}
+html body .site-footer .footer-links a,
+html body.reference-ui-v99 .site-footer .footer-links a{
+  display:inline-block!important;
+  width:auto!important;
+  max-width:100%!important;
+  align-self:flex-start!important;
+}
+
+html body.content-system-v103 main.compact-main-v103:not(.source-playbook-page) > .wrap.source-compare-note,
+html body.content-system-v103 main.compact-main-v103:not(.source-playbook-page) .wrap.source-compare-note,
+html body .source-compare-note,
+html body.reference-ui-v99 .source-compare-note{
+  padding:24px 28px!important;
+}
+@media (max-width:650px){
+  html body.content-system-v103 main.compact-main-v103:not(.source-playbook-page) > .wrap.source-compare-note,
+  html body.content-system-v103 main.compact-main-v103:not(.source-playbook-page) .wrap.source-compare-note,
+  html body .source-compare-note,
+  html body.reference-ui-v99 .source-compare-note{
+    padding:18px 20px!important;
+  }
+}
+
+/* v443 — vertically center text inside outlined link bars and chips */
+html body .related-secondary,
+html body.reference-ui-v99 .related-secondary{
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  flex-wrap:wrap!important;
+  padding:12px 16px!important;
+  min-height:48px!important;
+  box-sizing:border-box!important;
+}
+html body .related-secondary>span,
+html body.reference-ui-v99 .related-secondary>span,
+html body .related-secondary a,
+html body.reference-ui-v99 .related-secondary a,
+html body .source-next-links a,
+html body.reference-ui-v99 .source-next-links a,
+html body .service-task-nav a,
+html body.reference-ui-v99 .service-task-nav a,
+html body .service-primary-strip a,
+html body.reference-ui-v99 .service-primary-strip a,
+html body .article-cta-row>a,
+html body.reference-ui-v99 .article-cta-row>a,
+html body .geo-guideline-link,
+html body.reference-ui-v99 .geo-guideline-link,
+html body .article-exit-nav a,
+html body.reference-ui-v99 .article-exit-nav a{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:24px!important;
+  line-height:1.45!important;
+  box-sizing:border-box!important;
+}
+@media (max-width:650px){
+  html body .related-secondary,
+  html body.reference-ui-v99 .related-secondary{
+    padding:12px 14px!important;
+    gap:10px!important;
+  }
+}
+
+/* v444 — keep the site progress block pinned to the right on every desktop page */
+@media (min-width:901px){
+  html body.reference-ui-v99 .ref-topbar{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+  html body.reference-ui-v99 .ref-topbar-crumbs{
+    min-width:0!important;
+    flex:1 1 auto!important;
+  }
+  html body.reference-ui-v99 .ref-topbar-actions{
+    margin-left:auto!important;
+    flex:0 0 auto!important;
+    min-width:0!important;
+  }
+  html body.reference-ui-v99 .ref-top-progress{
+    flex:0 0 170px!important;
+    min-width:170px!important;
+    width:170px!important;
+    margin-left:0!important;
+  }
+}
+
+/* v445 — light theme diagnostics page cleanup
+   Remove the extra warm section slabs around the diagnostic blocks.
+   Keep the common template: page canvas outside, framed cards inside. */
+html body:not(.theme-dark) main.compact-main-v103 > :is(.diagnostic-wizard-page.compact-block-v103,.diagnostic-after.compact-block-v103,.diagnostic-seo-guide.compact-block-v103),
+html body.reference-ui-v99:not(.theme-dark) main.compact-main-v103 > :is(.diagnostic-wizard-page.compact-block-v103,.diagnostic-after.compact-block-v103,.diagnostic-seo-guide.compact-block-v103){
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
+html body:not(.theme-dark) .diagnostic-seo-inner,
+html body.reference-ui-v99:not(.theme-dark) .diagnostic-seo-inner{
+  background:var(--tl-light-surface)!important;
+  border:1px solid var(--tl-light-line)!important;
+  border-radius:14px!important;
+  box-shadow:none!important;
+}
+
+html body:not(.theme-dark) .diagnostic-seo-links a,
+html body.reference-ui-v99:not(.theme-dark) .diagnostic-seo-links a{
+  background:var(--tl-light-surface)!important;
+  border:1px solid var(--tl-light-line)!important;
+}
+
+html body:not(.theme-dark) .diagnostic-seo-links a:hover,
+html body.reference-ui-v99:not(.theme-dark) .diagnostic-seo-links a:hover{
+  border-color:var(--tl-light-line-strong)!important;
+  box-shadow:var(--tl-light-shadow)!important;
+}
