@@ -1,3 +1,4 @@
+import {isAdminAuthenticated,sameOrigin as adminSameOrigin} from '../_admin-auth.js';
 const JSON_HEADERS={
   'content-type':'application/json; charset=utf-8',
   'cache-control':'no-store, max-age=0',
@@ -40,16 +41,6 @@ function sameOrigin(request){
   const referer=request.headers.get('referer');
   if(referer){try{if(new URL(referer).origin===target)return true}catch{}}
   return false;
-}
-function bearer(request){
-  const value=request.headers.get('authorization')||'';
-  return value.startsWith('Bearer ')?value.slice(7):'';
-}
-function safeEqual(a,b){
-  a=String(a||'');b=String(b||'');
-  if(!a||!b||a.length!==b.length)return false;
-  let out=0;for(let i=0;i<a.length;i++)out|=a.charCodeAt(i)^b.charCodeAt(i);
-  return out===0;
 }
 async function hash(value){
   const bytes=new TextEncoder().encode(value);
@@ -185,9 +176,8 @@ async function handleRating(context){
 }
 async function handleStats(context){
   if(context.request.method!=='GET')return json({error:'method_not_allowed'},405);
-  const configured=String(context.env.ANALYTICS_ADMIN_TOKEN||'');
-  if(!configured)return json({error:'admin_token_not_configured'},503);
-  if(!safeEqual(bearer(context.request),configured))return json({error:'unauthorized'},401);
+  if(!adminSameOrigin(context.request))return json({error:'origin_rejected'},403);
+  if(!(await isAdminAuthenticated(context.request,context.env)))return json({error:'unauthorized'},401);
   await ensureSchema(context.env.DB);
   const url=new URL(context.request.url);
   const days=Math.max(1,Math.min(365,Number(url.searchParams.get('days'))||30));
@@ -220,9 +210,8 @@ async function handleStats(context){
 }
 async function handleHealth(context){
   if(context.request.method!=='GET')return json({error:'method_not_allowed'},405);
-  const configured=String(context.env.ANALYTICS_ADMIN_TOKEN||'');
-  if(!configured)return json({error:'admin_token_not_configured'},503);
-  if(!safeEqual(bearer(context.request),configured))return json({error:'unauthorized'},401);
+  if(!adminSameOrigin(context.request))return json({error:'origin_rejected'},403);
+  if(!(await isAdminAuthenticated(context.request,context.env)))return json({error:'unauthorized'},401);
   await ensureSchema(context.env.DB);
   return json({ok:true});
 }
