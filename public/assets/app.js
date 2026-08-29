@@ -1952,19 +1952,8 @@
     if(n.includes('profitads')) return 'profitads';
     return '';
   };
-  // v454: use the same reliable favicon source as the older working TrafficLab builds.
-  // Direct /favicon.ico URLs were failing on several services and left broken-image icons.
-  const iconUrl={
-    multilogin:'https://www.google.com/s2/favicons?domain=multilogin.com&sz=128',
-    proxys:'https://www.google.com/s2/favicons?domain=proxys.io&sz=128',
-    ruvds:'https://www.google.com/s2/favicons?domain=ruvds.com&sz=128',
-    adsbridge:'https://www.google.com/s2/favicons?domain=adsbridge.com&sz=128',
-    onlinesim:'https://www.google.com/s2/favicons?domain=onlinesim.io&sz=128',
-    spyhouse:'https://www.google.com/s2/favicons?domain=spy.house&sz=128',
-    darkstore:'https://www.google.com/s2/favicons?domain=dark.shopping&sz=128',
-    profitads:'https://www.google.com/s2/favicons?domain=profitads.ru&sz=128'
-  };
-  const iconFallback={multilogin:'ML',proxys:'PX',ruvds:'RV',adsbridge:'AB',onlinesim:'OS',spyhouse:'SH',darkstore:'DS',profitads:'PA'};
+  const iconUrl={multilogin:'/assets/tool-logos/multilogin.svg?v=4571',proxys:'/assets/tool-logos/proxys.svg?v=4571',ruvds:'/assets/tool-logos/ruvds.svg?v=4571',adsbridge:'/assets/tool-logos/adsbridge.svg?v=4571',onlinesim:'/assets/tool-logos/onlinesim.svg?v=4571',spyhouse:'/assets/tool-logos/spyhouse.svg?v=4571',darkstore:'/assets/tool-logos/darkstore.svg?v=4571',profitads:'/assets/tool-logos/profitads.svg?v=4571'};
+  const iconFallback={};
   const decorate = () => {
     document.querySelectorAll('.rail-tools a:not(.rail-all-tools), .service-tool, .source-tool-card').forEach(el=>{
       const title = (el.querySelector('h3,b')?.textContent || '').trim();
