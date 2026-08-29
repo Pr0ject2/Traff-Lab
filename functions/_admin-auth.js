@@ -75,10 +75,15 @@ export function clearAdminSessionCookie(){
 export function sameOrigin(request){
   const target=new URL(request.url).origin;
   const origin=request.headers.get('origin');
-  if(origin){try{return new URL(origin).origin===target}catch{return false}}
+  // On Cloudflare Pages the visitor-facing preview host can occasionally be
+  // represented differently in request.url while Fetch Metadata still
+  // correctly reports a same-origin form submission. Do not reject early on
+  // an Origin mismatch; accept only if one of the independent same-origin
+  // signals succeeds.
+  if(origin){try{if(new URL(origin).origin===target)return true}catch{}}
   if(request.headers.get('sec-fetch-site')==='same-origin')return true;
   const referer=request.headers.get('referer');
-  if(referer){try{return new URL(referer).origin===target}catch{return false}}
+  if(referer){try{if(new URL(referer).origin===target)return true}catch{}}
   return false;
 }
 async function ensureRateSchema(db){

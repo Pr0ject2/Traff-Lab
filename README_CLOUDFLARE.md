@@ -31,3 +31,7 @@ Admin security in v436:
 - `ANALYTICS_ADMIN_TOKEN` is no longer required by v436 and can be removed after the new deployment is confirmed working.
 
 The TrafficLab browser CMS is configured for GitHub repository `pr0ject2/Traff-Lab` and writes site changes under `public/`.
+
+
+## v437
+- Fixed admin login origin validation on the `*.pages.dev` preview host while retaining same-origin CSRF protection.
