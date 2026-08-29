@@ -22,6 +22,12 @@
           "title": "Сравнение источников",
           "href": "/traffic/compare/",
           "icon": "≡"
+        },
+        {
+          "id": "new",
+          "title": "1",
+          "href": "/new/",
+          "icon": "•"
         }
       ]
     },

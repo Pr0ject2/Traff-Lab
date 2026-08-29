@@ -108,6 +108,15 @@
       "url": "/help/",
       "description": "Шесть простых ситуаций, которые помогают быстро найти нужный раздел TrafficLab без изучения всей библиотеки.",
       "system": true
+    },
+    {
+      "id": "new",
+      "title": "1",
+      "description": "1",
+      "menuTitle": "1",
+      "path": "new/index.html",
+      "url": "/new/",
+      "system": false
     }
   ]
 }
