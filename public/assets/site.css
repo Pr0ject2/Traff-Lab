@@ -30755,3 +30755,29 @@ html body.reference-ui-v99.content-system-v103 main.compact-main-v103
     border-top:1px solid rgba(255,255,255,.10)!important;
   }
 }
+
+
+/* ======================================================================
+   v499 — mobile traffic hub: move the whole "С чего начать" section left
+   ====================================================================== */
+@media (max-width:650px){
+  html body .traffic-hub-page > .traffic-hub-main,
+  html body.reference-ui-v99 .traffic-hub-page > .traffic-hub-main{
+    position:relative!important;
+    left:-8px!important;
+    width:calc(100% + 8px)!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .traffic-hub-page > .traffic-hub-main .traffic-hub-title,
+  html body.reference-ui-v99 .traffic-hub-page > .traffic-hub-main .traffic-hub-title,
+  html body .traffic-hub-page > .traffic-hub-main .playbook-catalog-grid,
+  html body.reference-ui-v99 .traffic-hub-page > .traffic-hub-main .playbook-catalog-grid{
+    width:100%!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+  }
+}
