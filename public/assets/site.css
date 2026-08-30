@@ -29506,3 +29506,51 @@ html body.services-page.theme-dark .service-start-grid > div,
 html body.reference-ui-v99.services-page.theme-dark .service-start-grid > div{
   background:#191e25!important;
 }
+
+
+/* ======================================================================
+   v485 — service start kit: outlined cards with real spacing, no filled tiles
+   ====================================================================== */
+html body.services-page .service-start-grid,
+html body.reference-ui-v99.services-page .service-start-grid{
+  gap:14px!important;
+}
+
+html body.services-page .service-start-grid > div,
+html body.reference-ui-v99.services-page .service-start-grid > div{
+  padding:18px 20px!important;
+  border:1px solid #d9d1c4!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  outline:0!important;
+  box-sizing:border-box!important;
+}
+
+html body.services-page .service-start-grid > div > b,
+html body.reference-ui-v99.services-page .service-start-grid > div > b{
+  margin-bottom:7px!important;
+}
+
+html body.services-page:not(.theme-dark) .service-start-grid > div,
+html body.reference-ui-v99.services-page:not(.theme-dark) .service-start-grid > div{
+  background:transparent!important;
+  border-color:#d9d1c4!important;
+}
+
+html body.services-page.theme-dark .service-start-grid > div,
+html body.reference-ui-v99.services-page.theme-dark .service-start-grid > div{
+  background:transparent!important;
+  border-color:#37414c!important;
+}
+
+@media(max-width:640px){
+  html body.services-page .service-start-grid,
+  html body.reference-ui-v99.services-page .service-start-grid{
+    gap:10px!important;
+  }
+  html body.services-page .service-start-grid > div,
+  html body.reference-ui-v99.services-page .service-start-grid > div{
+    padding:16px 17px!important;
+  }
+}
