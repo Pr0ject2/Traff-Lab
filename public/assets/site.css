@@ -31484,3 +31484,124 @@ html.tl-right-rail-boot body.reference-ui-v99 .ref-top-progress{visibility:hidde
     visibility:visible!important;
   }
 }
+
+
+/* ======================================================================
+   v516 — mobile footer: restore clean cross separators
+   Keep link text completely transparent; only the 2x2 grid gets the cross.
+   ====================================================================== */
+@media (max-width:650px){
+
+  html body .site-footer .footer-links,
+  html body.reference-ui-v99 .site-footer .footer-links{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:auto auto!important;
+    gap:0!important;
+    align-items:stretch!important;
+  }
+
+  /* Reset legacy group borders first. */
+  html body .site-footer .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group,
+  html body .site-footer .footer-link-group + .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group + .footer-link-group{
+    border:0!important;
+    background:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+  }
+
+  /* Vertical stroke of the cross: right column only. */
+  html body .site-footer .footer-link-group:nth-child(2),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(2),
+  html body .site-footer .footer-link-group:nth-child(4),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(4){
+    border-left:1px solid rgba(255,255,255,.14)!important;
+  }
+
+  /* Horizontal stroke of the cross: lower row only. */
+  html body .site-footer .footer-link-group:nth-child(3),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(3),
+  html body .site-footer .footer-link-group:nth-child(4),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(4){
+    border-top:1px solid rgba(255,255,255,.14)!important;
+  }
+
+  /* Theme-specific subtle line colors. */
+  html body:not(.theme-dark) .site-footer .footer-link-group:nth-child(2),
+  html body.reference-ui-v99:not(.theme-dark) .site-footer .footer-link-group:nth-child(2),
+  html body:not(.theme-dark) .site-footer .footer-link-group:nth-child(4),
+  html body.reference-ui-v99:not(.theme-dark) .site-footer .footer-link-group:nth-child(4),
+  html body:not(.theme-dark) .site-footer .footer-link-group:nth-child(3),
+  html body.reference-ui-v99:not(.theme-dark) .site-footer .footer-link-group:nth-child(3){
+    border-color:rgba(232,242,238,.16)!important;
+  }
+
+  html body.theme-dark .site-footer .footer-link-group:nth-child(2),
+  html body.reference-ui-v99.theme-dark .site-footer .footer-link-group:nth-child(2),
+  html body.theme-dark .site-footer .footer-link-group:nth-child(4),
+  html body.reference-ui-v99.theme-dark .site-footer .footer-link-group:nth-child(4),
+  html body.theme-dark .site-footer .footer-link-group:nth-child(3),
+  html body.reference-ui-v99.theme-dark .site-footer .footer-link-group:nth-child(3){
+    border-color:#2c3740!important;
+  }
+
+  /* Balanced breathing room around the cross. */
+  html body .site-footer .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group{
+    padding:14px 16px!important;
+  }
+
+  html body .site-footer .footer-link-group:nth-child(odd),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(odd){
+    padding-left:0!important;
+  }
+
+  html body .site-footer .footer-link-group:nth-child(even),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(even){
+    padding-right:0!important;
+  }
+
+  /* Text itself stays completely clean. */
+  html body .site-footer .footer-links a,
+  html body.reference-ui-v99 .site-footer .footer-links a,
+  html body .site-footer .footer-links a:hover,
+  html body.reference-ui-v99 .site-footer .footer-links a:hover,
+  html body .site-footer .footer-links a:focus,
+  html body.reference-ui-v99 .site-footer .footer-links a:focus,
+  html body .site-footer .footer-links a:active,
+  html body.reference-ui-v99 .site-footer .footer-links a:active{
+    border:0!important;
+    background:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+  }
+}
+
+@media (max-width:360px){
+  /* One-column footer cannot have a cross. Use simple row separators. */
+  html body .site-footer .footer-links,
+  html body.reference-ui-v99 .site-footer .footer-links{
+    grid-template-columns:1fr!important;
+    grid-template-rows:none!important;
+  }
+
+  html body .site-footer .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group,
+  html body .site-footer .footer-link-group:nth-child(2),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(2),
+  html body .site-footer .footer-link-group:nth-child(3),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(3),
+  html body .site-footer .footer-link-group:nth-child(4),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(4){
+    border-left:0!important;
+    border-top:0!important;
+    padding:11px 0!important;
+  }
+
+  html body .site-footer .footer-link-group + .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group + .footer-link-group{
+    border-top:1px solid rgba(255,255,255,.12)!important;
+  }
+}
