@@ -1984,7 +1984,7 @@
         mark.classList.add('tool-mark--'+key,'tool-logo-inline');
         mark.dataset.tool = key;
         mark.setAttribute('aria-label', title);
-        if(iconSvg[key]) mark.innerHTML=iconSvg[key];
+        if(iconSvg[key] && !mark.querySelector('svg')) mark.innerHTML=iconSvg[key];
       }
     });
     document.querySelectorAll('.playbook-card').forEach(card=>{
@@ -2100,7 +2100,9 @@
   };
   const feedbackMarkup=()=>'<b>Статья помогла?</b><div class="rail-feedback-actions"><button class="rail-feedback-button" type="button" data-rail-vote="up" aria-pressed="false" aria-label="Поставить лайк"><span aria-hidden="true">👍</span><small data-vote-count="up">–</small></button><button class="rail-feedback-button" type="button" data-rail-vote="down" aria-pressed="false" aria-label="Поставить дизлайк"><span aria-hidden="true">👎</span><small data-vote-count="down">–</small></button></div>';
   const mountFeedback=(host,extraClass='')=>{
-    if(!host||host.querySelector('.rail-feedback'))return;
+    if(!host)return;
+    const existing=host.querySelector('.rail-feedback');
+    if(existing){syncVoteState(existing);loadCounts(existing);return;}
     const block=document.createElement('div');
     block.className=('aside-block rail-feedback '+extraClass).trim();
     block.innerHTML=feedbackMarkup();
