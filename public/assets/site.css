@@ -30893,3 +30893,107 @@ html body.reference-ui-v99.content-system-v103 main.compact-main-v103
     padding-right:18px!important;
   }
 }
+
+
+/* ======================================================================
+   v501 — definitive right rail sizing
+   The rail has a real height, not merely max-height. The TOC is the only
+   flexible block and its OL is the only scrollable region.
+   ====================================================================== */
+@media (min-width:1051px){
+
+  html body .article-aside.enhanced-rail,
+  html body.reference-ui-v99 .article-aside.enhanced-rail,
+  html body.theme-dark .article-aside.enhanced-rail,
+  html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:10px!important;
+
+    height:calc(100vh - var(--ref-topbar) - 30px)!important;
+    min-height:0!important;
+    max-height:none!important;
+
+    overflow:hidden!important;
+    overflow-x:hidden!important;
+    overflow-y:hidden!important;
+
+    visibility:visible!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Every block except TOC preserves its natural height. */
+  html body .article-aside.enhanced-rail > :not(.rail-toc),
+  html body.reference-ui-v99 .article-aside.enhanced-rail > :not(.rail-toc){
+    flex:0 0 auto!important;
+    min-height:0!important;
+  }
+
+  /* TOC stays natural when possible, shrinks when the rail gets crowded. */
+  html body .article-aside.enhanced-rail > .rail-toc,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc,
+  html body .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll{
+    display:flex!important;
+    flex-direction:column!important;
+    flex:0 1 auto!important;
+
+    min-height:104px!important;
+    height:auto!important;
+    max-height:none!important;
+
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > b,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > b,
+  html body .article-aside.enhanced-rail > .rail-toc > .rail-progress,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > .rail-progress{
+    flex:0 0 auto!important;
+  }
+
+  /* Hard boundary: section items can scroll only inside this OL. */
+  html body .article-aside.enhanced-rail > .rail-toc > ol,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol,
+  html body .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+
+    margin:0!important;
+    padding:0 8px 7px 0!important;
+
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+
+    scrollbar-width:thin!important;
+    scrollbar-color:#c5cfca transparent!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar{
+    width:5px!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar-thumb,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar-thumb{
+    background:#c5cfca!important;
+    border-radius:999px!important;
+  }
+
+  html body.theme-dark .article-aside.enhanced-rail > .rail-toc > ol,
+  html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail > .rail-toc > ol{
+    scrollbar-color:#4a5660 transparent!important;
+  }
+
+  html body.theme-dark .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar-thumb,
+  html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar-thumb{
+    background:#4a5660!important;
+  }
+}
