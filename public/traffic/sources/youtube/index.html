@@ -106,6 +106,103 @@ html body.reference-ui-v99.theme-dark main.source-playbook-page .source-hero-ico
   }
 }
 </style>
+
+<style id="tl-v508-right-rail-fit">
+/* v508 — entire right rail must fit inside the viewport.
+   Only the TOC list is allowed to shrink/scroll. */
+@media (min-width:1051px){
+
+  html body main.source-playbook-page > .wrap.article-layout > aside.article-aside.enhanced-rail{
+    position:sticky!important;
+    top:calc(var(--ref-topbar) + 18px)!important;
+
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:10px!important;
+
+    height:calc(100vh - var(--ref-topbar) - 30px)!important;
+    height:calc(100dvh - var(--ref-topbar) - 30px)!important;
+    min-height:0!important;
+    max-height:none!important;
+
+    overflow:hidden!important;
+    overflow-x:hidden!important;
+    overflow-y:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Everything below TOC keeps its full natural height. */
+  html body main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > :not(.rail-toc){
+    flex:0 0 auto!important;
+    min-height:0!important;
+  }
+
+  /* TOC takes exactly the space left above the lower blocks. */
+  html body main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc{
+    display:flex!important;
+    flex-direction:column!important;
+
+    flex:1 1 0!important;
+    min-height:72px!important;
+    height:auto!important;
+    max-height:none!important;
+
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  html body main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > b,
+  html body main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > .rail-progress{
+    flex:0 0 auto!important;
+  }
+
+  /* The list can never escape the TOC border. */
+  html body main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+
+    margin:0!important;
+    padding:0 8px 7px 0!important;
+
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    scrollbar-gutter:stable!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:#c5cfca transparent!important;
+    box-sizing:border-box!important;
+  }
+
+  html body main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol::-webkit-scrollbar{
+    width:5px!important;
+  }
+
+  html body main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol::-webkit-scrollbar-thumb{
+    background:#c5cfca!important;
+    border-radius:999px!important;
+  }
+
+  html body.theme-dark main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol{
+    scrollbar-color:#4a5660 transparent!important;
+  }
+
+  html body.theme-dark main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol::-webkit-scrollbar-thumb{
+    background:#4a5660!important;
+  }
+}
+</style>
 </head><body class="article-page internal-page-v198 tl-unified-v287 content-system-v103 reference-ui-v99"><a class="skip-link" href="#main-content">К основному содержанию</a>
 <header class="site-header"><div class="ref-topbar">
 <a class="ref-mobile-brand" href="/" aria-label="TrafficLab — на главную"><img src="/assets/trafficlab-flask.svg" alt="" width="96" height="82"><b>TrafficLab</b></a>
