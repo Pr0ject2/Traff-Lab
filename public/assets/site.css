@@ -28925,3 +28925,42 @@ html body.reference-ui-v99 .wrap.handbook.compact-block-v103{
     width:calc(100% - 20px)!important;
   }
 }
+
+
+/* v462 — definitive common-width fix for Start and Compare pages */
+html body.content-system-v103 main.compact-main-v103 > .source-compare-page.compact-block-v103,
+html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-explain.compact-block-v103,
+html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-note.compact-block-v103,
+html body.content-system-v103 main.compact-main-v103 > .wrap.handbook.compact-block-v103,
+html body.content-system-v103 main.compact-main-v103 > .wrap.starter-infra-section.compact-block-v103{
+  width:min(calc(100% - 36px),1148px)!important;
+  max-width:1148px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+html body .source-compare-page.compact-block-v103,
+html body.reference-ui-v99 .source-compare-page.compact-block-v103,
+html body .wrap.handbook.compact-block-v103,
+html body.reference-ui-v99 .wrap.handbook.compact-block-v103{
+  padding-left:0!important;
+  padding-right:0!important;
+}
+@media (max-width:900px){
+  html body.content-system-v103 main.compact-main-v103 > .source-compare-page.compact-block-v103,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-explain.compact-block-v103,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-note.compact-block-v103,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.handbook.compact-block-v103,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.starter-infra-section.compact-block-v103{
+    width:calc(100% - 28px)!important;
+  }
+}
+@media (max-width:650px){
+  html body.content-system-v103 main.compact-main-v103 > .source-compare-page.compact-block-v103,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-explain.compact-block-v103,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-note.compact-block-v103,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.handbook.compact-block-v103,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.starter-infra-section.compact-block-v103{
+    width:calc(100% - 20px)!important;
+  }
+}
