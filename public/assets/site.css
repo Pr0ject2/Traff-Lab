@@ -29983,44 +29983,67 @@ html body.reference-ui-v99 .site-header > .ref-topbar{
 
 
 /* ======================================================================
-   v491 — align ordinary page headers with the main content grid
+   v492 — source tool cards: keep logos left, text to the right
    ====================================================================== */
-html body.content-system-v103 main.compact-main-v103
-  > section.page-head.tl-align-main-head.compact-block-v103
-  > .wrap.narrow,
-html body.reference-ui-v99.content-system-v103 main.compact-main-v103
-  > section.page-head.tl-align-main-head.compact-block-v103
-  > .wrap.narrow{
-  width:min(calc(100% - 36px), var(--tl-v190-page-max))!important;
-  max-width:var(--tl-v190-page-max)!important;
-  margin-left:auto!important;
-  margin-right:auto!important;
-  padding-left:0!important;
-  padding-right:0!important;
-  box-sizing:border-box!important;
+
+/* Only cards that actually have a logo should reserve space for it. */
+html body .source-tool-card .source-tool-mark + b,
+html body.reference-ui-v99 .source-tool-card .source-tool-mark + b{
+  display:flex!important;
+  align-items:center!important;
+  min-height:52px!important;
+  padding-left:68px!important;
 }
 
-/* Keep the same left/right line on tablet and mobile. */
-@media(max-width:900px){
-  html body.content-system-v103 main.compact-main-v103
-    > section.page-head.tl-align-main-head.compact-block-v103
-    > .wrap.narrow,
-  html body.reference-ui-v99.content-system-v103 main.compact-main-v103
-    > section.page-head.tl-align-main-head.compact-block-v103
-    > .wrap.narrow{
-    width:calc(100% - 28px)!important;
-    max-width:none!important;
+html body .source-tool-card .source-tool-mark + b + .source-tool-card-copy,
+html body.reference-ui-v99 .source-tool-card .source-tool-mark + b + .source-tool-card-copy,
+html body .source-tool-card .source-tool-mark + b + .source-tool-card-copy + .source-tool-card-action,
+html body.reference-ui-v99 .source-tool-card .source-tool-mark + b + .source-tool-card-copy + .source-tool-card-action{
+  padding-left:68px!important;
+}
+
+/* Keep the icon neatly aligned with the text block. */
+html body .source-tool-card .source-tool-mark,
+html body.reference-ui-v99 .source-tool-card .source-tool-mark{
+  top:38px!important;
+}
+
+@media (max-width:900px){
+  html body .source-tool-card .source-tool-mark + b,
+  html body.reference-ui-v99 .source-tool-card .source-tool-mark + b{
+    min-height:48px!important;
+    padding-left:62px!important;
+  }
+
+  html body .source-tool-card .source-tool-mark + b + .source-tool-card-copy,
+  html body.reference-ui-v99 .source-tool-card .source-tool-mark + b + .source-tool-card-copy,
+  html body .source-tool-card .source-tool-mark + b + .source-tool-card-copy + .source-tool-card-action,
+  html body.reference-ui-v99 .source-tool-card .source-tool-mark + b + .source-tool-card-copy + .source-tool-card-action{
+    padding-left:62px!important;
+  }
+
+  html body .source-tool-card .source-tool-mark,
+  html body.reference-ui-v99 .source-tool-card .source-tool-mark{
+    top:36px!important;
   }
 }
 
-@media(max-width:640px){
-  html body.content-system-v103 main.compact-main-v103
-    > section.page-head.tl-align-main-head.compact-block-v103
-    > .wrap.narrow,
-  html body.reference-ui-v99.content-system-v103 main.compact-main-v103
-    > section.page-head.tl-align-main-head.compact-block-v103
-    > .wrap.narrow{
-    width:calc(100% - 20px)!important;
-    max-width:none!important;
+@media (max-width:430px){
+  html body .source-tool-card .source-tool-mark + b,
+  html body.reference-ui-v99 .source-tool-card .source-tool-mark + b{
+    min-height:44px!important;
+    padding-left:56px!important;
+  }
+
+  html body .source-tool-card .source-tool-mark + b + .source-tool-card-copy,
+  html body.reference-ui-v99 .source-tool-card .source-tool-mark + b + .source-tool-card-copy,
+  html body .source-tool-card .source-tool-mark + b + .source-tool-card-copy + .source-tool-card-action,
+  html body.reference-ui-v99 .source-tool-card .source-tool-mark + b + .source-tool-card-copy + .source-tool-card-action{
+    padding-left:56px!important;
+  }
+
+  html body .source-tool-card .source-tool-mark,
+  html body.reference-ui-v99 .source-tool-card .source-tool-mark{
+    top:34px!important;
   }
 }
