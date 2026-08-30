@@ -29727,3 +29727,109 @@ html body.reference-ui-v99.services-page.theme-dark .service-start-grid > div{
     padding:14px 15px!important;
   }
 }
+
+
+/* ======================================================================
+   v488 — REAL global fix for readable image-side text
+   Previous v486 selectors were wrong because article-page/source-playbook-page
+   are BODY classes, not descendants of BODY.
+   ====================================================================== */
+
+/* Article figures: text beside or under screenshots. */
+html body.article-page .article-figure > figcaption,
+html body.reference-ui-v99.article-page .article-figure > figcaption,
+html body.source-playbook-page .article-figure > figcaption,
+html body.reference-ui-v99.source-playbook-page .article-figure > figcaption,
+html body.article-page .guide-v101-media > figcaption,
+html body.reference-ui-v99.article-page .guide-v101-media > figcaption,
+html body.source-playbook-page .guide-v101-media > figcaption,
+html body.reference-ui-v99.source-playbook-page .guide-v101-media > figcaption{
+  font-size:17px!important;
+  line-height:1.68!important;
+}
+
+/* Compact screenshot + explanation blocks, including user-shot. */
+html body.article-page .article-figure.compact:not(.source-journey-card) > figcaption,
+html body.reference-ui-v99.article-page .article-figure.compact:not(.source-journey-card) > figcaption,
+html body.source-playbook-page .article-figure.compact:not(.source-journey-card) > figcaption,
+html body.reference-ui-v99.source-playbook-page .article-figure.compact:not(.source-journey-card) > figcaption,
+html body.article-page .article-figure.compact.user-shot > figcaption,
+html body.reference-ui-v99.article-page .article-figure.compact.user-shot > figcaption,
+html body.source-playbook-page .article-figure.compact.user-shot > figcaption,
+html body.reference-ui-v99.source-playbook-page .article-figure.compact.user-shot > figcaption,
+html body .source-visual-pair figcaption,
+html body.reference-ui-v99 .source-visual-pair figcaption,
+html body .source-visual-wide figcaption,
+html body.reference-ui-v99 .source-visual-wide figcaption,
+html body .source-wizard-card figcaption,
+html body.reference-ui-v99 .source-wizard-card figcaption{
+  font-size:17px!important;
+  line-height:1.68!important;
+  padding:20px 22px!important;
+}
+
+/* Headings in those descriptions. */
+html body.article-page .article-figure figcaption strong,
+html body.reference-ui-v99.article-page .article-figure figcaption strong,
+html body.source-playbook-page .article-figure figcaption strong,
+html body.reference-ui-v99.source-playbook-page .article-figure figcaption strong,
+html body.article-page .guide-v101-media figcaption strong,
+html body.reference-ui-v99.article-page .guide-v101-media figcaption strong,
+html body.source-playbook-page .guide-v101-media figcaption strong,
+html body.reference-ui-v99.source-playbook-page .guide-v101-media figcaption strong,
+html body .source-visual-pair figcaption strong,
+html body.reference-ui-v99 .source-visual-pair figcaption strong,
+html body .source-visual-wide figcaption strong,
+html body.reference-ui-v99 .source-visual-wide figcaption strong,
+html body .source-wizard-card figcaption strong,
+html body.reference-ui-v99 .source-wizard-card figcaption strong{
+  display:block!important;
+  margin-bottom:8px!important;
+  font-size:17px!important;
+  line-height:1.42!important;
+  font-weight:800!important;
+}
+
+/* Smaller multi-card image journeys, but still readable. */
+html body.article-page .source-journey-card figcaption,
+html body.reference-ui-v99.article-page .source-journey-card figcaption,
+html body.source-playbook-page .source-journey-card figcaption,
+html body.reference-ui-v99.source-playbook-page .source-journey-card figcaption,
+html body .source-journey-card figcaption,
+html body.reference-ui-v99 .source-journey-card figcaption{
+  font-size:15.5px!important;
+  line-height:1.62!important;
+  padding:14px 15px 16px!important;
+}
+
+html body.article-page .source-journey-card figcaption strong,
+html body.reference-ui-v99.article-page .source-journey-card figcaption strong,
+html body.source-playbook-page .source-journey-card figcaption strong,
+html body.reference-ui-v99.source-playbook-page .source-journey-card figcaption strong,
+html body .source-journey-card figcaption strong,
+html body.reference-ui-v99 .source-journey-card figcaption strong{
+  font-size:16.5px!important;
+  line-height:1.4!important;
+}
+
+/* Never shrink explanation text back to micro-copy on smaller screens. */
+@media(max-width:900px){
+  html body.article-page .article-figure > figcaption,
+  html body.reference-ui-v99.article-page .article-figure > figcaption,
+  html body.source-playbook-page .article-figure > figcaption,
+  html body.reference-ui-v99.source-playbook-page .article-figure > figcaption,
+  html body.article-page .article-figure.compact:not(.source-journey-card) > figcaption,
+  html body.reference-ui-v99.article-page .article-figure.compact:not(.source-journey-card) > figcaption,
+  html body.source-playbook-page .article-figure.compact:not(.source-journey-card) > figcaption,
+  html body.reference-ui-v99.source-playbook-page .article-figure.compact:not(.source-journey-card) > figcaption,
+  html body .source-visual-pair figcaption,
+  html body.reference-ui-v99 .source-visual-pair figcaption,
+  html body .source-visual-wide figcaption,
+  html body.reference-ui-v99 .source-visual-wide figcaption,
+  html body .source-wizard-card figcaption,
+  html body.reference-ui-v99 .source-wizard-card figcaption{
+    font-size:16.5px!important;
+    line-height:1.66!important;
+    padding:16px 17px!important;
+  }
+}
