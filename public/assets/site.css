@@ -29359,3 +29359,130 @@ html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.
     padding:16px 44px 16px 16px!important;
   }
 }
+
+
+/* ======================================================================
+   v480 — prevent first-paint sidebar swap/flicker
+   The static HTML sidebar stays hidden until reference UI has rebuilt it.
+   ====================================================================== */
+html body .global-sidebar{
+  visibility:hidden!important;
+}
+html body.reference-ui-v99 .global-sidebar{
+  visibility:visible!important;
+}
+
+
+/* ======================================================================
+   v482 — tool logos: fix crooked rendering for inline SVG marks
+   The root problem was that many blocks were styled only for <img> logos,
+   while the site actually uses inline <svg>. This makes all service logos
+   render in a clean, centered, consistent way.
+   ====================================================================== */
+
+html body .tool-logo-inline::before,
+html body.reference-ui-v99 .tool-logo-inline::before,
+html body .tool-logo-inline::after,
+html body.reference-ui-v99 .tool-logo-inline::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+}
+
+html body :is(.service-mark,.rail-tool-mark,.source-tool-mark).tool-logo-inline,
+html body.reference-ui-v99 :is(.service-mark,.rail-tool-mark,.source-tool-mark).tool-logo-inline{
+  position:relative!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  text-indent:0!important;
+  font-size:0!important;
+  line-height:0!important;
+}
+
+html body .service-mark.tool-logo-inline,
+html body.reference-ui-v99 .service-mark.tool-logo-inline{
+  background:linear-gradient(180deg,#f9fcfb,#eef5f2)!important;
+  border:1px solid #cfe0d8!important;
+}
+
+html body .rail-tool-mark.tool-logo-inline,
+html body.reference-ui-v99 .rail-tool-mark.tool-logo-inline,
+html body .source-tool-mark.tool-logo-inline,
+html body.reference-ui-v99 .source-tool-mark.tool-logo-inline{
+  background:linear-gradient(180deg,#f9fcfb,#eef5f2)!important;
+  border:1px solid #cfe0d8!important;
+}
+
+html body.theme-dark :is(.service-mark,.rail-tool-mark,.source-tool-mark).tool-logo-inline,
+html body.reference-ui-v99.theme-dark :is(.service-mark,.rail-tool-mark,.source-tool-mark).tool-logo-inline{
+  background:#20262e!important;
+  border-color:#37414c!important;
+}
+
+html body .tool-logo-inline > svg,
+html body.reference-ui-v99 .tool-logo-inline > svg{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  opacity:1!important;
+  visibility:visible!important;
+  overflow:visible!important;
+  flex:none!important;
+}
+
+html body .service-mark.tool-logo-inline > svg,
+html body.reference-ui-v99 .service-mark.tool-logo-inline > svg{
+  width:30px!important;
+  height:30px!important;
+}
+
+html body .rail-tool-mark.tool-logo-inline > svg,
+html body.reference-ui-v99 .rail-tool-mark.tool-logo-inline > svg{
+  width:22px!important;
+  height:22px!important;
+}
+
+html body .source-tool-mark.tool-logo-inline > svg,
+html body.reference-ui-v99 .source-tool-mark.tool-logo-inline > svg{
+  width:34px!important;
+  height:34px!important;
+}
+
+@media (max-width:900px){
+  html body .service-mark.tool-logo-inline > svg,
+  html body.reference-ui-v99 .service-mark.tool-logo-inline > svg{
+    width:28px!important;
+    height:28px!important;
+  }
+  html body .source-tool-mark.tool-logo-inline > svg,
+  html body.reference-ui-v99 .source-tool-mark.tool-logo-inline > svg{
+    width:32px!important;
+    height:32px!important;
+  }
+}
+
+@media (max-width:640px){
+  html body .service-mark.tool-logo-inline > svg,
+  html body.reference-ui-v99 .service-mark.tool-logo-inline > svg{
+    width:26px!important;
+    height:26px!important;
+  }
+  html body .rail-tool-mark.tool-logo-inline > svg,
+  html body.reference-ui-v99 .rail-tool-mark.tool-logo-inline > svg{
+    width:21px!important;
+    height:21px!important;
+  }
+  html body .source-tool-mark.tool-logo-inline > svg,
+  html body.reference-ui-v99 .source-tool-mark.tool-logo-inline > svg{
+    width:30px!important;
+    height:30px!important;
+  }
+}
