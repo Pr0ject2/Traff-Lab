@@ -28964,3 +28964,146 @@ html body.reference-ui-v99 .wrap.handbook.compact-block-v103{
     width:calc(100% - 20px)!important;
   }
 }
+
+
+/* ======================================================================
+   v470 — final centralized fixes after cumulative rebuild
+   These rules intentionally live at the very end of site.css so older
+   page-specific patches cannot override the current layout decisions.
+   ====================================================================== */
+
+/* 1. START: visible outer frame, wide common canvas and proper breathing room */
+html body.content-system-v103 main.compact-main-v103 > section.wrap.handbook.compact-block-v103{
+  width:min(calc(100% - 40px),1228px)!important;
+  max-width:1228px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding:26px 26px 30px!important;
+  box-sizing:border-box!important;
+  background:#fffdf8!important;
+  border:1px solid #d9d1c4!important;
+  border-radius:16px!important;
+  box-shadow:none!important;
+}
+html body.content-system-v103 main.compact-main-v103 > section.wrap.handbook.compact-block-v103 > :is(.affiliate-inline-mention,.handbook-intro,ol.starter-five,.handbook-after,.starter-next){
+  width:100%!important;
+  max-width:none!important;
+}
+html body.content-system-v103 main.compact-main-v103 > section.wrap.handbook.compact-block-v103 > .affiliate-inline-mention{
+  margin:0 0 20px!important;
+}
+html body.theme-dark.content-system-v103 main.compact-main-v103 > section.wrap.handbook.compact-block-v103,
+html body.reference-ui-v99.theme-dark.content-system-v103 main.compact-main-v103 > section.wrap.handbook.compact-block-v103{
+  background:#1d242c!important;
+  border-color:#313946!important;
+}
+
+/* 2. COMPARE: no duplicate outer frame, wider working area */
+html body.content-system-v103 main.compact-main-v103 > section.wrap.source-compare-page.compact-block-v103,
+html body.content-system-v103 main.compact-main-v103 > section.wrap.source-compare-explain.compact-block-v103,
+html body.content-system-v103 main.compact-main-v103 > section.wrap.source-compare-note.compact-block-v103{
+  width:min(calc(100% - 40px),1228px)!important;
+  max-width:1228px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  box-sizing:border-box!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+html body.content-system-v103 main.compact-main-v103 > section.wrap.source-compare-page.compact-block-v103 > :is(.source-compare-picker,.source-compare-table,.source-compare-actions){
+  width:100%!important;
+  max-width:none!important;
+}
+
+/* 3. GLOSSARY: remove redundant outer frame while keeping term rows */
+html body.content-system-v103 main.compact-main-v103 > section.wrap.glossary.compact-block-v103{
+  width:min(calc(100% - 40px),1228px)!important;
+  max-width:1228px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+html body.content-system-v103 main.compact-main-v103 > section.wrap.glossary.compact-block-v103 > dl{
+  width:100%!important;
+  max-width:none!important;
+}
+
+/* 4. TOOLS: remove redundant outer frame around calculator cards */
+html body.content-system-v103 main.compact-main-v103 > section.wrap.tool-memory.compact-block-v103,
+html body.content-system-v103 main.compact-main-v103 > section.wrap.tool-suite.compact-block-v103{
+  width:min(calc(100% - 40px),1228px)!important;
+  max-width:1228px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+html body.content-system-v103 main.compact-main-v103 > section.wrap.tool-suite.compact-block-v103 > .big-tool{
+  width:100%!important;
+  max-width:none!important;
+}
+
+/* 5. SAVED: keep the frame but move text/cards away from its edges */
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103{
+  width:min(calc(100% - 40px),1228px)!important;
+  max-width:1228px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding:28px 28px 34px!important;
+  box-sizing:border-box!important;
+}
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 > .saved-block{
+  margin:0!important;
+}
+
+/* Responsive equivalents */
+@media(max-width:900px){
+  html body.content-system-v103 main.compact-main-v103 > :is(
+    section.wrap.handbook.compact-block-v103,
+    section.wrap.source-compare-page.compact-block-v103,
+    section.wrap.source-compare-explain.compact-block-v103,
+    section.wrap.source-compare-note.compact-block-v103,
+    section.wrap.glossary.compact-block-v103,
+    section.wrap.tool-memory.compact-block-v103,
+    section.wrap.tool-suite.compact-block-v103,
+    section.wrap.saved-page.compact-block-v103
+  ){
+    width:calc(100% - 28px)!important;
+  }
+  html body.content-system-v103 main.compact-main-v103 > section.wrap.handbook.compact-block-v103{
+    padding:22px 20px 24px!important;
+  }
+  html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103{
+    padding:22px 20px 28px!important;
+  }
+}
+@media(max-width:640px){
+  html body.content-system-v103 main.compact-main-v103 > :is(
+    section.wrap.handbook.compact-block-v103,
+    section.wrap.source-compare-page.compact-block-v103,
+    section.wrap.source-compare-explain.compact-block-v103,
+    section.wrap.source-compare-note.compact-block-v103,
+    section.wrap.glossary.compact-block-v103,
+    section.wrap.tool-memory.compact-block-v103,
+    section.wrap.tool-suite.compact-block-v103,
+    section.wrap.saved-page.compact-block-v103
+  ){
+    width:calc(100% - 20px)!important;
+  }
+  html body.content-system-v103 main.compact-main-v103 > section.wrap.handbook.compact-block-v103{
+    padding:18px 14px 20px!important;
+    border-radius:14px!important;
+  }
+  html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103{
+    padding:18px 14px 22px!important;
+  }
+}
