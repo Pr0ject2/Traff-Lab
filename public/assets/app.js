@@ -1764,7 +1764,7 @@
 
     const sidebar=document.querySelector('.global-sidebar');
     if(sidebar){
-      sidebar.innerHTML=`
+      if(!sidebar.querySelector('.ref-sidebar-groups')) sidebar.innerHTML=`
         <a class="ref-sidebar-brand" href="${base}"><img src="${base}assets/trafficlab-flask.svg" alt="" width="96" height="82"><span><b>TrafficLab</b><small>арбитраж трафика</small></span></a>
         <button class="ref-sidebar-collapse ref-sidebar-collapse-top" type="button" data-ref-sidebar-collapse aria-expanded="true" aria-label="Свернуть левое меню"><span class="ref-collapse-icon" aria-hidden="true">←</span><span class="ref-collapse-label">Свернуть меню</span></button>
         <div class="ref-sidebar-groups">${groups.map((g,gi)=>{

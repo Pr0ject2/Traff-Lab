@@ -29486,3 +29486,7 @@ html body.reference-ui-v99 .source-tool-mark.tool-logo-inline > svg{
     height:30px!important;
   }
 }
+
+
+/* v483 — sidebar is server-rendered in final form; never hide it before JS */
+html body .global-sidebar,html body.reference-ui-v99 .global-sidebar{visibility:visible!important;}
