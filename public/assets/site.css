@@ -30997,3 +30997,243 @@ html body.reference-ui-v99.content-system-v103 main.compact-main-v103
     background:#4a5660!important;
   }
 }
+
+
+/* ======================================================================
+   v504 — mobile footer rebuilt cleanly
+   No background/pills behind any words. 2x2 balanced link groups.
+   ====================================================================== */
+@media (max-width:650px){
+
+  /* Clear every legacy decorative surface inside the footer.
+     The footer itself keeps its global green/dark background. */
+  html body .site-footer :is(
+    .footer-main,.footer-identity,.footer-links,.footer-link-group,
+    .footer-brand,.footer-identity p,.footer-links a,.footer-links a span,
+    .footer-bottom,.footer-bottom span,.footer-bottom small
+  ),
+  html body.reference-ui-v99 .site-footer :is(
+    .footer-main,.footer-identity,.footer-links,.footer-link-group,
+    .footer-brand,.footer-identity p,.footer-links a,.footer-links a span,
+    .footer-bottom,.footer-bottom span,.footer-bottom small
+  ){
+    background:none!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+    text-shadow:none!important;
+    filter:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+
+  html body .site-footer .footer-links a,
+  html body.reference-ui-v99 .site-footer .footer-links a,
+  html body .site-footer .footer-links a:hover,
+  html body.reference-ui-v99 .site-footer .footer-links a:hover,
+  html body .site-footer .footer-links a:focus,
+  html body.reference-ui-v99 .site-footer .footer-links a:focus,
+  html body .site-footer .footer-links a:focus-visible,
+  html body.reference-ui-v99 .site-footer .footer-links a:focus-visible,
+  html body .site-footer .footer-links a:active,
+  html body.reference-ui-v99 .site-footer .footer-links a:active{
+    width:auto!important;
+    min-width:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+
+    border:0!important;
+    border-radius:0!important;
+    outline:0!important;
+
+    background:none!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+
+    -webkit-tap-highlight-color:transparent!important;
+    appearance:none!important;
+    -webkit-appearance:none!important;
+
+    font-size:13.5px!important;
+    font-weight:650!important;
+    line-height:1.45!important;
+    text-decoration:none!important;
+  }
+
+  html body .site-footer .footer-links a::before,
+  html body .site-footer .footer-links a::after,
+  html body.reference-ui-v99 .site-footer .footer-links a::before,
+  html body.reference-ui-v99 .site-footer .footer-links a::after{
+    content:none!important;
+    display:none!important;
+    background:none!important;
+    box-shadow:none!important;
+  }
+
+  html body .site-footer > .wrap,
+  html body.reference-ui-v99 .site-footer > .wrap,
+  html body .site-footer .footer-bottom,
+  html body.reference-ui-v99 .site-footer .footer-bottom{
+    width:calc(100% - 28px)!important;
+    max-width:none!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .site-footer .footer-main,
+  html body.reference-ui-v99 .site-footer .footer-main{
+    display:block!important;
+    padding-top:24px!important;
+    padding-bottom:18px!important;
+  }
+
+  html body .site-footer .footer-identity,
+  html body.reference-ui-v99 .site-footer .footer-identity{
+    margin:0 0 18px!important;
+    padding:0 0 18px!important;
+    border:0!important;
+    border-bottom:1px solid rgba(255,255,255,.12)!important;
+  }
+
+  html body.theme-dark .site-footer .footer-identity,
+  html body.reference-ui-v99.theme-dark .site-footer .footer-identity{
+    border-bottom-color:#2c3740!important;
+  }
+  html body:not(.theme-dark) .site-footer .footer-identity,
+  html body.reference-ui-v99:not(.theme-dark) .site-footer .footer-identity{
+    border-bottom-color:#2e4c43!important;
+  }
+
+  html body .site-footer .footer-brand,
+  html body.reference-ui-v99 .site-footer .footer-brand{
+    display:inline!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    font-size:26px!important;
+    line-height:1.1!important;
+  }
+
+  html body .site-footer .footer-identity p,
+  html body.reference-ui-v99 .site-footer .footer-identity p{
+    margin:9px 0 0!important;
+    padding:0!important;
+    border:0!important;
+    font-size:14px!important;
+    line-height:1.55!important;
+  }
+
+  html body .site-footer .footer-links,
+  html body.reference-ui-v99 .site-footer .footer-links{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:auto auto!important;
+    grid-auto-flow:row!important;
+    align-items:stretch!important;
+    gap:0!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  html body .site-footer .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    justify-content:flex-start!important;
+    gap:9px!important;
+
+    min-width:0!important;
+    min-height:100%!important;
+    margin:0!important;
+    padding:13px 14px!important;
+
+    border:0!important;
+    border-radius:0!important;
+  }
+
+  html body .site-footer .footer-link-group:nth-child(odd),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(odd){
+    padding-left:0!important;
+  }
+  html body .site-footer .footer-link-group:nth-child(even),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(even){
+    padding-right:0!important;
+    border-left:1px solid rgba(255,255,255,.12)!important;
+  }
+  html body .site-footer .footer-link-group:nth-child(n+3),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(n+3){
+    border-top:1px solid rgba(255,255,255,.10)!important;
+  }
+
+  html body.theme-dark .site-footer .footer-link-group:nth-child(even),
+  html body.reference-ui-v99.theme-dark .site-footer .footer-link-group:nth-child(even),
+  html body.theme-dark .site-footer .footer-link-group:nth-child(n+3),
+  html body.reference-ui-v99.theme-dark .site-footer .footer-link-group:nth-child(n+3){
+    border-color:#2c3740!important;
+  }
+  html body:not(.theme-dark) .site-footer .footer-link-group:nth-child(even),
+  html body.reference-ui-v99:not(.theme-dark) .site-footer .footer-link-group:nth-child(even),
+  html body:not(.theme-dark) .site-footer .footer-link-group:nth-child(n+3),
+  html body.reference-ui-v99:not(.theme-dark) .site-footer .footer-link-group:nth-child(n+3){
+    border-color:#2e4c43!important;
+  }
+
+  html body .site-footer .footer-bottom,
+  html body.reference-ui-v99 .site-footer .footer-bottom{
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:12px!important;
+
+    margin:0 auto!important;
+    padding-top:14px!important;
+    padding-bottom:max(17px,env(safe-area-inset-bottom))!important;
+
+    border:0!important;
+    border-top:1px solid rgba(255,255,255,.11)!important;
+  }
+
+  html body .site-footer .footer-bottom span,
+  html body.reference-ui-v99 .site-footer .footer-bottom span{
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    font-size:11px!important;
+    line-height:1.35!important;
+    white-space:nowrap!important;
+  }
+}
+
+@media(max-width:360px){
+  html body .site-footer .footer-links,
+  html body.reference-ui-v99 .site-footer .footer-links{
+    grid-template-columns:1fr!important;
+    grid-template-rows:none!important;
+  }
+
+  html body .site-footer .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group,
+  html body .site-footer .footer-link-group:nth-child(odd),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(odd),
+  html body .site-footer .footer-link-group:nth-child(even),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(even){
+    padding:11px 0!important;
+    border-left:0!important;
+  }
+
+  html body .site-footer .footer-link-group + .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group + .footer-link-group{
+    border-top:1px solid rgba(255,255,255,.10)!important;
+  }
+}
