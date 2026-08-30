@@ -1,7 +1,132 @@
 <!DOCTYPE html>
 
 <html lang="ru"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="strict-origin-when-cross-origin" name="referrer"/><meta content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google.com; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests" http-equiv="Content-Security-Policy"/>
-<title>Арбитраж трафика в iGaming: гайды и аналитика | TrafficLab</title><meta name="description" content="Практическая база по арбитражу трафика в iGaming: источники, первые тесты, трекинг, FTD, RevShare, аналитика и диагностика воронки."><meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"><meta content="website" property="og:type"/><meta content="TrafficLab" property="og:site_name"/><meta content="ru_RU" property="og:locale"/><meta property="og:title" content="Арбитраж трафика в iGaming: гайды и аналитика"><meta property="og:description" content="Практическая база по арбитражу трафика в iGaming: источники, первые тесты, трекинг, FTD, RevShare, аналитика и диагностика воронки."><link href="/assets/site.css?v=20260831-5161" rel="stylesheet"/><link as="image" fetchpriority="high" href="/assets/home-chalk-reference-soft-tall-hq.webp?v=20260825-3301" rel="preload" type="image/webp"/><link href="/assets/trafficlab-flask.svg" rel="icon" type="image/svg+xml"/><meta content="#17342d" name="theme-color"/><link href="https://traff-lab.com/" rel="canonical"/><meta content="https://traff-lab.com/" property="og:url"/><meta property="og:image" content="https://traff-lab.com/assets/home-lab-board-light-exact.webp"><meta property="og:image:width" content="2800"><meta property="og:image:height" content="1477"><meta property="og:image:alt" content="TrafficLab — практическая база по арбитражу трафика"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Арбитраж трафика в iGaming: гайды и аналитика"><meta name="twitter:description" content="Практическая база по арбитражу трафика в iGaming: источники, первые тесты, трекинг, FTD, RevShare, аналитика и диагностика воронки."><meta name="twitter:image" content="https://traff-lab.com/assets/home-lab-board-light-exact.webp"><link rel="icon" href="/assets/favicon-48.png" type="image/png" sizes="48x48"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" sizes="180x180"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://traff-lab.com/#organization","name":"TrafficLab","url":"https://traff-lab.com/","logo":{"@type":"ImageObject","url":"https://traff-lab.com/assets/trafficlab-logo-512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://traff-lab.com/#website","url":"https://traff-lab.com/","name":"TrafficLab","alternateName":"Traffic Lab","inLanguage":"ru-RU","publisher":{"@id":"https://traff-lab.com/#organization"}},{"@type":"WebPage","@id":"https://traff-lab.com/#webpage","url":"https://traff-lab.com/","name":"Арбитраж трафика в iGaming: гайды и аналитика","description":"Практическая база по арбитражу трафика в iGaming: источники, первые тесты, трекинг, FTD, RevShare, аналитика и диагностика воронки.","inLanguage":"ru-RU","isPartOf":{"@id":"https://traff-lab.com/#website"},"about":{"@type":"Thing","name":"Арбитраж трафика в iGaming"}}]}</script></head><body class="content-system-v103 home-shell-v256 tl-unified-v287 reference-ui-v99" data-release="20260829-v436"><a class="skip-link" href="#main-content">К основному содержанию</a>
+<title>Арбитраж трафика в iGaming: гайды и аналитика | TrafficLab</title><meta name="description" content="Практическая база по арбитражу трафика в iGaming: источники, первые тесты, трекинг, FTD, RevShare, аналитика и диагностика воронки."><meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"><meta content="website" property="og:type"/><meta content="TrafficLab" property="og:site_name"/><meta content="ru_RU" property="og:locale"/><meta property="og:title" content="Арбитраж трафика в iGaming: гайды и аналитика"><meta property="og:description" content="Практическая база по арбитражу трафика в iGaming: источники, первые тесты, трекинг, FTD, RevShare, аналитика и диагностика воронки."><link href="/assets/site.css?v=20260831-5161" rel="stylesheet"/><link as="image" fetchpriority="high" href="/assets/home-chalk-reference-soft-tall-hq.webp?v=20260825-3301" rel="preload" type="image/webp"/><link href="/assets/trafficlab-flask.svg" rel="icon" type="image/svg+xml"/><meta content="#17342d" name="theme-color"/><link href="https://traff-lab.com/" rel="canonical"/><meta content="https://traff-lab.com/" property="og:url"/><meta property="og:image" content="https://traff-lab.com/assets/home-lab-board-light-exact.webp"><meta property="og:image:width" content="2800"><meta property="og:image:height" content="1477"><meta property="og:image:alt" content="TrafficLab — практическая база по арбитражу трафика"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Арбитраж трафика в iGaming: гайды и аналитика"><meta name="twitter:description" content="Практическая база по арбитражу трафика в iGaming: источники, первые тесты, трекинг, FTD, RevShare, аналитика и диагностика воронки."><meta name="twitter:image" content="https://traff-lab.com/assets/home-lab-board-light-exact.webp"><link rel="icon" href="/assets/favicon-48.png" type="image/png" sizes="48x48"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" sizes="180x180"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://traff-lab.com/#organization","name":"TrafficLab","url":"https://traff-lab.com/","logo":{"@type":"ImageObject","url":"https://traff-lab.com/assets/trafficlab-logo-512.png","width":512,"height":512}},{"@type":"WebSite","@id":"https://traff-lab.com/#website","url":"https://traff-lab.com/","name":"TrafficLab","alternateName":"Traffic Lab","inLanguage":"ru-RU","publisher":{"@id":"https://traff-lab.com/#organization"}},{"@type":"WebPage","@id":"https://traff-lab.com/#webpage","url":"https://traff-lab.com/","name":"Арбитраж трафика в iGaming: гайды и аналитика","description":"Практическая база по арбитражу трафика в iGaming: источники, первые тесты, трекинг, FTD, RevShare, аналитика и диагностика воронки.","inLanguage":"ru-RU","isPartOf":{"@id":"https://traff-lab.com/#website"},"about":{"@type":"Thing","name":"Арбитраж трафика в iGaming"}}]}</script>
+<style id="tl-v517-home-mobile-gutters">
+/* v517 — mobile home: consistent breathing room from viewport and card edges */
+@media (max-width:650px){
+
+  /* Keep all main home sections off the physical screen edge. */
+  html body.home-shell-v256 main.home-page .home-welcome > .wrap,
+  html body.home-shell-v256 main.home-page :is(
+    .home-entry-section,
+    .home-sources-v51,
+    .continue-home,
+    .home-results,
+    .home-next
+  ) > .wrap,
+  html body.reference-ui-v99.home-shell-v256 main.home-page .home-welcome > .wrap,
+  html body.reference-ui-v99.home-shell-v256 main.home-page :is(
+    .home-entry-section,
+    .home-sources-v51,
+    .continue-home,
+    .home-results,
+    .home-next
+  ) > .wrap{
+    width:calc(100% - 40px)!important;
+    max-width:none!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Intro/search and regular cards: same comfortable inner gutter. */
+  html body.home-shell-v256 main.home-page :is(
+    .home-welcome-copy,
+    .home-search-card
+  ),
+  html body.reference-ui-v99.home-shell-v256 main.home-page :is(
+    .home-welcome-copy,
+    .home-search-card
+  ){
+    padding-left:22px!important;
+    padding-right:22px!important;
+  }
+
+  html body.home-shell-v256 main.home-page :is(
+    .home-entry-grid > a,
+    .home-source-grid > a
+  ),
+  html body.reference-ui-v99.home-shell-v256 main.home-page :is(
+    .home-entry-grid > a,
+    .home-source-grid > a
+  ){
+    padding-left:22px!important;
+    padding-right:22px!important;
+  }
+
+  /* Continue-reading card from the screenshot. */
+  html body.home-shell-v256 main.home-page .continue-card,
+  html body.reference-ui-v99.home-shell-v256 main.home-page .continue-card{
+    padding:22px 22px 23px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.home-shell-v256 main.home-page .continue-copy,
+  html body.reference-ui-v99.home-shell-v256 main.home-page .continue-copy{
+    padding-left:1px!important;
+    padding-right:1px!important;
+  }
+
+  html body.home-shell-v256 main.home-page .continue-primary,
+  html body.reference-ui-v99.home-shell-v256 main.home-page .continue-primary{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+
+  /* Dark-green results block from the screenshot. */
+  html body.home-shell-v256 main.home-page .home-results .home-results-inner,
+  html body.reference-ui-v99.home-shell-v256 main.home-page .home-results .home-results-inner{
+    padding:27px 24px 28px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.home-shell-v256 main.home-page .home-results .home-results-inner > div,
+  html body.reference-ui-v99.home-shell-v256 main.home-page .home-results .home-results-inner > div{
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+
+  html body.home-shell-v256 main.home-page .home-results nav a,
+  html body.reference-ui-v99.home-shell-v256 main.home-page .home-results nav a{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+}
+
+/* Very narrow phones: keep enough width for content, but never hug the edge. */
+@media (max-width:380px){
+  html body.home-shell-v256 main.home-page .home-welcome > .wrap,
+  html body.home-shell-v256 main.home-page :is(
+    .home-entry-section,
+    .home-sources-v51,
+    .continue-home,
+    .home-results,
+    .home-next
+  ) > .wrap,
+  html body.reference-ui-v99.home-shell-v256 main.home-page .home-welcome > .wrap,
+  html body.reference-ui-v99.home-shell-v256 main.home-page :is(
+    .home-entry-section,
+    .home-sources-v51,
+    .continue-home,
+    .home-results,
+    .home-next
+  ) > .wrap{
+    width:calc(100% - 32px)!important;
+  }
+
+  html body.home-shell-v256 main.home-page .continue-card,
+  html body.reference-ui-v99.home-shell-v256 main.home-page .continue-card,
+  html body.home-shell-v256 main.home-page .home-results .home-results-inner,
+  html body.reference-ui-v99.home-shell-v256 main.home-page .home-results .home-results-inner{
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+}
+</style>
+</head><body class="content-system-v103 home-shell-v256 tl-unified-v287 reference-ui-v99" data-release="20260829-v436"><a class="skip-link" href="#main-content">К основному содержанию</a>
 <header class="site-header"><div class="ref-topbar">
 <a class="ref-mobile-brand" href="/" aria-label="TrafficLab — на главную"><img src="/assets/trafficlab-flask.svg" alt="" width="96" height="82"><b>TrafficLab</b></a>
 <nav class="ref-topbar-crumbs"><a class="ref-top-home" href="/"><span>Главная</span></a></nav>
