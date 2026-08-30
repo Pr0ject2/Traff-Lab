@@ -29554,3 +29554,89 @@ html body.reference-ui-v99.services-page.theme-dark .service-start-grid > div{
     padding:16px 17px!important;
   }
 }
+
+
+/* ======================================================================
+   v486 — readable text around screenshots and images everywhere
+   Image explanations are article copy, not tiny captions.
+   ====================================================================== */
+
+/* Regular figures in articles. */
+html body :is(.article-page,.source-playbook-page) .article-figure > figcaption,
+html body.reference-ui-v99 :is(.article-page,.source-playbook-page) .article-figure > figcaption,
+html body :is(.article-page,.source-playbook-page) .guide-v101-media > figcaption,
+html body.reference-ui-v99 :is(.article-page,.source-playbook-page) .guide-v101-media > figcaption{
+  font-size:16.5px!important;
+  line-height:1.68!important;
+}
+
+/* Main screenshot + explanation layouts, including text beside an image. */
+html body :is(.article-page,.source-playbook-page) .article-figure.compact:not(.source-journey-card) > figcaption,
+html body.reference-ui-v99 :is(.article-page,.source-playbook-page) .article-figure.compact:not(.source-journey-card) > figcaption,
+html body .source-visual-pair figcaption,
+html body.reference-ui-v99 .source-visual-pair figcaption,
+html body .source-visual-wide figcaption,
+html body.reference-ui-v99 .source-visual-wide figcaption,
+html body .source-wizard-card figcaption,
+html body.reference-ui-v99 .source-wizard-card figcaption{
+  font-size:17px!important;
+  line-height:1.68!important;
+  padding:20px 22px!important;
+}
+
+/* Headings inside image explanations should also read like real copy. */
+html body :is(.article-page,.source-playbook-page) .article-figure figcaption strong,
+html body.reference-ui-v99 :is(.article-page,.source-playbook-page) .article-figure figcaption strong,
+html body .source-visual-pair figcaption strong,
+html body.reference-ui-v99 .source-visual-pair figcaption strong,
+html body .source-visual-wide figcaption strong,
+html body.reference-ui-v99 .source-visual-wide figcaption strong,
+html body .source-wizard-card figcaption strong,
+html body.reference-ui-v99 .source-wizard-card figcaption strong{
+  display:block!important;
+  margin-bottom:7px!important;
+  font-size:17px!important;
+  line-height:1.42!important;
+  font-weight:800!important;
+}
+
+/* Multi-image journey cards stay compact, but never use micro-text. */
+html body .source-journey-card figcaption,
+html body.reference-ui-v99 .source-journey-card figcaption{
+  font-size:15.5px!important;
+  line-height:1.62!important;
+  padding:14px 15px 16px!important;
+}
+
+html body .source-journey-card figcaption strong,
+html body.reference-ui-v99 .source-journey-card figcaption strong{
+  display:block!important;
+  margin-bottom:5px!important;
+  font-size:16.5px!important;
+  line-height:1.4!important;
+  font-weight:800!important;
+}
+
+/* Keep the same readability on tablets/mobile instead of shrinking captions. */
+@media(max-width:900px){
+  html body :is(.article-page,.source-playbook-page) .article-figure > figcaption,
+  html body.reference-ui-v99 :is(.article-page,.source-playbook-page) .article-figure > figcaption,
+  html body :is(.article-page,.source-playbook-page) .article-figure.compact:not(.source-journey-card) > figcaption,
+  html body.reference-ui-v99 :is(.article-page,.source-playbook-page) .article-figure.compact:not(.source-journey-card) > figcaption,
+  html body .source-visual-pair figcaption,
+  html body.reference-ui-v99 .source-visual-pair figcaption,
+  html body .source-visual-wide figcaption,
+  html body.reference-ui-v99 .source-visual-wide figcaption,
+  html body .source-wizard-card figcaption,
+  html body.reference-ui-v99 .source-wizard-card figcaption{
+    font-size:16.5px!important;
+    line-height:1.66!important;
+    padding:16px 17px!important;
+  }
+
+  html body .source-journey-card figcaption,
+  html body.reference-ui-v99 .source-journey-card figcaption{
+    font-size:15.5px!important;
+    line-height:1.6!important;
+  }
+}
