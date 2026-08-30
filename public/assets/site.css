@@ -29879,3 +29879,104 @@ html body.reference-ui-v99 .site-header > .ref-topbar{
   min-height:var(--ref-topbar)!important;
   box-sizing:border-box!important;
 }
+
+/* ======================================================================
+   v490 — final prerelease mobile stability and consent cleanup
+   ====================================================================== */
+@media (max-width:900px){
+  :root{--tl-final-mobile-topbar:58px;}
+
+  html body.reference-ui-v99 .site-header,
+  html body.reference-ui-v99 .site-header > .ref-topbar{
+    height:var(--tl-final-mobile-topbar)!important;
+    min-height:var(--tl-final-mobile-topbar)!important;
+    max-height:var(--tl-final-mobile-topbar)!important;
+  }
+
+  html body.reference-ui-v99 main#main-content,
+  html body.reference-ui-v99 > main{
+    padding-top:var(--tl-final-mobile-topbar)!important;
+  }
+
+  html body .global-sidebar,
+  html body.reference-ui-v99 .global-sidebar,
+  html body:not(.theme-dark) .global-sidebar,
+  html body.reference-ui-v99:not(.theme-dark) .global-sidebar,
+  html body.theme-dark .global-sidebar,
+  html body.reference-ui-v99.theme-dark .global-sidebar{
+    top:var(--tl-final-mobile-topbar)!important;
+    width:min(282px,calc(100vw - 64px))!important;
+    min-width:min(282px,calc(100vw - 64px))!important;
+    max-width:min(282px,calc(100vw - 64px))!important;
+    height:calc(100dvh - var(--tl-final-mobile-topbar))!important;
+    max-height:calc(100dvh - var(--tl-final-mobile-topbar))!important;
+  }
+
+  html body .mobile-nav-overlay,
+  html body.reference-ui-v99 .mobile-nav-overlay{
+    inset:var(--tl-final-mobile-topbar) 0 0!important;
+  }
+
+  /* Consent must never sit over the navigation drawer. */
+  html body.mobile-nav-open .tl-privacy-banner,
+  html body.reference-ui-v99.mobile-nav-open .tl-privacy-banner{
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+  }
+}
+
+@media (max-width:700px){
+  html body .tl-privacy-banner,
+  html body.reference-ui-v99 .tl-privacy-banner{
+    left:10px!important;
+    right:10px!important;
+    bottom:10px!important;
+    gap:8px!important;
+    padding:10px 11px!important;
+    border-radius:11px!important;
+  }
+  html body .tl-privacy-copy b,
+  html body.reference-ui-v99 .tl-privacy-copy b{
+    font-size:12.5px!important;
+    line-height:1.25!important;
+  }
+  html body .tl-privacy-copy p,
+  html body.reference-ui-v99 .tl-privacy-copy p{
+    margin-top:3px!important;
+    font-size:11.5px!important;
+    line-height:1.38!important;
+  }
+  html body .tl-privacy-copy a,
+  html body.reference-ui-v99 .tl-privacy-copy a{
+    margin-top:3px!important;
+    font-size:10.5px!important;
+  }
+  html body .tl-privacy-actions,
+  html body.reference-ui-v99 .tl-privacy-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:7px!important;
+    width:100%!important;
+  }
+  html body .tl-privacy-actions button,
+  html body.reference-ui-v99 .tl-privacy-actions button{
+    min-height:36px!important;
+    width:100%!important;
+    padding:7px 8px!important;
+    font-size:11px!important;
+  }
+}
+
+@media (max-width:430px){
+  html body .global-sidebar,
+  html body.reference-ui-v99 .global-sidebar,
+  html body:not(.theme-dark) .global-sidebar,
+  html body.reference-ui-v99:not(.theme-dark) .global-sidebar,
+  html body.theme-dark .global-sidebar,
+  html body.reference-ui-v99.theme-dark .global-sidebar{
+    width:min(270px,calc(100vw - 56px))!important;
+    min-width:min(270px,calc(100vw - 56px))!important;
+    max-width:min(270px,calc(100vw - 56px))!important;
+  }
+}
