@@ -208,6 +208,21 @@ async function handleStats(context){
     visitors:visitors.results||[]
   });
 }
+async function handleStatsReset(context){
+  if(context.request.method!=='POST')return json({error:'method_not_allowed'},405);
+  if(!adminSameOrigin(context.request))return json({error:'origin_rejected'},403);
+  if(!(await isAdminAuthenticated(context.request,context.env)))return json({error:'unauthorized'},401);
+  let payload;try{payload=await bodyJson(context.request)}catch{return json({error:'invalid_request'},400)}
+  if(payload.confirm!=='RESET_STATS')return json({error:'confirmation_required'},400);
+  await ensureSchema(context.env.DB);
+  const db=context.env.DB;
+  await db.batch([
+    db.prepare(`DELETE FROM events_daily`),
+    db.prepare(`DELETE FROM visitors_daily`),
+    db.prepare(`DELETE FROM article_votes`)
+  ]);
+  return json({ok:true,reset:true,reset_at:new Date().toISOString()});
+}
 async function handleHealth(context){
   if(context.request.method!=='GET')return json({error:'method_not_allowed'},405);
   if(!adminSameOrigin(context.request))return json({error:'origin_rejected'},403);
@@ -224,6 +239,7 @@ export async function onRequest(context){
     if(route==='event')return handleEvent(context);
     if(route==='rating')return handleRating(context);
     if(route==='stats')return handleStats(context);
+    if(route==='stats/reset')return handleStatsReset(context);
     if(route==='health')return handleHealth(context);
     return json({error:'not_found'},404);
   }catch(error){

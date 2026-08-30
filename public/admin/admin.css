@@ -8,3 +8,13 @@
 .admin-logout-form{margin:0;display:inline-flex}.adm-top .admin-logout-form .ghost{color:#fff;border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06)}
 .stats-auth{grid-template-columns:180px auto!important;justify-content:start!important}.stats-auth small{grid-column:1/-1!important}
 @media(max-width:650px){.stats-auth{grid-template-columns:1fr!important}.stats-auth small{grid-column:auto!important}}
+
+/* v521 — statistics reset control */
+.panel-head-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.danger:hover{background:#fde4e4;border-color:#dcaeae;color:#842f2f}
+.danger:disabled,.primary:disabled,.ghost:disabled{opacity:.55;cursor:not-allowed}
+.reset-stats-dialog{width:min(600px,calc(100vw - 28px))}
+.reset-stats-copy{margin:0;color:var(--copy);font-size:14px;line-height:1.65}
+.reset-stats-warning{display:grid;gap:3px;margin-top:16px;padding:13px 14px;border:1px solid #e8c2c2;border-radius:10px;background:#fff2f2;color:#863939}
+.reset-stats-warning b{font-size:13px}.reset-stats-warning span{font-size:12px}
+@media(max-width:800px){.panel-head-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}.panel-head-actions>*{width:100%}}
