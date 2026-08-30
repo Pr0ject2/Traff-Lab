@@ -30262,3 +30262,96 @@ html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-p
   width:24px!important;
   display:block!important;
 }
+
+
+/* ======================================================================
+   v496 — right rail: only the TOC scrolls when the rail is taller than viewport
+   No JS measurement, so there is no layout jump on refresh.
+   ====================================================================== */
+@media (min-width:1051px){
+
+  html body .article-aside.enhanced-rail,
+  html body.reference-ui-v99 .article-aside.enhanced-rail{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:10px!important;
+
+    height:auto!important;
+    min-height:0!important;
+    max-height:calc(100vh - var(--ref-topbar) - 30px)!important;
+
+    overflow:hidden!important;
+    overflow-x:hidden!important;
+    overflow-y:hidden!important;
+  }
+
+  /* Every rail block except the table of contents keeps its natural height. */
+  html body .article-aside.enhanced-rail > :not(.rail-toc),
+  html body.reference-ui-v99 .article-aside.enhanced-rail > :not(.rail-toc){
+    flex:0 0 auto!important;
+    min-height:0!important;
+  }
+
+  /* The TOC is the only block allowed to shrink when vertical room runs out. */
+  html body .article-aside.enhanced-rail > .rail-toc,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc{
+    display:flex!important;
+    flex-direction:column!important;
+    flex:1 1 auto!important;
+    min-height:118px!important;
+    height:auto!important;
+    max-height:none!important;
+
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > b,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > b,
+  html body .article-aside.enhanced-rail > .rail-toc > .rail-progress,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > .rail-progress{
+    flex:0 0 auto!important;
+  }
+
+  /* If everything fits, this stays at its natural height.
+     If the rail is too tall, this list alone becomes scrollable. */
+  html body .article-aside.enhanced-rail > .rail-toc > ol,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:#c5cfca transparent!important;
+
+    padding-right:8px!important;
+    padding-bottom:5px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar{
+    width:5px!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar-thumb,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar-thumb{
+    background:#c5cfca!important;
+    border-radius:999px!important;
+  }
+
+  html body.theme-dark .article-aside.enhanced-rail > .rail-toc > ol,
+  html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail > .rail-toc > ol{
+    scrollbar-color:#4a5660 transparent!important;
+  }
+
+  html body.theme-dark .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar-thumb,
+  html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail > .rail-toc > ol::-webkit-scrollbar-thumb{
+    background:#4a5660!important;
+  }
+}
