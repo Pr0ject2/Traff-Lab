@@ -31237,3 +31237,93 @@ html body.reference-ui-v99.content-system-v103 main.compact-main-v103
     border-top:1px solid rgba(255,255,255,.10)!important;
   }
 }
+
+
+/* ======================================================================
+   v510 — footer: absolutely no background behind link text.
+   Mobile: remove all internal link-grid separator lines as well.
+   ====================================================================== */
+html body .site-footer .footer-links a,
+html body.reference-ui-v99 .site-footer .footer-links a,
+html body .site-footer .footer-links a:link,
+html body.reference-ui-v99 .site-footer .footer-links a:link,
+html body .site-footer .footer-links a:visited,
+html body.reference-ui-v99 .site-footer .footer-links a:visited,
+html body .site-footer .footer-links a:hover,
+html body.reference-ui-v99 .site-footer .footer-links a:hover,
+html body .site-footer .footer-links a:focus,
+html body.reference-ui-v99 .site-footer .footer-links a:focus,
+html body .site-footer .footer-links a:focus-visible,
+html body.reference-ui-v99 .site-footer .footer-links a:focus-visible,
+html body .site-footer .footer-links a:active,
+html body.reference-ui-v99 .site-footer .footer-links a:active{
+  display:block!important;
+  width:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-top:0!important;
+  border-right:0!important;
+  border-bottom:0!important;
+  border-left:0!important;
+  border-radius:0!important;
+  outline:0!important;
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+  filter:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+html body .site-footer .footer-links a::before,
+html body.reference-ui-v99 .site-footer .footer-links a::before,
+html body .site-footer .footer-links a::after,
+html body.reference-ui-v99 .site-footer .footer-links a::after{
+  content:none!important;
+  display:none!important;
+  border:0!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+/* Kill old nth-child rules that created short rules above 3rd links. */
+html body .site-footer .footer-links a:nth-child(n),
+html body.reference-ui-v99 .site-footer .footer-links a:nth-child(n){
+  margin-top:0!important;
+  padding-top:0!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  border-top:0!important;
+  border-left:0!important;
+}
+
+@media(max-width:650px){
+  /* Mobile link grid: no internal vertical/horizontal separators. */
+  html body .site-footer .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group,
+  html body .site-footer .footer-link-group:nth-child(odd),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(odd),
+  html body .site-footer .footer-link-group:nth-child(even),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(even),
+  html body .site-footer .footer-link-group:nth-child(n+3),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(n+3),
+  html body .site-footer .footer-link-group + .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group + .footer-link-group{
+    border:0!important;
+    border-top:0!important;
+    border-left:0!important;
+    background:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+  }
+  html body .site-footer .footer-links,
+  html body.reference-ui-v99 .site-footer .footer-links{
+    gap:18px 24px!important;
+  }
+}
