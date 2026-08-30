@@ -30355,3 +30355,111 @@ html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-p
     background:#4a5660!important;
   }
 }
+
+
+/* ======================================================================
+   v497 — right rail: measured TOC height, hard-clipped inside its own card
+   ====================================================================== */
+@media (min-width:1051px){
+
+  html body .article-aside.enhanced-rail,
+  html body.reference-ui-v99 .article-aside.enhanced-rail{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:10px!important;
+
+    height:auto!important;
+    min-height:0!important;
+    max-height:var(--tl-rail-max,calc(100vh - var(--ref-topbar) - 30px))!important;
+
+    overflow:hidden!important;
+    overflow-x:hidden!important;
+    overflow-y:hidden!important;
+
+    /* Prevent the incorrect intermediate state from flashing on refresh. */
+    visibility:hidden!important;
+  }
+
+  html body .article-aside.enhanced-rail.rail-size-ready,
+  html body.reference-ui-v99 .article-aside.enhanced-rail.rail-size-ready{
+    visibility:visible!important;
+  }
+
+  html body .article-aside.enhanced-rail > :not(.rail-toc),
+  html body.reference-ui-v99 .article-aside.enhanced-rail > :not(.rail-toc){
+    flex:0 0 auto!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc{
+    display:flex!important;
+    flex-direction:column!important;
+    flex:0 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > b,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > b,
+  html body .article-aside.enhanced-rail > .rail-toc > .rail-progress,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > .rail-progress{
+    flex:0 0 auto!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > ol,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol{
+    flex:0 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+
+    overflow-x:hidden!important;
+    overflow-y:visible!important;
+    padding-right:8px!important;
+    padding-bottom:6px!important;
+    margin-bottom:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Applied only when the full rail cannot fit in the viewport. */
+  html body .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll{
+    max-height:var(--tl-toc-max)!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol{
+    flex:1 1 auto!important;
+    max-height:var(--tl-toc-list-max)!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:#c5cfca transparent!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol::-webkit-scrollbar,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol::-webkit-scrollbar{
+    width:5px!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol::-webkit-scrollbar-thumb,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol::-webkit-scrollbar-thumb{
+    background:#c5cfca!important;
+    border-radius:999px!important;
+  }
+
+  html body.theme-dark .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol,
+  html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol{
+    scrollbar-color:#4a5660 transparent!important;
+  }
+
+  html body.theme-dark .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol::-webkit-scrollbar-thumb,
+  html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol::-webkit-scrollbar-thumb{
+    background:#4a5660!important;
+  }
+}

@@ -2023,15 +2023,97 @@
   else decorateFactIcons();
 })();
 
-/* v489 — right rail geometry is CSS-only to avoid refresh layout shifts. */
+/* v497 — calculate the exact room left for the TOC.
+   The rail stays invisible for the first measurement, so users never see
+   an overflowing/intermediate layout. Only the TOC list is scrollable. */
 (()=>{
-  const stabilize=()=>{
-    document.querySelectorAll('.article-aside.enhanced-rail').forEach(rail=>{
-      rail.classList.remove('rail-fits-viewport');
+  let raf=0;
+
+  const px=v=>{
+    const n=parseFloat(v);
+    return Number.isFinite(n)?n:0;
+  };
+
+  const measureRail=rail=>{
+    if(!rail) return;
+
+    const toc=rail.querySelector(':scope > .rail-toc');
+    const list=toc?.querySelector(':scope > ol');
+
+    if(window.innerWidth<1051 || !toc || !list){
+      rail.classList.remove('rail-size-ready');
+      toc?.classList.remove('rail-toc-scroll');
+      toc?.style.removeProperty('--tl-toc-max');
+      toc?.style.removeProperty('--tl-toc-list-max');
+      rail.style.removeProperty('--tl-rail-max');
+      rail.classList.add('rail-size-ready');
+      return;
+    }
+
+    rail.classList.remove('rail-size-ready');
+    toc.classList.remove('rail-toc-scroll');
+    toc.style.removeProperty('--tl-toc-max');
+    toc.style.removeProperty('--tl-toc-list-max');
+
+    const railStyle=getComputedStyle(rail);
+    const stickyTop=px(railStyle.top);
+    const viewportRoom=Math.max(180,window.innerHeight-stickyTop-14);
+    rail.style.setProperty('--tl-rail-max',`${viewportRoom}px`);
+
+    /* Measure the natural, fully-expanded layout. */
+    list.style.maxHeight='none';
+    list.style.overflowY='visible';
+
+    const children=[...rail.children];
+    const gap=px(railStyle.rowGap||railStyle.gap);
+    const gaps=Math.max(0,children.length-1)*gap;
+
+    const otherHeight=children
+      .filter(el=>el!==toc)
+      .reduce((sum,el)=>sum+el.getBoundingClientRect().height,0);
+
+    const tocRect=toc.getBoundingClientRect();
+    const listRect=list.getBoundingClientRect();
+    const tocChrome=Math.max(0,tocRect.height-listRect.height);
+    const naturalListHeight=list.scrollHeight;
+
+    const fullNaturalHeight=otherHeight+gaps+tocChrome+naturalListHeight;
+
+    if(fullNaturalHeight>viewportRoom+1){
+      /* Reserve all non-TOC blocks and let only the section list shrink. */
+      const listRoom=Math.max(72,viewportRoom-otherHeight-gaps-tocChrome);
+      const tocRoom=Math.max(tocChrome+72,viewportRoom-otherHeight-gaps);
+
+      toc.style.setProperty('--tl-toc-list-max',`${listRoom}px`);
+      toc.style.setProperty('--tl-toc-max',`${tocRoom}px`);
+      toc.classList.add('rail-toc-scroll');
+    }
+
+    list.style.removeProperty('max-height');
+    list.style.removeProperty('overflow-y');
+    rail.classList.add('rail-size-ready');
+  };
+
+  const update=()=>{
+    cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(()=>{
+      document.querySelectorAll('.article-aside.enhanced-rail').forEach(measureRail);
     });
   };
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',stabilize,{once:true});
-  else stabilize();
+
+  const init=()=>{
+    /* Two frames lets layout/fonts and any synchronous rail decoration settle. */
+    requestAnimationFrame(()=>requestAnimationFrame(update));
+    if(document.fonts?.ready) document.fonts.ready.then(update).catch(()=>{});
+  };
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init,{once:true});
+  }else{
+    init();
+  }
+
+  window.addEventListener('resize',update,{passive:true});
 })();
 
 
