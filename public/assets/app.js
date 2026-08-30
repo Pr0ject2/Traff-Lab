@@ -1,3 +1,6 @@
+/* v511 — prevent first-paint flicker in top progress and right rail. */
+(()=>{try{document.documentElement.classList.add('tl-right-rail-boot')}catch(_e){}})();
+
 (function(){try{
  const keyboardMap={
    'q':'й','w':'ц','e':'у','r':'к','t':'е','y':'н','u':'г','i':'ш','o':'щ','p':'з','[':'х',']':'ъ',
@@ -1814,6 +1817,8 @@
           crumbHtml=`<a class="ref-top-home" href="${base}"><span>Главная</span></a>`+parts.map(p=>`<span>›</span>${p.href?`<a href="${p.href}">${p.text}</a>`:`<b>${p.text}</b>`}`).join('');
         }
       }
+      const __refProgress=(window.ITASiteProgress&&typeof window.ITASiteProgress.get==='function'?window.ITASiteProgress.get():null)||{pct:0};
+      const __refPct=Math.max(0,Math.min(100,Number(__refProgress.pct)||0));
       header.innerHTML=`<div class="ref-topbar">
         <a class="ref-mobile-brand" href="${base}" aria-label="TrafficLab — на главную"><img src="${base}assets/trafficlab-flask.svg" alt="" width="96" height="82"><b>TrafficLab</b></a>
         <nav class="ref-topbar-crumbs">${crumbHtml}</nav>
@@ -1821,7 +1826,7 @@
           <form class="ref-top-search" action="${base}guides/" method="get" autocomplete="off"><span>${svg('search')}</span><input type="text" name="q" placeholder="Поиск по TrafficLab..." aria-label="Поиск по TrafficLab" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"><kbd>Ctrl + K</kbd></form>
           <button class="ref-theme-button" type="button" data-theme-toggle aria-label="Переключить тему"><span class="theme-toggle-icon">☾</span></button>
           <a class="ref-top-favorite" href="${base}saved/">${svg('star')}<span>Избранное</span></a>
-          <div class="ref-top-progress" title="Доля открытых страниц TrafficLab"><span>Прогресс по TrafficLab</span><b data-ref-progress-value>0%</b><i><em data-ref-progress-bar></em></i></div>
+          <div class="ref-top-progress" title="Доля открытых страниц TrafficLab"><span>Прогресс по TrafficLab</span><b data-ref-progress-value>${__refPct}%</b><i><em data-ref-progress-bar style="width:${__refPct}%"></em></i></div>
           <button class="mobile-nav-toggle ref-mobile-menu" type="button" aria-label="Открыть меню"><span class="mobile-nav-icon" aria-hidden="true"><i></i><i></i><i></i></span><span>Меню</span></button>
         </div>
       </div>`;
@@ -1932,6 +1937,16 @@
 
     // Site progress is handled independently by core.js (v272).
     if(window.ITARefreshSiteProgress)window.ITARefreshSiteProgress();
+
+    const releaseRightRailBoot=()=>{
+      const done=()=>{try{document.documentElement.classList.remove('tl-right-rail-boot')}catch(_e){}};
+      requestAnimationFrame(()=>requestAnimationFrame(done));
+    };
+    if(document.fonts&&document.fonts.ready){
+      document.fonts.ready.then(releaseRightRailBoot).catch(releaseRightRailBoot);
+    }else{
+      releaseRightRailBoot();
+    }
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initReferenceUI); else initReferenceUI();
 })();
@@ -2023,26 +2038,99 @@
   else decorateFactIcons();
 })();
 
-/* v501 — right-rail sizing is CSS-only.
-   A definite rail height lets flexbox constrain the TOC without layout jumps. */
+/* v497 — calculate the exact room left for the TOC.
+   The rail stays invisible for the first measurement, so users never see
+   an overflowing/intermediate layout. Only the TOC list is scrollable. */
 (()=>{
-  const clearLegacyRailSizing=()=>{
-    document.querySelectorAll('.article-aside.enhanced-rail').forEach(rail=>{
-      rail.classList.remove('rail-size-ready');
+  let raf=0;
+
+  const px=v=>{
+    const n=parseFloat(v);
+    return Number.isFinite(n)?n:0;
+  };
+
+  const measureRail=rail=>{
+    if(!rail) return;
+
+    const toc=rail.querySelector(':scope > .rail-toc');
+    const list=toc?.querySelector(':scope > ol');
+
+    const firstMeasure=rail.dataset.tlRailMeasured!=='1';
+    if(window.innerWidth<1051 || !toc || !list){
+      toc?.classList.remove('rail-toc-scroll');
+      toc?.style.removeProperty('--tl-toc-max');
+      toc?.style.removeProperty('--tl-toc-list-max');
       rail.style.removeProperty('--tl-rail-max');
-      const toc=rail.querySelector(':scope > .rail-toc');
-      if(toc){
-        toc.classList.remove('rail-toc-scroll');
-        toc.style.removeProperty('--tl-toc-max');
-        toc.style.removeProperty('--tl-toc-list-max');
-      }
+      rail.classList.add('rail-size-ready');
+      rail.dataset.tlRailMeasured='1';
+      return;
+    }
+
+    if(firstMeasure) rail.classList.remove('rail-size-ready');
+    toc.classList.remove('rail-toc-scroll');
+    toc.style.removeProperty('--tl-toc-max');
+    toc.style.removeProperty('--tl-toc-list-max');
+
+    const railStyle=getComputedStyle(rail);
+    const stickyTop=px(railStyle.top);
+    const viewportRoom=Math.max(180,window.innerHeight-stickyTop-14);
+    rail.style.setProperty('--tl-rail-max',`${viewportRoom}px`);
+
+    /* Measure the natural, fully-expanded layout. */
+    list.style.maxHeight='none';
+    list.style.overflowY='visible';
+
+    const children=[...rail.children];
+    const gap=px(railStyle.rowGap||railStyle.gap);
+    const gaps=Math.max(0,children.length-1)*gap;
+
+    const otherHeight=children
+      .filter(el=>el!==toc)
+      .reduce((sum,el)=>sum+el.getBoundingClientRect().height,0);
+
+    const tocRect=toc.getBoundingClientRect();
+    const listRect=list.getBoundingClientRect();
+    const tocChrome=Math.max(0,tocRect.height-listRect.height);
+    const naturalListHeight=list.scrollHeight;
+
+    const fullNaturalHeight=otherHeight+gaps+tocChrome+naturalListHeight;
+
+    if(fullNaturalHeight>viewportRoom+1){
+      /* Reserve all non-TOC blocks and let only the section list shrink. */
+      const listRoom=Math.max(72,viewportRoom-otherHeight-gaps-tocChrome);
+      const tocRoom=Math.max(tocChrome+72,viewportRoom-otherHeight-gaps);
+
+      toc.style.setProperty('--tl-toc-list-max',`${listRoom}px`);
+      toc.style.setProperty('--tl-toc-max',`${tocRoom}px`);
+      toc.classList.add('rail-toc-scroll');
+    }
+
+    list.style.removeProperty('max-height');
+    list.style.removeProperty('overflow-y');
+    rail.classList.add('rail-size-ready');
+    rail.dataset.tlRailMeasured='1';
+  };
+
+  const update=()=>{
+    cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(()=>{
+      document.querySelectorAll('.article-aside.enhanced-rail').forEach(measureRail);
     });
   };
+
+  const init=()=>{
+    /* Two frames lets layout/fonts and any synchronous rail decoration settle. */
+    requestAnimationFrame(()=>requestAnimationFrame(update));
+    if(document.fonts?.ready) document.fonts.ready.then(update).catch(()=>{});
+  };
+
   if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',clearLegacyRailSizing,{once:true});
+    document.addEventListener('DOMContentLoaded',init,{once:true});
   }else{
-    clearLegacyRailSizing();
+    init();
   }
+
+  window.addEventListener('resize',update,{passive:true});
 })();
 
 

@@ -30377,7 +30377,14 @@ html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-p
     overflow-x:hidden!important;
     overflow-y:hidden!important;
 
-    /* Prevent the incorrect intermediate state from flashing on refresh. */
+    /* The rail itself stays stable and visible.
+       A short boot class hides it only once during first paint,
+       so users do not see repeated hide/show flashes. */
+    visibility:visible!important;
+  }
+
+  html.tl-right-rail-boot body .article-aside.enhanced-rail,
+  html.tl-right-rail-boot body.reference-ui-v99 .article-aside.enhanced-rail{
     visibility:hidden!important;
   }
 
@@ -31327,3 +31334,5 @@ html body.reference-ui-v99 .site-footer .footer-links a:nth-child(n){
     gap:18px 24px!important;
   }
 }
+
+html.tl-right-rail-boot body.reference-ui-v99 .ref-top-progress{visibility:hidden!important;}
