@@ -31662,3 +31662,21 @@ html body.reference-ui-v99.content-system-v103.source-playbook-page
     font-size:14px!important;
   }
 }
+
+
+/* v520 — stronger numbering contrast in Services workflow sections */
+html body.services-page .service-workflow-head>span,
+html body.reference-ui-v99.services-page .service-workflow-head>span{
+  background:#dcefe7!important;
+  color:#124e40!important;
+  border:1px solid #b8d7ca!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.65) inset!important;
+}
+
+html body.theme-dark.services-page .service-workflow-head>span,
+html body.reference-ui-v99.theme-dark.services-page .service-workflow-head>span{
+  background:#1f5144!important;
+  color:#e8f6f0!important;
+  border-color:#346c5d!important;
+  box-shadow:none!important;
+}
