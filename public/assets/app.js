@@ -1727,7 +1727,7 @@
         ['С чего начать',base+'start/','compass'],['Источники трафика',base+'traffic/','route'],['Сравнение источников',base+'traffic/compare/','scaling']
       ]},
       {title:'РАБОТА',links:[
-        ['Практические гайды',base+'practice/','book-open'],['Сервисы',base+'services/','package-2'],['Аналитика',base+'analytics/','line-chart'],['Диагностика и ошибки',base+'diagnostics/','circle-alert'],['Калькуляторы',base+'tools/','calculator']
+        ['Практические гайды',base+'practice/','book-open'],['Диагностика и ошибки',base+'diagnostics/','circle-alert'],['Аналитика',base+'analytics/','line-chart'],['Калькуляторы',base+'tools/','calculator'],['Сервисы',base+'services/','package-2']
       ]},
       {title:'БИБЛИОТЕКА',links:[
         ['Статьи',base+'guides/','layout-template'],['Обзоры',base+'basics/','map'],['Словарь терминов',base+'glossary/','whole-word']
