@@ -29246,3 +29246,116 @@ html body.reference-ui-v99 .global-sidebar .sidebar-menu a:is(.active,.is-active
     font-size:13.5px!important;
   }
 }
+
+
+/* ======================================================================
+   v479 — saved page: restore spacing after v478 and align the block
+   ====================================================================== */
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103{
+  width:min(calc(100% - 40px),1228px)!important;
+  max-width:1228px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding:30px 30px 36px!important;
+  box-sizing:border-box!important;
+}
+
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 > .saved-block,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 > .saved-block{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+
+/* Heading and grid start on exactly the same vertical line. */
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-block-head,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-block-head{
+  width:100%!important;
+  margin:0!important;
+  padding:0 0 18px!important;
+  gap:24px!important;
+  box-sizing:border-box!important;
+}
+
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-grid,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-grid{
+  width:100%!important;
+  margin:20px 0 0!important;
+  gap:14px!important;
+  box-sizing:border-box!important;
+}
+
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card{
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main{
+  display:block!important;
+  padding:20px 54px 20px 20px!important;
+  box-sizing:border-box!important;
+}
+
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-remove,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-remove{
+  top:13px!important;
+  right:13px!important;
+}
+
+/* Neutral titles in light theme. */
+html body:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-block-head h2,
+html body.reference-ui-v99:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-block-head h2{
+  color:#24302d!important;
+}
+
+html body:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main > b,
+html body:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-title,
+html body.reference-ui-v99:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main > b,
+html body.reference-ui-v99:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-title{
+  color:#27332f!important;
+}
+
+/* The page hero uses the same left edge as the outer saved-page frame. */
+html body.content-system-v103 main.compact-main-v103 > section.page-head.compact-block-v103 > .wrap.saved-page-head-wide,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.page-head.compact-block-v103 > .wrap.saved-page-head-wide{
+  width:min(calc(100% - 40px),1228px)!important;
+  max-width:1228px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  box-sizing:border-box!important;
+}
+
+@media(max-width:900px){
+  html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103{
+    width:calc(100% - 28px)!important;
+    padding:24px 20px 28px!important;
+  }
+  html body.content-system-v103 main.compact-main-v103 > section.page-head.compact-block-v103 > .wrap.saved-page-head-wide,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.page-head.compact-block-v103 > .wrap.saved-page-head-wide{
+    width:calc(100% - 28px)!important;
+  }
+}
+
+@media(max-width:640px){
+  html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103{
+    width:calc(100% - 20px)!important;
+    padding:18px 14px 22px!important;
+  }
+  html body.content-system-v103 main.compact-main-v103 > section.page-head.compact-block-v103 > .wrap.saved-page-head-wide,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.page-head.compact-block-v103 > .wrap.saved-page-head-wide{
+    width:calc(100% - 20px)!important;
+  }
+  html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main{
+    padding:16px 44px 16px 16px!important;
+  }
+}
