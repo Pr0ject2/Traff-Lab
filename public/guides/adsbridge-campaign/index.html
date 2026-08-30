@@ -63,6 +63,125 @@
   }
 }
 </style>
+
+<style id="tl-v515-toc-compact-separator">
+@media (min-width:1051px){
+  /* The whole rail keeps the viewport limit, but does not force children to fill it. */
+  html body .article-aside.enhanced-rail,
+  html body.reference-ui-v99 .article-aside.enhanced-rail{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:10px!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:calc(100dvh - var(--ref-topbar) - 30px)!important;
+    overflow:hidden!important;
+  }
+
+  html body .article-aside.enhanced-rail > :not(.rail-toc),
+  html body.reference-ui-v99 .article-aside.enhanced-rail > :not(.rail-toc){
+    flex:0 0 auto!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+  }
+
+  /* Natural height when content fits; shrink only when the rail runs out of room. */
+  html body .article-aside.enhanced-rail > .rail-toc,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc,
+  html body .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll{
+    display:flex!important;
+    flex-direction:column!important;
+    flex:0 1 auto!important;
+    height:auto!important;
+    min-height:88px!important;
+    max-height:none!important;
+    padding-bottom:10px!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > b,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > b{
+    flex:0 0 auto!important;
+    margin-bottom:8px!important;
+  }
+
+  /* Cleaner separator / reading progress line. */
+  html body .article-aside.enhanced-rail > .rail-toc > .rail-progress,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > .rail-progress{
+    position:relative!important;
+    flex:0 0 auto!important;
+    width:100%!important;
+    height:3px!important;
+    margin:0 0 10px!important;
+    border:0!important;
+    border-radius:999px!important;
+    background:linear-gradient(90deg,#d6e0dc 0%,#e8eeeb 82%,rgba(232,238,235,0) 100%)!important;
+    overflow:hidden!important;
+    box-shadow:none!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > .rail-progress > span,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > .rail-progress > span{
+    display:block!important;
+    height:100%!important;
+    border-radius:999px!important;
+    background:linear-gradient(90deg,#1a765a,#35a27c)!important;
+  }
+
+  html body.theme-dark .article-aside.enhanced-rail > .rail-toc > .rail-progress,
+  html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail > .rail-toc > .rail-progress{
+    background:linear-gradient(90deg,#36424a 0%,#29333a 82%,rgba(41,51,58,0) 100%)!important;
+  }
+
+  html body.theme-dark .article-aside.enhanced-rail > .rail-toc > .rail-progress > span,
+  html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail > .rail-toc > .rail-progress > span{
+    background:linear-gradient(90deg,#82949e,#b1bec5)!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > ol,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol,
+  html body .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc.rail-toc-scroll > ol{
+    display:block!important;
+    flex:1 1 auto!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0 8px 0 0!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    scrollbar-gutter:stable!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > ol > li,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol > li{
+    display:block!important;
+    height:auto!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > ol > li > a,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol > li > a{
+    margin:0!important;
+    padding-top:5px!important;
+    padding-bottom:5px!important;
+  }
+
+  html body .article-aside.enhanced-rail > .rail-toc > ol > li:last-child > a,
+  html body.reference-ui-v99 .article-aside.enhanced-rail > .rail-toc > ol > li:last-child > a{
+    padding-bottom:2px!important;
+  }
+}
+</style>
 </head><body class="article-page content-system-v103 internal-page-v198 tl-unified-v287 reference-ui-v99"><a class="skip-link" href="#main-content">К основному содержанию</a><header class="site-header"><div class="ref-topbar">
 <a class="ref-mobile-brand" href="/" aria-label="TrafficLab — на главную"><img src="/assets/trafficlab-flask.svg" alt="" width="96" height="82"><b>TrafficLab</b></a>
 <nav class="ref-topbar-crumbs"><a class="ref-top-home" href="/"><span>Главная</span></a><span>›</span><a href="/analytics/">Аналитика и трекинг</a><span>›</span><b>AdsBridge: первая кампания</b></nav>
