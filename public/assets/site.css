@@ -29980,3 +29980,47 @@ html body.reference-ui-v99 .site-header > .ref-topbar{
     max-width:min(270px,calc(100vw - 56px))!important;
   }
 }
+
+
+/* ======================================================================
+   v491 — align ordinary page headers with the main content grid
+   ====================================================================== */
+html body.content-system-v103 main.compact-main-v103
+  > section.page-head.tl-align-main-head.compact-block-v103
+  > .wrap.narrow,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103
+  > section.page-head.tl-align-main-head.compact-block-v103
+  > .wrap.narrow{
+  width:min(calc(100% - 36px), var(--tl-v190-page-max))!important;
+  max-width:var(--tl-v190-page-max)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  box-sizing:border-box!important;
+}
+
+/* Keep the same left/right line on tablet and mobile. */
+@media(max-width:900px){
+  html body.content-system-v103 main.compact-main-v103
+    > section.page-head.tl-align-main-head.compact-block-v103
+    > .wrap.narrow,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103
+    > section.page-head.tl-align-main-head.compact-block-v103
+    > .wrap.narrow{
+    width:calc(100% - 28px)!important;
+    max-width:none!important;
+  }
+}
+
+@media(max-width:640px){
+  html body.content-system-v103 main.compact-main-v103
+    > section.page-head.tl-align-main-head.compact-block-v103
+    > .wrap.narrow,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103
+    > section.page-head.tl-align-main-head.compact-block-v103
+    > .wrap.narrow{
+    width:calc(100% - 20px)!important;
+    max-width:none!important;
+  }
+}
