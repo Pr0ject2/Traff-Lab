@@ -29640,3 +29640,90 @@ html body.reference-ui-v99 .source-journey-card figcaption strong{
     line-height:1.6!important;
   }
 }
+
+
+/* ======================================================================
+   v487 — service start kit: one outer frame + breathing room + smaller cards
+   ====================================================================== */
+
+/* The outer frame follows exactly the same 920px width as the service grids above. */
+html body.services-page .service-start-grid,
+html body.reference-ui-v99.services-page .service-start-grid{
+  width:100%!important;
+  max-width:920px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding:16px 16px 18px!important;
+  gap:12px!important;
+  border:1px solid #d7cdbf!important;
+  border-radius:12px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  box-sizing:border-box!important;
+}
+
+/* Inner cards are deliberately a little smaller so they do not touch the frame. */
+html body.services-page .service-start-grid > div,
+html body.reference-ui-v99.services-page .service-start-grid > div{
+  min-height:0!important;
+  padding:14px 16px!important;
+  border:1px solid #ddd4c7!important;
+  border-radius:9px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  box-sizing:border-box!important;
+}
+
+html body.services-page .service-start-grid > div > b,
+html body.reference-ui-v99.services-page .service-start-grid > div > b{
+  margin:0 0 6px!important;
+}
+
+html body.services-page .service-start-grid > div > span,
+html body.reference-ui-v99.services-page .service-start-grid > div > span{
+  margin:0!important;
+}
+
+/* Do not let the section shell create a second frame around this one. */
+html body.services-page .service-start-kit.compact-block-v103,
+html body.reference-ui-v99.services-page .service-start-kit.compact-block-v103{
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* Dark theme mirrors the same geometry. */
+html body.services-page.theme-dark .service-start-grid,
+html body.reference-ui-v99.services-page.theme-dark .service-start-grid{
+  border-color:#37414c!important;
+  background:transparent!important;
+}
+html body.services-page.theme-dark .service-start-grid > div,
+html body.reference-ui-v99.services-page.theme-dark .service-start-grid > div{
+  border-color:#313b46!important;
+  background:transparent!important;
+}
+
+@media(max-width:900px){
+  html body.services-page .service-start-grid,
+  html body.reference-ui-v99.services-page .service-start-grid{
+    padding:14px!important;
+    gap:10px!important;
+  }
+  html body.services-page .service-start-grid > div,
+  html body.reference-ui-v99.services-page .service-start-grid > div{
+    padding:13px 15px!important;
+  }
+}
+
+@media(max-width:640px){
+  html body.services-page .service-start-grid,
+  html body.reference-ui-v99.services-page .service-start-grid{
+    padding:12px!important;
+    gap:10px!important;
+  }
+  html body.services-page .service-start-grid > div,
+  html body.reference-ui-v99.services-page .service-start-grid > div{
+    padding:14px 15px!important;
+  }
+}
