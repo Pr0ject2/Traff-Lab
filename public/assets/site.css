@@ -30204,3 +30204,61 @@ html body.reference-ui-v99 .source-tool-card > b{
     height:32px!important;
   }
 }
+
+
+/* ======================================================================
+   v495 — force TOC cards to grow with content, no overflow in source pages
+   ====================================================================== */
+
+/* Source pages: the TOC card should never use a short fixed height here. */
+html body.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc,
+html body.reference-ui-v99.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc,
+html body.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc,
+html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc{
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  padding:12px 13px 14px!important;
+  box-sizing:border-box!important;
+}
+
+html body.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc ol,
+html body.reference-ui-v99.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc ol,
+html body.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc ol,
+html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc ol{
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  padding:0 8px 8px 0!important;
+  margin:0!important;
+}
+
+html body.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc li,
+html body.reference-ui-v99.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc li,
+html body.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc li,
+html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc li{
+  margin:2px 0!important;
+}
+
+html body.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc a,
+html body.reference-ui-v99.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc a,
+html body.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc a,
+html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc a{
+  display:grid!important;
+  grid-template-columns:24px minmax(0,1fr)!important;
+  gap:6px!important;
+  align-items:start!important;
+  padding:4px 0!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  line-height:1.42!important;
+}
+
+html body.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc li a:before,
+html body.reference-ui-v99.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc li a:before,
+html body.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc li a:before,
+html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc li a:before{
+  width:24px!important;
+  display:block!important;
+}
