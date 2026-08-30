@@ -30463,3 +30463,295 @@ html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-p
     background:#4a5660!important;
   }
 }
+
+
+/* ======================================================================
+   v491-preserved — ordinary page headers align with the main content grid
+   ====================================================================== */
+html body.content-system-v103 main.compact-main-v103
+  > section.page-head.tl-align-main-head.compact-block-v103
+  > .wrap.narrow,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103
+  > section.page-head.tl-align-main-head.compact-block-v103
+  > .wrap.narrow{
+  width:min(calc(100% - 36px), var(--tl-v190-page-max))!important;
+  max-width:var(--tl-v190-page-max)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  box-sizing:border-box!important;
+}
+@media(max-width:900px){
+  html body.content-system-v103 main.compact-main-v103
+    > section.page-head.tl-align-main-head.compact-block-v103
+    > .wrap.narrow,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103
+    > section.page-head.tl-align-main-head.compact-block-v103
+    > .wrap.narrow{
+    width:calc(100% - 28px)!important;
+    max-width:none!important;
+  }
+}
+@media(max-width:640px){
+  html body.content-system-v103 main.compact-main-v103
+    > section.page-head.tl-align-main-head.compact-block-v103
+    > .wrap.narrow,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103
+    > section.page-head.tl-align-main-head.compact-block-v103
+    > .wrap.narrow{
+    width:calc(100% - 20px)!important;
+    max-width:none!important;
+  }
+}
+
+
+/* ======================================================================
+   v498 — clean mobile footer
+   Plain text only: no pills/backgrounds behind words.
+   ====================================================================== */
+@media(max-width:650px){
+
+  html body .site-footer,
+  html body.reference-ui-v99 .site-footer{
+    margin-top:38px!important;
+    padding:0!important;
+    background-image:none!important;
+  }
+
+  html body .site-footer > .wrap,
+  html body.reference-ui-v99 .site-footer > .wrap,
+  html body .site-footer .footer-bottom,
+  html body.reference-ui-v99 .site-footer .footer-bottom{
+    width:calc(100% - 28px)!important;
+    max-width:none!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .site-footer .footer-main,
+  html body.reference-ui-v99 .site-footer .footer-main{
+    display:block!important;
+    padding:25px 0 20px!important;
+  }
+
+  html body .site-footer .footer-identity,
+  html body.reference-ui-v99 .site-footer .footer-identity{
+    margin:0 0 21px!important;
+    padding:0 0 19px!important;
+    border-bottom:1px solid rgba(255,255,255,.12)!important;
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+
+  html body.theme-dark .site-footer .footer-identity,
+  html body.reference-ui-v99.theme-dark .site-footer .footer-identity{
+    border-bottom-color:#2c3740!important;
+  }
+  html body:not(.theme-dark) .site-footer .footer-identity,
+  html body.reference-ui-v99:not(.theme-dark) .site-footer .footer-identity{
+    border-bottom-color:#2e4c43!important;
+  }
+
+  html body .site-footer .footer-brand,
+  html body.reference-ui-v99 .site-footer .footer-brand{
+    display:inline-block!important;
+    width:auto!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+    font-size:27px!important;
+    line-height:1.1!important;
+  }
+
+  html body .site-footer .footer-identity p,
+  html body.reference-ui-v99 .site-footer .footer-identity p{
+    width:100%!important;
+    max-width:430px!important;
+    margin:9px 0 0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+    font-size:14px!important;
+    line-height:1.55!important;
+  }
+
+  html body .site-footer .footer-links,
+  html body.reference-ui-v99 .site-footer .footer-links{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-auto-flow:row!important;
+    grid-template-rows:none!important;
+    gap:0!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  html body .site-footer .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    gap:8px!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:13px 14px!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+  }
+
+  /* First column sits on the left edge; second column has one simple divider. */
+  html body .site-footer .footer-link-group:nth-child(odd),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(odd){
+    padding-left:0!important;
+    padding-right:14px!important;
+  }
+  html body .site-footer .footer-link-group:nth-child(even),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(even){
+    padding-left:14px!important;
+    padding-right:0!important;
+    border-left:1px solid rgba(255,255,255,.12)!important;
+  }
+
+  html body.theme-dark .site-footer .footer-link-group:nth-child(even),
+  html body.reference-ui-v99.theme-dark .site-footer .footer-link-group:nth-child(even){
+    border-left-color:#2c3740!important;
+  }
+  html body:not(.theme-dark) .site-footer .footer-link-group:nth-child(even),
+  html body.reference-ui-v99:not(.theme-dark) .site-footer .footer-link-group:nth-child(even){
+    border-left-color:#2e4c43!important;
+  }
+
+  /* Second row is separated from the first one, but never boxed. */
+  html body .site-footer .footer-link-group:nth-child(n+3),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(n+3){
+    border-top:1px solid rgba(255,255,255,.10)!important;
+  }
+  html body.theme-dark .site-footer .footer-link-group:nth-child(n+3),
+  html body.reference-ui-v99.theme-dark .site-footer .footer-link-group:nth-child(n+3){
+    border-top-color:#2c3740!important;
+  }
+  html body:not(.theme-dark) .site-footer .footer-link-group:nth-child(n+3),
+  html body.reference-ui-v99:not(.theme-dark) .site-footer .footer-link-group:nth-child(n+3){
+    border-top-color:#2e4c43!important;
+  }
+
+  /* Strong reset: words in the footer never get their own background. */
+  html body .site-footer :is(
+    .footer-link-group,
+    .footer-link-group a,
+    .footer-link-group a span,
+    .footer-brand,
+    .footer-identity p,
+    .footer-bottom span,
+    .footer-bottom small
+  ),
+  html body.reference-ui-v99 .site-footer :is(
+    .footer-link-group,
+    .footer-link-group a,
+    .footer-link-group a span,
+    .footer-brand,
+    .footer-identity p,
+    .footer-bottom span,
+    .footer-bottom small
+  ){
+    background:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+    text-shadow:none!important;
+  }
+
+  html body .site-footer .footer-links a,
+  html body.reference-ui-v99 .site-footer .footer-links a{
+    display:block!important;
+    width:auto!important;
+    max-width:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    outline:0!important;
+    background:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+    font-size:13.5px!important;
+    font-weight:650!important;
+    line-height:1.42!important;
+    text-decoration:none!important;
+    overflow-wrap:anywhere!important;
+  }
+
+  html body .site-footer .footer-links a::before,
+  html body .site-footer .footer-links a::after,
+  html body.reference-ui-v99 .site-footer .footer-links a::before,
+  html body.reference-ui-v99 .site-footer .footer-links a::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  html body .site-footer .footer-bottom,
+  html body.reference-ui-v99 .site-footer .footer-bottom{
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:12px!important;
+    min-height:0!important;
+    margin:0 auto!important;
+    padding:14px 0 max(17px,env(safe-area-inset-bottom))!important;
+    border-top:1px solid rgba(255,255,255,.11)!important;
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+
+  html body .site-footer .footer-bottom span,
+  html body.reference-ui-v99 .site-footer .footer-bottom span{
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    font-size:11px!important;
+    line-height:1.35!important;
+    white-space:nowrap!important;
+  }
+}
+
+/* Very narrow phones: one column, still plain text and compact. */
+@media(max-width:360px){
+  html body .site-footer .footer-links,
+  html body.reference-ui-v99 .site-footer .footer-links{
+    grid-template-columns:1fr!important;
+  }
+
+  html body .site-footer .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group,
+  html body .site-footer .footer-link-group:nth-child(odd),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(odd),
+  html body .site-footer .footer-link-group:nth-child(even),
+  html body.reference-ui-v99 .site-footer .footer-link-group:nth-child(even){
+    padding:11px 0!important;
+    border-left:0!important;
+  }
+
+  html body .site-footer .footer-link-group + .footer-link-group,
+  html body.reference-ui-v99 .site-footer .footer-link-group + .footer-link-group{
+    border-top:1px solid rgba(255,255,255,.10)!important;
+  }
+}
