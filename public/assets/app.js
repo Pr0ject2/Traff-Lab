@@ -1,6 +1,3 @@
-/* v511 — prevent first-paint flicker in top progress and right rail. */
-(()=>{try{document.documentElement.classList.add('tl-right-rail-boot')}catch(_e){}})();
-
 (function(){try{
  const keyboardMap={
    'q':'й','w':'ц','e':'у','r':'к','t':'е','y':'н','u':'г','i':'ш','o':'щ','p':'з','[':'х',']':'ъ',
@@ -1937,16 +1934,6 @@
 
     // Site progress is handled independently by core.js (v272).
     if(window.ITARefreshSiteProgress)window.ITARefreshSiteProgress();
-
-    const releaseRightRailBoot=()=>{
-      const done=()=>{try{document.documentElement.classList.remove('tl-right-rail-boot')}catch(_e){}};
-      requestAnimationFrame(()=>requestAnimationFrame(done));
-    };
-    if(document.fonts&&document.fonts.ready){
-      document.fonts.ready.then(releaseRightRailBoot).catch(releaseRightRailBoot);
-    }else{
-      releaseRightRailBoot();
-    }
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initReferenceUI); else initReferenceUI();
 })();
@@ -2038,99 +2025,28 @@
   else decorateFactIcons();
 })();
 
-/* v497 — calculate the exact room left for the TOC.
-   The rail stays invisible for the first measurement, so users never see
-   an overflowing/intermediate layout. Only the TOC list is scrollable. */
+/* v512 — right-rail height is CSS-only.
+   Do not repeatedly hide, measure, resize and reveal the rail. */
 (()=>{
-  let raf=0;
-
-  const px=v=>{
-    const n=parseFloat(v);
-    return Number.isFinite(n)?n:0;
-  };
-
-  const measureRail=rail=>{
-    if(!rail) return;
-
-    const toc=rail.querySelector(':scope > .rail-toc');
-    const list=toc?.querySelector(':scope > ol');
-
-    const firstMeasure=rail.dataset.tlRailMeasured!=='1';
-    if(window.innerWidth<1051 || !toc || !list){
-      toc?.classList.remove('rail-toc-scroll');
-      toc?.style.removeProperty('--tl-toc-max');
-      toc?.style.removeProperty('--tl-toc-list-max');
-      rail.style.removeProperty('--tl-rail-max');
+  const cleanup=()=>{
+    document.documentElement.classList.remove('tl-right-rail-boot');
+    document.querySelectorAll('.article-aside.enhanced-rail').forEach(rail=>{
       rail.classList.add('rail-size-ready');
-      rail.dataset.tlRailMeasured='1';
-      return;
-    }
-
-    if(firstMeasure) rail.classList.remove('rail-size-ready');
-    toc.classList.remove('rail-toc-scroll');
-    toc.style.removeProperty('--tl-toc-max');
-    toc.style.removeProperty('--tl-toc-list-max');
-
-    const railStyle=getComputedStyle(rail);
-    const stickyTop=px(railStyle.top);
-    const viewportRoom=Math.max(180,window.innerHeight-stickyTop-14);
-    rail.style.setProperty('--tl-rail-max',`${viewportRoom}px`);
-
-    /* Measure the natural, fully-expanded layout. */
-    list.style.maxHeight='none';
-    list.style.overflowY='visible';
-
-    const children=[...rail.children];
-    const gap=px(railStyle.rowGap||railStyle.gap);
-    const gaps=Math.max(0,children.length-1)*gap;
-
-    const otherHeight=children
-      .filter(el=>el!==toc)
-      .reduce((sum,el)=>sum+el.getBoundingClientRect().height,0);
-
-    const tocRect=toc.getBoundingClientRect();
-    const listRect=list.getBoundingClientRect();
-    const tocChrome=Math.max(0,tocRect.height-listRect.height);
-    const naturalListHeight=list.scrollHeight;
-
-    const fullNaturalHeight=otherHeight+gaps+tocChrome+naturalListHeight;
-
-    if(fullNaturalHeight>viewportRoom+1){
-      /* Reserve all non-TOC blocks and let only the section list shrink. */
-      const listRoom=Math.max(72,viewportRoom-otherHeight-gaps-tocChrome);
-      const tocRoom=Math.max(tocChrome+72,viewportRoom-otherHeight-gaps);
-
-      toc.style.setProperty('--tl-toc-list-max',`${listRoom}px`);
-      toc.style.setProperty('--tl-toc-max',`${tocRoom}px`);
-      toc.classList.add('rail-toc-scroll');
-    }
-
-    list.style.removeProperty('max-height');
-    list.style.removeProperty('overflow-y');
-    rail.classList.add('rail-size-ready');
-    rail.dataset.tlRailMeasured='1';
-  };
-
-  const update=()=>{
-    cancelAnimationFrame(raf);
-    raf=requestAnimationFrame(()=>{
-      document.querySelectorAll('.article-aside.enhanced-rail').forEach(measureRail);
+      rail.style.removeProperty('--tl-rail-max');
+      delete rail.dataset.tlRailMeasured;
+      const toc=rail.querySelector(':scope > .rail-toc');
+      if(toc){
+        toc.classList.remove('rail-toc-scroll');
+        toc.style.removeProperty('--tl-toc-max');
+        toc.style.removeProperty('--tl-toc-list-max');
+      }
     });
   };
-
-  const init=()=>{
-    /* Two frames lets layout/fonts and any synchronous rail decoration settle. */
-    requestAnimationFrame(()=>requestAnimationFrame(update));
-    if(document.fonts?.ready) document.fonts.ready.then(update).catch(()=>{});
-  };
-
   if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',init,{once:true});
+    document.addEventListener('DOMContentLoaded',cleanup,{once:true});
   }else{
-    init();
+    cleanup();
   }
-
-  window.addEventListener('resize',update,{passive:true});
 })();
 
 
