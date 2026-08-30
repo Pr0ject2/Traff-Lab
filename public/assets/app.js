@@ -1860,7 +1860,7 @@
       const h1=article.querySelector('h1'); if(h1)h1.textContent=data.title;
       const lead=article.querySelector('.source-hero-shell>.lead'); if(lead)lead.textContent=data.subtitle;
       const icon=article.querySelector('.source-hero-icon');
-      if(icon){icon.style.setProperty('--source-accent',data.accent); if(slug==='youtube')icon.innerHTML='<span class="ref-play-triangle"></span>';}
+      if(icon){icon.style.setProperty('--source-accent',data.accent); if(slug==='youtube'){icon.classList.add('brand-logo-inline'); if(!icon.querySelector('svg')) icon.innerHTML='<svg aria-hidden="true" focusable="false" viewBox="0 0 64 64"><path d="M57.7 19.5a7.2 7.2 0 0 0-5.1-5.1C48 13.1 32 13.1 32 13.1s-16 0-20.6 1.3a7.2 7.2 0 0 0-5.1 5.1C5 24.1 5 32 5 32s0 7.9 1.3 12.5a7.2 7.2 0 0 0 5.1 5.1C16 50.9 32 50.9 32 50.9s16 0 20.6-1.3a7.2 7.2 0 0 0 5.1-5.1C59 39.9 59 32 59 32s0-7.9-1.3-12.5Z" fill="#ff0000"></path><path d="m27 40.2 14-8.2-14-8.2v16.4Z" fill="#fff"></path></svg>';}}
       const titleRow=article.querySelector('.source-title-row');
       if(titleRow){titleRow.querySelector('.ref-launch-time')?.remove();}
       const oldFacts=article.querySelector('.playbook-facts');
@@ -1952,8 +1952,12 @@
     if(n.includes('profitads')) return 'profitads';
     return '';
   };
-  const iconUrl={multilogin:'/assets/tool-logos/multilogin.svg?v=4571',proxys:'/assets/tool-logos/proxys.svg?v=4571',ruvds:'/assets/tool-logos/ruvds.svg?v=4571',adsbridge:'/assets/tool-logos/adsbridge.svg?v=4571',onlinesim:'/assets/tool-logos/onlinesim.svg?v=4571',spyhouse:'/assets/tool-logos/spyhouse.svg?v=4571',darkstore:'/assets/tool-logos/darkstore.svg?v=4571',profitads:'/assets/tool-logos/profitads.svg?v=4571'};
-  const iconFallback={};
+  const iconSvg={
+    multilogin:'<svg aria-hidden="true" focusable="false" viewBox="0 0 64 64"><rect fill="#1769ff" height="64" rx="14" width="64"></rect><path d="M18.5 42.6c-5.2-4.2-7.3-10.9-5-17.1 2.5-6.8 9.2-11.1 16.4-10.4 5.8.5 10.6 4.2 12.7 9.3l-8.2 2.8c-1.1-2.5-3.5-4.3-6.3-4.5-3.8-.3-7.4 2-8.7 5.6-1.2 3.3-.2 6.9 2.5 9.1l-3.4 5.2Z" fill="#fff"></path><path d="M21.5 46.4 32.2 30l6.9 9.6 10.7-3.8-5.1 12-9.2 3.4-6.2-8.7-7.8 3.9Z" fill="#fff"></path></svg>',
+    proxys:'<svg aria-hidden="true" focusable="false" viewBox="0 0 64 64"><rect fill="#fff" height="64" rx="14" width="64"></rect><path d="M32 10 46 22H18L32 10Z" fill="#61b83a"></path><rect fill="#61b83a" height="5" rx="2.5" width="20" x="22" y="23"></rect><path d="M19 31h26v5H19zM15 39h34v5H15zM11 47h42v6H11z" fill="#61b83a"></path></svg>',
+    ruvds:'<svg aria-hidden="true" focusable="false" viewBox="0 0 64 64"><rect fill="#10a9df" height="64" rx="14" width="64"></rect><path d="M16 40c-5 0-9-3.8-9-8.6 0-4.4 3.4-8.1 7.8-8.6C17 16.1 23.3 12 30.4 12c8.4 0 15.4 5.7 17.2 13.3 5.5.3 9.9 4.7 9.9 10.2 0 2.1-.6 4-1.7 5.7H16V40Z" fill="#fff"></path><path d="M22 29h6v13h-6V29Zm9 0h6v13h-6V29Zm9 0h6v13h-6V29Z" fill="#10a9df"></path></svg>',
+    adsbridge:'<svg aria-hidden="true" focusable="false" viewBox="0 0 64 64"><rect fill="#fff" height="64" rx="14" width="64"></rect><g fill="none" stroke="#20bce5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2"><path d="M10 47h44M17 47V20M47 47V20M15 25h34"></path><path d="M18 21c4 10 10 14 14 14s10-4 14-14M18 29c4 7 9 10 14 10s10-3 14-10"></path><path d="M24 34v13M32 38v9M40 34v13"></path></g><circle cx="17" cy="20" fill="#20bce5" r="3.4"></circle><circle cx="47" cy="20" fill="#20bce5" r="3.4"></circle></svg>'
+  };
   const decorate = () => {
     document.querySelectorAll('.rail-tools a:not(.rail-all-tools), .service-tool, .source-tool-card').forEach(el=>{
       const title = (el.querySelector('h3,b')?.textContent || '').trim();
@@ -1969,22 +1973,10 @@
         else el.insertAdjacentElement('afterbegin', mark);
       }
       if(mark){
-        mark.classList.add('tool-mark--'+key);
+        mark.classList.add('tool-mark--'+key,'tool-logo-inline');
         mark.dataset.tool = key;
-        mark.dataset.fallback = iconFallback[key] || 'IT';
         mark.setAttribute('aria-label', title);
-        mark.textContent = '';
-        const img=document.createElement('img');
-        img.src=iconUrl[key];
-        img.alt='';
-        img.setAttribute('aria-hidden','true');
-        img.loading='lazy';
-        img.decoding='async';
-        img.width=40;
-        img.height=40;
-        img.referrerPolicy='no-referrer';
-        img.addEventListener('error',()=>{img.hidden=true;mark.classList.add('is-fallback')},{once:true});
-        mark.appendChild(img);
+        if(iconSvg[key]) mark.innerHTML=iconSvg[key];
       }
     });
     document.querySelectorAll('.playbook-card').forEach(card=>{

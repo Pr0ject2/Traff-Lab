@@ -28893,3 +28893,12 @@ html body .source-hero-youtube.brand-logo-inline>svg{
 html body.theme-dark .source-hero-youtube.brand-logo-inline{
   background:#171d23!important;border-color:#394551!important;
 }
+
+
+/* v458: brand marks are inline SVG and must never be hidden or replaced by remote images. */
+html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline{color:inherit!important;font-size:inherit!important;}
+html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline>img{display:none!important;}
+html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline>svg{display:block!important;visibility:visible!important;opacity:1!important;width:28px!important;height:28px!important;max-width:28px!important;max-height:28px!important;flex:0 0 auto!important;}
+html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline>svg *{visibility:visible!important;opacity:1!important;}
+html body .source-hero-youtube.brand-logo-inline>svg{display:block!important;visibility:visible!important;opacity:1!important;width:52px!important;height:52px!important;}
+html body .source-hero-youtube.brand-logo-inline>svg *{visibility:visible!important;opacity:1!important;}
