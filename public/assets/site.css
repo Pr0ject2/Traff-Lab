@@ -29833,3 +29833,49 @@ html body.reference-ui-v99 .source-journey-card figcaption strong{
     padding:16px 17px!important;
   }
 }
+
+
+/* ======================================================================
+   v489 — stable first paint for top bar and right rail
+   ====================================================================== */
+
+/* The right rail uses one geometry from the first paint onward.
+   overflow:auto does not show a scrollbar when the content already fits. */
+@media (min-width:1051px){
+  html body.article-page .article-aside.enhanced-rail,
+  html body.reference-ui-v99.article-page .article-aside.enhanced-rail,
+  html body.source-playbook-page .article-aside.enhanced-rail,
+  html body.reference-ui-v99.source-playbook-page .article-aside.enhanced-rail,
+  html body.article-page .article-aside.enhanced-rail.rail-fits-viewport,
+  html body.reference-ui-v99.article-page .article-aside.enhanced-rail.rail-fits-viewport,
+  html body.source-playbook-page .article-aside.enhanced-rail.rail-fits-viewport,
+  html body.reference-ui-v99.source-playbook-page .article-aside.enhanced-rail.rail-fits-viewport{
+    position:sticky!important;
+    top:calc(var(--ref-topbar) + 18px)!important;
+    max-height:calc(100vh - var(--ref-topbar) - 30px)!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+
+  html body .article-aside.enhanced-rail .rail-toc,
+  html body.reference-ui-v99 .article-aside.enhanced-rail .rail-toc,
+  html body .article-aside.enhanced-rail.rail-fits-viewport .rail-toc,
+  html body.reference-ui-v99 .article-aside.enhanced-rail.rail-fits-viewport .rail-toc{
+    overflow:visible!important;
+  }
+
+  html body .article-aside.enhanced-rail .rail-toc ol,
+  html body.reference-ui-v99 .article-aside.enhanced-rail .rail-toc ol,
+  html body .article-aside.enhanced-rail.rail-fits-viewport .rail-toc ol,
+  html body.reference-ui-v99 .article-aside.enhanced-rail.rail-fits-viewport .rail-toc ol{
+    max-height:none!important;
+    overflow:visible!important;
+    padding-right:0!important;
+  }
+}
+
+/* Final top bar exists in HTML immediately, so its height is stable. */
+html body.reference-ui-v99 .site-header > .ref-topbar{
+  min-height:var(--ref-topbar)!important;
+  box-sizing:border-box!important;
+}
