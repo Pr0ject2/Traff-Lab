@@ -29107,3 +29107,184 @@ html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.c
     padding:18px 14px 22px!important;
   }
 }
+
+/* ======================================================================
+   v471 — stable sidebar navigation geometry
+   Active/hover states must never change link dimensions or text metrics.
+   ====================================================================== */
+html body .global-sidebar .sidebar-menu,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu{
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+html body .global-sidebar .sidebar-menu a,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a,
+html body .global-sidebar .sidebar-menu a:hover,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a:hover,
+html body .global-sidebar .sidebar-menu a:is(.active,.is-active,[aria-current="page"]),
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a:is(.active,.is-active,[aria-current="page"]){
+  display:flex!important;
+  align-items:center!important;
+  position:relative!important;
+  width:100%!important;
+  min-width:0!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  padding:7px 9px 7px 35px!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:8px!important;
+  box-sizing:border-box!important;
+  font-size:13.5px!important;
+  font-weight:560!important;
+  line-height:1.2!important;
+  letter-spacing:0!important;
+  transform:none!important;
+  transition:background-color .13s ease,color .13s ease,box-shadow .13s ease!important;
+}
+html body .global-sidebar .sidebar-menu a > span:last-child,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a > span:last-child{
+  display:block!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  line-height:1.2!important;
+  font:inherit!important;
+}
+html body .global-sidebar .sidebar-menu a::before,
+html body.reference-ui-v99 .global-sidebar .sidebar-menu a::before{
+  left:10px!important;
+  top:50%!important;
+  width:17px!important;
+  height:17px!important;
+  min-width:17px!important;
+  min-height:17px!important;
+  margin:0!important;
+  transform:translateY(-50%)!important;
+  box-sizing:border-box!important;
+}
+/* Keep active styling purely visual. */
+html body:not(.theme-dark) .global-sidebar .sidebar-menu a:is(.active,.is-active,[aria-current="page"]),
+html body.reference-ui-v99:not(.theme-dark) .global-sidebar .sidebar-menu a:is(.active,.is-active,[aria-current="page"]){
+  background:rgba(117,201,169,.14)!important;
+  color:#fff!important;
+  font-weight:560!important;
+  box-shadow:inset 2px 0 0 #49c596!important;
+}
+html body.theme-dark .global-sidebar .sidebar-menu a:is(.active,.is-active,[aria-current="page"]),
+html body.reference-ui-v99.theme-dark .global-sidebar .sidebar-menu a:is(.active,.is-active,[aria-current="page"]){
+  background:#1c252e!important;
+  color:#edf2f5!important;
+  font-weight:560!important;
+  box-shadow:inset 2px 0 0 #44b892!important;
+}
+@media(max-width:650px){
+  html body .global-sidebar .sidebar-menu a,
+  html body.reference-ui-v99 .global-sidebar .sidebar-menu a,
+  html body .global-sidebar .sidebar-menu a:hover,
+  html body.reference-ui-v99 .global-sidebar .sidebar-menu a:hover,
+  html body .global-sidebar .sidebar-menu a:is(.active,.is-active,[aria-current="page"]),
+  html body.reference-ui-v99 .global-sidebar .sidebar-menu a:is(.active,.is-active,[aria-current="page"]){
+    height:38px!important;
+    min-height:38px!important;
+    max-height:38px!important;
+    padding:8px 9px 8px 35px!important;
+    font-size:14px!important;
+    font-weight:560!important;
+  }
+}
+
+
+/* ======================================================================
+   v475 — SAVED PAGE: real spacing + neutral title colors
+   Kept at absolute end of stylesheet so earlier theme rules cannot win.
+   ====================================================================== */
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103{
+  width:min(calc(100% - 40px),1228px)!important;
+  max-width:1228px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding:36px 36px 42px!important;
+  box-sizing:border-box!important;
+}
+
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 > .saved-block,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 > .saved-block{
+  margin:0!important;
+  padding:0!important;
+}
+
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-block-head,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-block-head{
+  margin:0!important;
+  padding:0 2px 18px!important;
+  gap:28px!important;
+  box-sizing:border-box!important;
+}
+
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-grid,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-grid{
+  margin-top:20px!important;
+  gap:14px!important;
+}
+
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main{
+  padding:21px 58px 21px 22px!important;
+  box-sizing:border-box!important;
+}
+
+html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-remove,
+html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-remove{
+  top:13px!important;
+  right:13px!important;
+}
+
+html body:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-block-head h2,
+html body.reference-ui-v99:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-block-head h2{
+  color:#24302d!important;
+}
+
+html body:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main > b,
+html body.reference-ui-v99:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main > b,
+html body:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main:hover > b,
+html body.reference-ui-v99:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main:hover > b{
+  color:#27332f!important;
+}
+
+html body:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main,
+html body.reference-ui-v99:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main{
+  color:#27332f!important;
+}
+
+html body:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .text-button,
+html body.reference-ui-v99:not(.theme-dark).content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .text-button{
+  color:#6c6d67!important;
+}
+
+html body.theme-dark.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main > b,
+html body.reference-ui-v99.theme-dark.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main > b{
+  color:#edf1f4!important;
+}
+
+@media(max-width:900px){
+  html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103{
+    width:calc(100% - 28px)!important;
+    padding:25px 22px 30px!important;
+  }
+}
+
+@media(max-width:640px){
+  html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103{
+    width:calc(100% - 20px)!important;
+    padding:20px 15px 24px!important;
+  }
+  html body.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main,
+  html body.reference-ui-v99.content-system-v103 main.compact-main-v103 > section.wrap.saved-page.compact-block-v103 .saved-card-main{
+    padding:17px 46px 17px 17px!important;
+  }
+}

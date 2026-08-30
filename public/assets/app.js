@@ -172,7 +172,7 @@
    const renderDefault=()=>{
      if(!defaultSuggestions.length){close();box.innerHTML='';return;}
      visible=defaultSuggestions.map((item,i)=>({...item,_i:i}));
-     box.innerHTML=visible.map((item,i)=>`<a href="${item.url}" role="option" id="${boxId}-opt-${i}" aria-selected="false" data-suggest-index="${i}"><span>${item.section}</span><b>${item.title}</b><small>${item.desc}</small></a>`).join('');
+     box.innerHTML=visible.map((item,i)=>`<a href="${item.url}" role="option" id="${boxId}-opt-${i}" aria-selected="false" data-suggest-index="${i}"><span>${item.section}</span><b class="saved-card-title">${item.title}</b><small>${item.desc}</small></a>`).join('');
      active=-1; open();
    };
    const render=()=>{
@@ -183,7 +183,7 @@
      }
      visible=suggestionIndex.map((item,i)=>({...item,_score:scoreSuggestion(q,item),_i:i})).filter(x=>x._score>0.9).sort((a,b)=>b._score-a._score||a._i-b._i).slice(0,6);
      if(!visible.length){box.innerHTML='<div class="autocomplete-empty">Ничего похожего. Нажмите Enter, чтобы искать по всей библиотеке.</div>';box.hidden=false;input.setAttribute('aria-expanded','true');return}
-     box.innerHTML=visible.map((item,i)=>`<a href="${item.url}" role="option" id="${boxId}-opt-${i}" aria-selected="false" data-suggest-index="${i}"><span>${item.section}</span><b>${item.title}</b><small>${item.desc}</small></a>`).join('');
+     box.innerHTML=visible.map((item,i)=>`<a href="${item.url}" role="option" id="${boxId}-opt-${i}" aria-selected="false" data-suggest-index="${i}"><span>${item.section}</span><b class="saved-card-title">${item.title}</b><small>${item.desc}</small></a>`).join('');
      active=-1; open();
    };
    input.setAttribute('type','text');
@@ -1044,9 +1044,9 @@
    if(btn){const refresh=()=>{const saved=get(BOOK,[]).some(x=>normalize(x.url)===nurl);btn.classList.toggle('saved',saved);btn.setAttribute('aria-pressed',saved?'true':'false');btn.textContent=saved?'В закладках':'Сохранить в закладки'};btn.addEventListener('click',()=>{let list=get(BOOK,[]);if(list.some(x=>normalize(x.url)===nurl))list=list.filter(x=>normalize(x.url)!==nurl);else list.unshift(item);set(BOOK,list.slice(0,50));refresh()});refresh()}
  }
 
- function favoriteCard(item){return `<article class="saved-card favorite-card"><a class="saved-card-main" href="${item.url}"><span>${item.section||'Материал'}</span><b>${item.title}</b></a><button type="button" class="saved-card-remove" data-remove-url="${item.url}" aria-label="Удалить из избранного">×</button></article>`}
- function historyCard(item){const st=stateFor(item.url)||{},progress=st.progress||0,resume=progress>.05&&progress<.82?item.url+'?continue=1':item.url,date=item.ts?new Date(item.ts).toLocaleDateString('ru-RU'):'';return `<article class="saved-card history-card viewed"><a class="saved-card-main" href="${resume}"><span>${item.section||'Материал'} · просмотрено</span><b>${item.title}</b><small>${progress>.05?pctLabel(progress):(date?'Открыто '+date:'Открыто ранее')}</small></a></article>`}
- function unviewedCard(item){return `<article class="saved-card history-card unviewed"><a class="saved-card-main" href="${item.url}"><span>${item.section||'Материал'} · не просмотрено</span><b>${item.title}</b><small>Ещё не открывали</small></a></article>`}
+ function favoriteCard(item){return `<article class="saved-card favorite-card"><a class="saved-card-main" href="${item.url}"><span>${item.section||'Материал'}</span><b class="saved-card-title">${item.title}</b></a><button type="button" class="saved-card-remove" data-remove-url="${item.url}" aria-label="Удалить из избранного">×</button></article>`}
+ function historyCard(item){const st=stateFor(item.url)||{},progress=st.progress||0,resume=progress>.05&&progress<.82?item.url+'?continue=1':item.url,date=item.ts?new Date(item.ts).toLocaleDateString('ru-RU'):'';return `<article class="saved-card history-card viewed"><a class="saved-card-main" href="${resume}"><span>${item.section||'Материал'} · просмотрено</span><b class="saved-card-title">${item.title}</b><small>${progress>.05?pctLabel(progress):(date?'Открыто '+date:'Открыто ранее')}</small></a></article>`}
+ function unviewedCard(item){return `<article class="saved-card history-card unviewed"><a class="saved-card-main" href="${item.url}"><span>${item.section||'Материал'} · не просмотрено</span><b class="saved-card-title">${item.title}</b><small>Ещё не открывали</small></a></article>`}
  function renderFavorites(){const bList=document.querySelector('[data-bookmark-list]');if(!bList)return;const data=get(BOOK,[]).map(x=>x&&x.url?catalogMap.get(normalize(x.url)):null).filter(Boolean);bList.innerHTML=data.map(favoriteCard).join('');const empty=document.querySelector('[data-bookmark-empty]');if(empty)empty.hidden=data.length>0}
  function renderHistory(){
    const viewedList=document.querySelector('[data-history-viewed-list]'),unviewedList=document.querySelector('[data-history-unviewed-list]'); if(!viewedList&&!unviewedList)return;
