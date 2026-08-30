@@ -31605,3 +31605,60 @@ html.tl-right-rail-boot body.reference-ui-v99 .ref-top-progress{visibility:hidde
     border-top:1px solid rgba(255,255,255,.12)!important;
   }
 }
+
+
+/* ======================================================================
+   v518 — image explanations use the same body-copy size as the article
+   ====================================================================== */
+
+/* Desktop article copy is 16px in structured sections. */
+html body.content-system-v103.article-page
+  .structured-article-v103 .article-figure.compact:not(.source-journey-card) > figcaption,
+html body.reference-ui-v99.content-system-v103.article-page
+  .structured-article-v103 .article-figure.compact:not(.source-journey-card) > figcaption,
+html body.content-system-v103.source-playbook-page
+  .source-playbook-article .article-figure.compact:not(.source-journey-card) > figcaption,
+html body.reference-ui-v99.content-system-v103.source-playbook-page
+  .source-playbook-article .article-figure.compact:not(.source-journey-card) > figcaption{
+  font-size:16px!important;
+  line-height:1.68!important;
+}
+
+/* The bold intro inside a figure stays a heading, but no longer looks oversized. */
+html body.content-system-v103.article-page
+  .structured-article-v103 .article-figure.compact:not(.source-journey-card) > figcaption > strong,
+html body.reference-ui-v99.content-system-v103.article-page
+  .structured-article-v103 .article-figure.compact:not(.source-journey-card) > figcaption > strong,
+html body.content-system-v103.source-playbook-page
+  .source-playbook-article .article-figure.compact:not(.source-journey-card) > figcaption > strong,
+html body.reference-ui-v99.content-system-v103.source-playbook-page
+  .source-playbook-article .article-figure.compact:not(.source-journey-card) > figcaption > strong{
+  font-size:14px!important;
+  line-height:1.45!important;
+  margin-bottom:6px!important;
+}
+
+@media(max-width:900px){
+  html body.content-system-v103.article-page
+    .structured-article-v103 .article-figure.compact:not(.source-journey-card) > figcaption,
+  html body.reference-ui-v99.content-system-v103.article-page
+    .structured-article-v103 .article-figure.compact:not(.source-journey-card) > figcaption,
+  html body.content-system-v103.source-playbook-page
+    .source-playbook-article .article-figure.compact:not(.source-journey-card) > figcaption,
+  html body.reference-ui-v99.content-system-v103.source-playbook-page
+    .source-playbook-article .article-figure.compact:not(.source-journey-card) > figcaption{
+    font-size:15.5px!important;
+    line-height:1.66!important;
+  }
+
+  html body.content-system-v103.article-page
+    .structured-article-v103 .article-figure.compact:not(.source-journey-card) > figcaption > strong,
+  html body.reference-ui-v99.content-system-v103.article-page
+    .structured-article-v103 .article-figure.compact:not(.source-journey-card) > figcaption > strong,
+  html body.content-system-v103.source-playbook-page
+    .source-playbook-article .article-figure.compact:not(.source-journey-card) > figcaption > strong,
+  html body.reference-ui-v99.content-system-v103.source-playbook-page
+    .source-playbook-article .article-figure.compact:not(.source-journey-card) > figcaption > strong{
+    font-size:14px!important;
+  }
+}
