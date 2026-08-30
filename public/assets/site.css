@@ -28869,36 +28869,59 @@ html body.reference-ui-v99 main.source-playbook-page .source-playbook-article .s
 }
 
 
-/* v457: definitive local brand marks. No text initials, no remote favicon dependency. */
-html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline{
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  overflow:hidden!important;color:transparent!important;font-size:0!important;
+/* v460 — compare page outer frame follows the common site width */
+html body.content-system-v103 main.compact-main-v103 > .source-compare-page,
+html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-explain,
+html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-note{
+  width:min(calc(100% - 40px), 1288px)!important;
+  max-width:1288px!important;
 }
-html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline::before,
-html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline::after{
-  content:none!important;display:none!important;
+html body .source-compare-page.compact-block-v103,
+html body .wrap.source-compare-explain.compact-block-v103,
+html body .wrap.source-compare-note.compact-block-v103,
+html body.reference-ui-v99 .source-compare-page.compact-block-v103,
+html body.reference-ui-v99 .wrap.source-compare-explain.compact-block-v103,
+html body.reference-ui-v99 .wrap.source-compare-note.compact-block-v103{
+  padding-left:0!important;
+  padding-right:0!important;
 }
-html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline>svg{
-  display:block!important;width:30px!important;height:30px!important;max-width:30px!important;max-height:30px!important;
+@media (max-width:900px){
+  html body.content-system-v103 main.compact-main-v103 > .source-compare-page,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-explain,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-note{
+    width:calc(100% - 28px)!important;
+  }
 }
-html body .source-hero-youtube.brand-logo-inline{
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  background:#fbf8f1!important;background-image:none!important;border:1px solid #dfcdb5!important;
-}
-html body .source-hero-youtube.brand-logo-inline::before,
-html body .source-hero-youtube.brand-logo-inline::after{content:none!important;display:none!important;}
-html body .source-hero-youtube.brand-logo-inline>svg{
-  display:block!important;width:52px!important;height:52px!important;max-width:52px!important;max-height:52px!important;
-}
-html body.theme-dark .source-hero-youtube.brand-logo-inline{
-  background:#171d23!important;border-color:#394551!important;
+@media (max-width:640px){
+  html body.content-system-v103 main.compact-main-v103 > .source-compare-page,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-explain,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.source-compare-note{
+    width:calc(100% - 20px)!important;
+  }
 }
 
 
-/* v458: brand marks are inline SVG and must never be hidden or replaced by remote images. */
-html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline{color:inherit!important;font-size:inherit!important;}
-html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline>img{display:none!important;}
-html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline>svg{display:block!important;visibility:visible!important;opacity:1!important;width:28px!important;height:28px!important;max-width:28px!important;max-height:28px!important;flex:0 0 auto!important;}
-html body :is(.rail-tool-mark,.service-mark,.source-tool-mark).tool-logo-inline>svg *{visibility:visible!important;opacity:1!important;}
-html body .source-hero-youtube.brand-logo-inline>svg{display:block!important;visibility:visible!important;opacity:1!important;width:52px!important;height:52px!important;}
-html body .source-hero-youtube.brand-logo-inline>svg *{visibility:visible!important;opacity:1!important;}
+/* v461 — start page content width follows the common page logic */
+html body.content-system-v103 main.compact-main-v103 > .wrap.handbook.compact-block-v103,
+html body.content-system-v103 main.compact-main-v103 > .wrap.starter-infra-section.compact-block-v103{
+  width:min(calc(100% - 40px), 1288px)!important;
+  max-width:1288px!important;
+}
+html body .wrap.handbook.compact-block-v103,
+html body.reference-ui-v99 .wrap.handbook.compact-block-v103{
+  max-width:none!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+@media (max-width:900px){
+  html body.content-system-v103 main.compact-main-v103 > .wrap.handbook.compact-block-v103,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.starter-infra-section.compact-block-v103{
+    width:calc(100% - 28px)!important;
+  }
+}
+@media (max-width:640px){
+  html body.content-system-v103 main.compact-main-v103 > .wrap.handbook.compact-block-v103,
+  html body.content-system-v103 main.compact-main-v103 > .wrap.starter-infra-section.compact-block-v103{
+    width:calc(100% - 20px)!important;
+  }
+}
