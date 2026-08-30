@@ -30781,3 +30781,115 @@ html body.reference-ui-v99.content-system-v103 main.compact-main-v103
     box-sizing:border-box!important;
   }
 }
+
+
+/* ======================================================================
+   v500 — Traffic Hub mobile layout: full-width cards + safe inner padding
+   Mobile UI starts at 1050px on this site, so the content must switch too.
+   ====================================================================== */
+@media (max-width:1050px){
+
+  /* Treat the traffic hub as a true mobile layout whenever the mobile header is active. */
+  html body .traffic-hub-page .playbook-catalog-grid,
+  html body.reference-ui-v99 .traffic-hub-page .playbook-catalog-grid,
+  html body .traffic-hub-page .traffic-hub-basics,
+  html body.reference-ui-v99 .traffic-hub-page .traffic-hub-basics,
+  html body.content-system-v103 .traffic-hub-page .traffic-next,
+  html body.reference-ui-v99.content-system-v103 .traffic-hub-page .traffic-next{
+    grid-template-columns:minmax(0,1fr)!important;
+    width:100%!important;
+    max-width:100%!important;
+    gap:14px!important;
+  }
+
+  /* Never turn the three basic steps into thin vertical strips. */
+  html body .traffic-hub-page .traffic-hub-basics,
+  html body.reference-ui-v99 .traffic-hub-page .traffic-hub-basics{
+    padding-top:18px!important;
+    padding-bottom:18px!important;
+  }
+
+  html body .traffic-hub-page .traffic-hub-basics > div,
+  html body.reference-ui-v99 .traffic-hub-page .traffic-hub-basics > div{
+    width:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+    height:auto!important;
+    padding:20px 22px!important;
+    border-radius:13px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body .traffic-hub-page .traffic-hub-basics > div > p,
+  html body.reference-ui-v99 .traffic-hub-page .traffic-hub-basics > div > p{
+    margin:0!important;
+    padding:0!important;
+    max-width:none!important;
+  }
+
+  /* The partner block keeps the same breathing room in light and dark themes. */
+  html body.content-system-v103 .traffic-hub-page .traffic-partner-step,
+  html body.reference-ui-v99.content-system-v103 .traffic-hub-page .traffic-partner-step{
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    padding:20px 22px 22px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.content-system-v103 .traffic-hub-page .traffic-partner-step > span,
+  html body.reference-ui-v99.content-system-v103 .traffic-hub-page .traffic-partner-step > span,
+  html body.content-system-v103 .traffic-hub-page .traffic-partner-step > p,
+  html body.reference-ui-v99.content-system-v103 .traffic-hub-page .traffic-partner-step > p,
+  html body.content-system-v103 .traffic-hub-page .traffic-partner-step > a,
+  html body.reference-ui-v99.content-system-v103 .traffic-hub-page .traffic-partner-step > a{
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+
+  html body.content-system-v103 .traffic-hub-page .traffic-partner-step > p,
+  html body.reference-ui-v99.content-system-v103 .traffic-hub-page .traffic-partner-step > p{
+    margin-top:10px!important;
+    margin-bottom:16px!important;
+  }
+
+  html body.content-system-v103 .traffic-hub-page .traffic-next,
+  html body.reference-ui-v99.content-system-v103 .traffic-hub-page .traffic-next{
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+
+  /* Cards inside the source catalog also become one full-width column. */
+  html body .traffic-hub-page .playbook-card,
+  html body.reference-ui-v99 .traffic-hub-page .playbook-card{
+    width:100%!important;
+    max-width:100%!important;
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+
+  /* Avoid three tiny fact cells when a card itself is in mobile mode. */
+  html body .traffic-hub-page .playbook-card .playbook-facts,
+  html body.reference-ui-v99 .traffic-hub-page .playbook-card .playbook-facts{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+}
+
+@media (max-width:650px){
+  html body .traffic-hub-page .traffic-hub-basics > div,
+  html body.reference-ui-v99 .traffic-hub-page .traffic-hub-basics > div{
+    padding:18px 18px!important;
+  }
+
+  html body.content-system-v103 .traffic-hub-page .traffic-partner-step,
+  html body.reference-ui-v99.content-system-v103 .traffic-hub-page .traffic-partner-step{
+    padding:19px 18px 21px!important;
+  }
+
+  html body .traffic-hub-page .playbook-card,
+  html body.reference-ui-v99 .traffic-hub-page .playbook-card{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+}
