@@ -91,8 +91,40 @@ async function ensureSchema(db){
       visitor_hash TEXT NOT NULL,
       PRIMARY KEY(day,visitor_hash)
     )`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS visitors (
+      visitor_hash TEXT PRIMARY KEY,
+      first_seen TEXT NOT NULL,
+      last_seen TEXT NOT NULL,
+      session_count INTEGER NOT NULL DEFAULT 0,
+      page_views INTEGER NOT NULL DEFAULT 0,
+      event_count INTEGER NOT NULL DEFAULT 0
+    )`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS visitor_sessions (
+      session_hash TEXT PRIMARY KEY,
+      visitor_hash TEXT NOT NULL,
+      started_at TEXT NOT NULL,
+      last_seen TEXT NOT NULL,
+      entry_path TEXT NOT NULL,
+      exit_path TEXT NOT NULL,
+      page_views INTEGER NOT NULL DEFAULT 0,
+      event_count INTEGER NOT NULL DEFAULT 0
+    )`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS visitor_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      visitor_hash TEXT NOT NULL,
+      session_hash TEXT NOT NULL,
+      occurred_at TEXT NOT NULL,
+      event TEXT NOT NULL,
+      path TEXT NOT NULL,
+      detail TEXT NOT NULL DEFAULT ''
+    )`),
     db.prepare(`CREATE INDEX IF NOT EXISTS idx_events_event_day ON events_daily(event,day)`),
-    db.prepare(`CREATE INDEX IF NOT EXISTS idx_votes_path ON article_votes(article_path)`)
+    db.prepare(`CREATE INDEX IF NOT EXISTS idx_votes_path ON article_votes(article_path)`),
+    db.prepare(`CREATE INDEX IF NOT EXISTS idx_visitors_last_seen ON visitors(last_seen)`),
+    db.prepare(`CREATE INDEX IF NOT EXISTS idx_sessions_visitor_last ON visitor_sessions(visitor_hash,last_seen)`),
+    db.prepare(`CREATE INDEX IF NOT EXISTS idx_visitor_events_visitor_time ON visitor_events(visitor_hash,occurred_at)`),
+    db.prepare(`CREATE INDEX IF NOT EXISTS idx_visitor_events_time ON visitor_events(occurred_at)`),
+    db.prepare(`CREATE INDEX IF NOT EXISTS idx_visitor_events_session ON visitor_events(session_hash)`)
   ]);
 }
 function eventDetail(event,data){
@@ -131,19 +163,51 @@ async function handleEvent(context){
   if(!EVENT_ALLOWLIST.has(event))return json({error:'event_rejected'},400);
   const path=cleanPath(payload?.path);
   const detail=eventDetail(event,payload?.data);
-  const day=new Date().toISOString().slice(0,10);
-  await ensureSchema(context.env.DB);
-  await context.env.DB.prepare(`INSERT INTO events_daily(day,event,path,detail,count)
+  const now=new Date();
+  const nowIso=now.toISOString();
+  const day=nowIso.slice(0,10);
+  const db=context.env.DB;
+  await ensureSchema(db);
+  await db.prepare(`INSERT INTO events_daily(day,event,path,detail,count)
     VALUES(?1,?2,?3,?4,1)
     ON CONFLICT(day,event,path,detail) DO UPDATE SET count=count+1`)
     .bind(day,event,path,detail).run();
-  if(event==='page_view'){
-    const clientId=cleanClientId(payload?.clientId);
-    if(clientId){
-      const salt=String(context.env.ANALYTICS_SALT||'trafficlab-daily-v1');
-      const visitorHash=await hash(`${day}|${salt}|${clientId}`);
-      await context.env.DB.prepare(`INSERT OR IGNORE INTO visitors_daily(day,visitor_hash) VALUES(?1,?2)`)
-        .bind(day,visitorHash).run();
+
+  const clientId=cleanClientId(payload?.clientId);
+  const sessionId=cleanClientId(payload?.sessionId);
+  if(clientId){
+    const salt=String(context.env.ANALYTICS_SALT||'trafficlab-analytics-v2');
+    if(event==='page_view'){
+      const dailyHash=await hash(`${day}|${salt}|${clientId}`);
+      await db.prepare(`INSERT OR IGNORE INTO visitors_daily(day,visitor_hash) VALUES(?1,?2)`)
+        .bind(day,dailyHash).run();
+    }
+    if(sessionId){
+      const visitorHash=await hash(`${salt}|visitor|${clientId}`);
+      const sessionHash=await hash(`${salt}|session|${clientId}|${sessionId}`);
+      const inserted=await db.prepare(`INSERT OR IGNORE INTO visitor_sessions(
+          session_hash,visitor_hash,started_at,last_seen,entry_path,exit_path,page_views,event_count
+        ) VALUES(?1,?2,?3,?3,?4,?4,0,0)`)
+        .bind(sessionHash,visitorHash,nowIso,path).run();
+      const newSession=Number(inserted?.meta?.changes||0)>0?1:0;
+      const pageInc=event==='page_view'?1:0;
+      await db.batch([
+        db.prepare(`INSERT INTO visitors(visitor_hash,first_seen,last_seen,session_count,page_views,event_count)
+          VALUES(?1,?2,?2,?3,?4,1)
+          ON CONFLICT(visitor_hash) DO UPDATE SET
+            last_seen=excluded.last_seen,
+            session_count=visitors.session_count+excluded.session_count,
+            page_views=visitors.page_views+excluded.page_views,
+            event_count=visitors.event_count+1`)
+          .bind(visitorHash,nowIso,newSession,pageInc),
+        db.prepare(`UPDATE visitor_sessions SET
+            last_seen=?2,exit_path=?3,page_views=page_views+?4,event_count=event_count+1
+          WHERE session_hash=?1`)
+          .bind(sessionHash,nowIso,path,pageInc),
+        db.prepare(`INSERT INTO visitor_events(visitor_hash,session_hash,occurred_at,event,path,detail)
+          VALUES(?1,?2,?3,?4,?5,?6)`)
+          .bind(visitorHash,sessionHash,nowIso,event,path,detail)
+      ]);
     }
   }
   return json({ok:true});
@@ -182,8 +246,10 @@ async function handleStats(context){
   const url=new URL(context.request.url);
   const days=Math.max(1,Math.min(365,Number(url.searchParams.get('days'))||30));
   const since=new Date(Date.now()-(days-1)*86400000).toISOString().slice(0,10);
+  const sinceIso=`${since}T00:00:00.000Z`;
   const db=context.env.DB;
-  const [summary,topPages,reads90,bookmarks,searches,ratings,daily,visitors]=await Promise.all([
+  const [summary,topPages,reads90,bookmarks,searches,ratings,daily,visitors,
+    visitorOverview,newVisitors,returningVisitors,visitorSummaries,lastVisitorActions]=await Promise.all([
     db.prepare(`SELECT event,SUM(count) AS count FROM events_daily WHERE day>=?1 GROUP BY event`).bind(since).all(),
     db.prepare(`SELECT path,SUM(count) AS views FROM events_daily WHERE day>=?1 AND event='page_view' GROUP BY path ORDER BY views DESC LIMIT 80`).bind(since).all(),
     db.prepare(`SELECT path,SUM(count) AS count FROM events_daily WHERE day>=?1 AND event='read_depth' AND detail='{"percent":90}' GROUP BY path ORDER BY count DESC LIMIT 80`).bind(since).all(),
@@ -194,7 +260,29 @@ async function handleStats(context){
         SUM(CASE WHEN vote='down' THEN 1 ELSE 0 END) AS down
       FROM article_votes GROUP BY article_path ORDER BY (up+down) DESC,up DESC LIMIT 100`).all(),
     db.prepare(`SELECT day,SUM(count) AS views FROM events_daily WHERE day>=?1 AND event='page_view' GROUP BY day ORDER BY day ASC`).bind(since).all(),
-    db.prepare(`SELECT day,COUNT(*) AS unique_browsers FROM visitors_daily WHERE day>=?1 GROUP BY day ORDER BY day ASC`).bind(since).all()
+    db.prepare(`SELECT day,COUNT(*) AS unique_browsers FROM visitors_daily WHERE day>=?1 GROUP BY day ORDER BY day ASC`).bind(since).all(),
+    db.prepare(`SELECT COUNT(DISTINCT visitor_hash) AS unique_visitors,
+        COUNT(DISTINCT session_hash) AS sessions,
+        SUM(CASE WHEN event='page_view' THEN 1 ELSE 0 END) AS page_views,
+        COUNT(*) AS actions
+      FROM visitor_events WHERE occurred_at>=?1`).bind(sinceIso).first(),
+    db.prepare(`SELECT COUNT(*) AS new_visitors FROM visitors WHERE first_seen>=?1`).bind(sinceIso).first(),
+    db.prepare(`SELECT COUNT(DISTINCT ve.visitor_hash) AS returning_visitors
+      FROM visitor_events ve JOIN visitors v ON v.visitor_hash=ve.visitor_hash
+      WHERE ve.occurred_at>=?1 AND v.session_count>1`).bind(sinceIso).first(),
+    db.prepare(`SELECT v.visitor_hash,v.first_seen,v.last_seen,v.session_count,v.page_views,v.event_count,
+        COUNT(DISTINCT e.session_hash) AS period_sessions,
+        SUM(CASE WHEN e.event='page_view' THEN 1 ELSE 0 END) AS period_page_views,
+        COUNT(*) AS period_events,MAX(e.occurred_at) AS period_last_seen
+      FROM visitor_events e JOIN visitors v ON v.visitor_hash=e.visitor_hash
+      WHERE e.occurred_at>=?1
+      GROUP BY v.visitor_hash,v.first_seen,v.last_seen,v.session_count,v.page_views,v.event_count
+      ORDER BY period_last_seen DESC LIMIT 100`).bind(sinceIso).all(),
+    db.prepare(`SELECT e.visitor_hash,e.event,e.path,e.detail,e.occurred_at
+      FROM visitor_events e
+      JOIN (SELECT visitor_hash,MAX(id) AS id FROM visitor_events WHERE occurred_at>=?1 GROUP BY visitor_hash) x
+        ON x.id=e.id
+      ORDER BY e.occurred_at DESC LIMIT 100`).bind(sinceIso).all()
   ]);
   return json({
     ok:true,days,since,
@@ -205,8 +293,39 @@ async function handleStats(context){
     searches:searches.results||[],
     ratings:ratings.results||[],
     daily:daily.results||[],
-    visitors:visitors.results||[]
+    visitors:visitors.results||[],
+    visitorOverview:{
+      unique_visitors:Number(visitorOverview?.unique_visitors||0),
+      sessions:Number(visitorOverview?.sessions||0),
+      page_views:Number(visitorOverview?.page_views||0),
+      actions:Number(visitorOverview?.actions||0),
+      new_visitors:Number(newVisitors?.new_visitors||0),
+      returning_visitors:Number(returningVisitors?.returning_visitors||0)
+    },
+    visitorSummaries:visitorSummaries.results||[],
+    lastVisitorActions:lastVisitorActions.results||[]
   });
+}
+async function handleVisitorStats(context){
+  if(context.request.method!=='GET')return json({error:'method_not_allowed'},405);
+  if(!adminSameOrigin(context.request))return json({error:'origin_rejected'},403);
+  if(!(await isAdminAuthenticated(context.request,context.env)))return json({error:'unauthorized'},401);
+  await ensureSchema(context.env.DB);
+  const url=new URL(context.request.url);
+  const id=cleanText(url.searchParams.get('id'),64).toLowerCase();
+  if(!/^[a-f0-9]{64}$/.test(id))return json({error:'invalid_visitor'},400);
+  const days=Math.max(1,Math.min(365,Number(url.searchParams.get('days'))||30));
+  const since=new Date(Date.now()-(days-1)*86400000).toISOString().slice(0,10)+'T00:00:00.000Z';
+  const db=context.env.DB;
+  const [visitor,sessions,events]=await Promise.all([
+    db.prepare(`SELECT visitor_hash,first_seen,last_seen,session_count,page_views,event_count FROM visitors WHERE visitor_hash=?1`).bind(id).first(),
+    db.prepare(`SELECT session_hash,started_at,last_seen,entry_path,exit_path,page_views,event_count
+      FROM visitor_sessions WHERE visitor_hash=?1 AND last_seen>=?2 ORDER BY last_seen DESC LIMIT 80`).bind(id,since).all(),
+    db.prepare(`SELECT session_hash,occurred_at,event,path,detail
+      FROM visitor_events WHERE visitor_hash=?1 AND occurred_at>=?2 ORDER BY id DESC LIMIT 300`).bind(id,since).all()
+  ]);
+  if(!visitor)return json({error:'visitor_not_found'},404);
+  return json({ok:true,days,visitor,sessions:sessions.results||[],events:events.results||[]});
 }
 async function handleStatsReset(context){
   if(context.request.method!=='POST')return json({error:'method_not_allowed'},405);
@@ -217,6 +336,9 @@ async function handleStatsReset(context){
   await ensureSchema(context.env.DB);
   const db=context.env.DB;
   await db.batch([
+    db.prepare(`DELETE FROM visitor_events`),
+    db.prepare(`DELETE FROM visitor_sessions`),
+    db.prepare(`DELETE FROM visitors`),
     db.prepare(`DELETE FROM events_daily`),
     db.prepare(`DELETE FROM visitors_daily`),
     db.prepare(`DELETE FROM article_votes`)
@@ -239,6 +361,7 @@ export async function onRequest(context){
     if(route==='event')return handleEvent(context);
     if(route==='rating')return handleRating(context);
     if(route==='stats')return handleStats(context);
+    if(route==='stats/visitor')return handleVisitorStats(context);
     if(route==='stats/reset')return handleStatsReset(context);
     if(route==='health')return handleHealth(context);
     return json({error:'not_found'},404);

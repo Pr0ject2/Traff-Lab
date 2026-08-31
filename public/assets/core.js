@@ -170,6 +170,8 @@ window.dataLayer=window.dataLayer||[];
 (function(){
   'use strict';
   const CLIENT_KEY='tl-anon-client-v1';
+  const SESSION_KEY='tl-anon-session-v1';
+  const SESSION_TTL=30*60*1000;
   const CONSENT_KEY='tl-analytics-consent-v1';
   const endpoint='/api/event';
   let trackingStarted=false;
@@ -189,23 +191,32 @@ window.dataLayer=window.dataLayer||[];
     return v;
   }
   function analyticsAllowed(){return consent()==='yes'}
+  function randomId(){
+    if(window.crypto&&typeof window.crypto.randomUUID==='function')return window.crypto.randomUUID();
+    const b=new Uint8Array(16);window.crypto.getRandomValues(b);return [...b].map(x=>x.toString(16).padStart(2,'0')).join('');
+  }
   function clientId(){
     try{
       let id=localStorage.getItem(CLIENT_KEY)||'';
       if(id&&!/^[A-Za-z0-9-]{16,80}$/.test(id)){try{localStorage.removeItem(CLIENT_KEY)}catch(_e){}id=''}
-      if(!id){
-        if(window.crypto&&typeof window.crypto.randomUUID==='function') id=window.crypto.randomUUID();
-        else{
-          const b=new Uint8Array(16);window.crypto.getRandomValues(b);id=[...b].map(x=>x.toString(16).padStart(2,'0')).join('');
-        }
-        localStorage.setItem(CLIENT_KEY,id);
-      }
+      if(!id){id=randomId();localStorage.setItem(CLIENT_KEY,id)}
+      return id;
+    }catch(_e){return ''}
+  }
+  function sessionId(){
+    try{
+      const now=Date.now();let value={};
+      try{value=JSON.parse(localStorage.getItem(SESSION_KEY)||'{}')||{}}catch(_e){}
+      let id=/^[A-Za-z0-9-]{16,80}$/.test(String(value.id||''))?String(value.id):'';
+      const last=Number(value.last)||0;
+      if(!id||!last||now-last>SESSION_TTL)id=randomId();
+      localStorage.setItem(SESSION_KEY,JSON.stringify({id,last:now}));
       return id;
     }catch(_e){return ''}
   }
   function post(name,data){
     if(!analyticsAllowed())return;
-    const payload={event:name,path:location.pathname,data:data||{},clientId:clientId()};
+    const payload={event:name,path:location.pathname,data:data||{},clientId:clientId(),sessionId:sessionId()};
     try{
       fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload),keepalive:true,credentials:'same-origin'}).catch(()=>{});
     }catch(_e){}
@@ -223,7 +234,7 @@ window.dataLayer=window.dataLayer||[];
     box.className='tl-privacy-banner';
     box.setAttribute('role','dialog');
     box.setAttribute('aria-label','Настройки конфиденциальности');
-    box.innerHTML='<div class="tl-privacy-copy"><b>Статистика TrafficLab</b><p>История, закладки и заметки остаются в этом браузере. Анонимную статистику сайта отправляем только с вашего разрешения.</p><a href="/privacy/">Подробнее</a></div><div class="tl-privacy-actions"><button type="button" data-privacy-choice="no">Только необходимое</button><button class="primary" type="button" data-privacy-choice="yes">Разрешить статистику</button></div>';
+    box.innerHTML='<div class="tl-privacy-copy"><b>Статистика TrafficLab</b><p>История, закладки и заметки остаются в этом браузере. Анонимные посещения и основные действия отправляем только с вашего разрешения.</p><a href="/privacy/">Подробнее</a></div><div class="tl-privacy-actions"><button type="button" data-privacy-choice="no">Только необходимое</button><button class="primary" type="button" data-privacy-choice="yes">Разрешить статистику</button></div>';
     box.addEventListener('click',e=>{
       const b=e.target.closest('[data-privacy-choice]');if(!b)return;
       setConsent(b.dataset.privacyChoice);removeBanner();
@@ -253,7 +264,7 @@ window.dataLayer=window.dataLayer||[];
     setTimeout(depthHandler,400);
   }
 
-  window.TLAnalytics={clientId,allowed:analyticsAllowed};
+  window.TLAnalytics={clientId,sessionId,allowed:analyticsAllowed};
   window.TLPrivacy={consent,setConsent,openSettings:()=>showPrivacyChoice(true)};
 
   const init=()=>{
