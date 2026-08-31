@@ -163,87 +163,37 @@
 })();
 
 
-/* v433 — consent-aware first-party analytics for Cloudflare Pages + D1.
+/* v528 — aggregate first-party analytics without visitor profiles.
    Functional browser storage (history, bookmarks, notes, theme, settings) stays local.
-   Aggregate analytics is sent only after an explicit choice to allow statistics. */
+   TrafficLab sends only aggregate event counters; no persistent visitor/session ID is sent. */
 window.dataLayer=window.dataLayer||[];
 (function(){
   'use strict';
-  const CLIENT_KEY='tl-anon-client-v1';
-  const SESSION_KEY='tl-anon-session-v1';
-  const SESSION_TTL=30*60*1000;
-  const CONSENT_KEY='tl-analytics-consent-v1';
   const endpoint='/api/event';
   let trackingStarted=false;
   let depthHandler=null;
 
-  function consent(){
-    try{
-      const v=localStorage.getItem(CONSENT_KEY)||'';
-      return v==='yes'||v==='no'?v:'';
-    }catch(_e){return ''}
-  }
-  function setConsent(value){
-    const v=value==='yes'?'yes':'no';
-    try{localStorage.setItem(CONSENT_KEY,v)}catch(_e){}
-    document.dispatchEvent(new CustomEvent('tl:privacychange',{detail:{analytics:v==='yes'}}));
-    if(v==='yes') startTracking();
-    return v;
-  }
-  function analyticsAllowed(){return consent()==='yes'}
-  function randomId(){
-    if(window.crypto&&typeof window.crypto.randomUUID==='function')return window.crypto.randomUUID();
-    const b=new Uint8Array(16);window.crypto.getRandomValues(b);return [...b].map(x=>x.toString(16).padStart(2,'0')).join('');
-  }
-  function clientId(){
-    try{
-      let id=localStorage.getItem(CLIENT_KEY)||'';
-      if(id&&!/^[A-Za-z0-9-]{16,80}$/.test(id)){try{localStorage.removeItem(CLIENT_KEY)}catch(_e){}id=''}
-      if(!id){id=randomId();localStorage.setItem(CLIENT_KEY,id)}
-      return id;
-    }catch(_e){return ''}
-  }
-  function sessionId(){
-    try{
-      const now=Date.now();let value={};
-      try{value=JSON.parse(localStorage.getItem(SESSION_KEY)||'{}')||{}}catch(_e){}
-      let id=/^[A-Za-z0-9-]{16,80}$/.test(String(value.id||''))?String(value.id):'';
-      const last=Number(value.last)||0;
-      if(!id||!last||now-last>SESSION_TTL)id=randomId();
-      localStorage.setItem(SESSION_KEY,JSON.stringify({id,last:now}));
-      return id;
-    }catch(_e){return ''}
-  }
+
   function post(name,data){
-    if(!analyticsAllowed())return;
-    const payload={event:name,path:location.pathname,data:data||{},clientId:clientId(),sessionId:sessionId()};
+    const payload={event:name,path:location.pathname,data:data||{}};
     try{
-      fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload),keepalive:true,credentials:'same-origin'}).catch(()=>{});
+      fetch(endpoint,{
+        method:'POST',
+        headers:{'content-type':'application/json'},
+        body:JSON.stringify(payload),
+        keepalive:true,
+        credentials:'same-origin'
+      }).catch(()=>{});
     }catch(_e){}
   }
+
   window.alTrack=function(name,data){
     try{window.dataLayer.push(Object.assign({event:'al_'+name,path:location.pathname},data||{}));}catch(_e){}
     post(name,data);
   };
 
-  function removeBanner(){document.querySelector('.tl-privacy-banner')?.remove()}
-  function showPrivacyChoice(force){
-    if(!force&&consent())return;
-    removeBanner();
-    const box=document.createElement('section');
-    box.className='tl-privacy-banner';
-    box.setAttribute('role','dialog');
-    box.setAttribute('aria-label','Настройки конфиденциальности');
-    box.innerHTML='<div class="tl-privacy-copy"><b>Статистика TrafficLab</b><p>История, закладки и заметки остаются в этом браузере. Анонимные посещения и основные действия отправляем только с вашего разрешения.</p><a href="/privacy/">Подробнее</a></div><div class="tl-privacy-actions"><button type="button" data-privacy-choice="no">Только необходимое</button><button class="primary" type="button" data-privacy-choice="yes">Разрешить статистику</button></div>';
-    box.addEventListener('click',e=>{
-      const b=e.target.closest('[data-privacy-choice]');if(!b)return;
-      setConsent(b.dataset.privacyChoice);removeBanner();
-    });
-    document.body.appendChild(box);
-  }
-
   function startTracking(){
-    if(trackingStarted||!analyticsAllowed())return;
+    if(trackingStarted)return;
     trackingStarted=true;
     window.alTrack('page_view',{});
     const article=document.querySelector('article.article,.source-playbook-article');
@@ -264,16 +214,14 @@ window.dataLayer=window.dataLayer||[];
     setTimeout(depthHandler,400);
   }
 
-  window.TLAnalytics={clientId,sessionId,allowed:analyticsAllowed};
-  window.TLPrivacy={consent,setConsent,openSettings:()=>showPrivacyChoice(true)};
+  /* Remove identifiers/consent left by older TrafficLab builds. */
+  try{
+    ['tl-anon-client-v1','tl-anon-session-v1','tl-analytics-consent-v1'].forEach(k=>localStorage.removeItem(k));
+  }catch(_e){}
 
-  const init=()=>{
-    if(analyticsAllowed())startTracking();
-    else if(!consent())showPrivacyChoice(false);
-    document.addEventListener('click',e=>{
-      if(e.target.closest('[data-privacy-settings]')){e.preventDefault();showPrivacyChoice(true)}
-    });
-  };
+  window.TLAnalytics={allowed:()=>true};
+
+  const init=()=>startTracking();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
   else init();
 })();
