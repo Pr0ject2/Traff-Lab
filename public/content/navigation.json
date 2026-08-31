@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "groups": [
+    {
+      "id": "0",
+      "title": "Начать",
+      "items": [
+        {
+          "id": "start",
+          "title": "С чего начать",
+          "href": "/start/",
+          "icon": "○"
+        },
+        {
+          "id": "traffic",
+          "title": "Источники трафика",
+          "href": "/traffic/",
+          "icon": "↗"
+        },
+        {
+          "id": "compare",
+          "title": "Сравнение источников",
+          "href": "/traffic/compare/",
+          "icon": "≡"
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "title": "Работа",
+      "items": [
+        {
+          "id": "practice",
+          "title": "Практические гайды",
+          "href": "/practice/",
+          "icon": "✓"
+        },
+        {
+          "id": "diagnostics",
+          "title": "Диагностика и ошибки",
+          "href": "/diagnostics/",
+          "icon": "?"
+        },
+        {
+          "id": "analytics",
+          "title": "Аналитика",
+          "href": "/analytics/",
+          "icon": "⌁"
+        },
+        {
+          "id": "tools",
+          "title": "Калькуляторы",
+          "href": "/tools/",
+          "icon": "▦"
+        },
+        {
+          "id": "services",
+          "title": "Сервисы",
+          "href": "/services/",
+          "icon": "□"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Библиотека",
+      "items": [
+        {
+          "id": "library",
+          "title": "Статьи",
+          "href": "/guides/",
+          "icon": "▤"
+        },
+        {
+          "id": "basics",
+          "title": "Обзоры",
+          "href": "/basics/",
+          "icon": "◫"
+        },
+        {
+          "id": "glossary",
+          "title": "Словарь терминов",
+          "href": "/glossary/",
+          "icon": "ab"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Личное",
+      "items": [
+        {
+          "id": "notes",
+          "title": "Журнал тестов",
+          "href": "/notes/",
+          "icon": "✎"
+        },
+        {
+          "id": "history",
+          "title": "История",
+          "href": "/history/",
+          "icon": "↺"
+        }
+      ]
+    }
+  ]
+}
