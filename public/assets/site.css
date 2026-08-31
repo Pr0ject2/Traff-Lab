@@ -31682,63 +31682,123 @@ html body.reference-ui-v99.theme-dark.services-page .service-workflow-head>span{
 }
 
 
-/* TL_PARTNER_CTA_VISIBILITY_V524 */
-.partner-next-step-primary{border-width:1px!important;border-left-width:4px!important;padding:22px 24px!important}
-.partner-next-step-primary>span{font-size:11px!important}
-.partner-next-step-primary>p{font-size:15px!important;max-width:760px!important}
-.partner-next-step-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
-.partner-direct-button,.partner-guide-button{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:11px 17px!important;border-radius:9px!important;font-weight:800!important;text-decoration:none!important}
-.partner-direct-button{background:#173f34!important;border:1px solid #173f34!important;color:#fff!important;box-shadow:0 6px 18px rgba(23,63,52,.12)}
-.partner-direct-button:hover{background:#0f342a!important;border-color:#0f342a!important;color:#fff!important}
-.partner-guide-button{background:transparent!important;border:1px solid rgba(36,79,66,.28)!important;color:#244f42!important}
-.article-cta-row>.partner-direct-button{background:#173f34!important;border-color:#173f34!important;color:#fff!important}
-html body.theme-dark .partner-next-step-primary{background:#1b2228!important;border-color:#344149!important;border-left-color:#4ca882!important}
-html body.theme-dark .partner-guide-button{border-color:#46515c!important;color:#9ed9c5!important}
-html body.theme-dark .partner-direct-button{background:#1b8b64!important;border-color:#1b8b64!important;color:#fff!important}
-@media(max-width:650px){.partner-next-step-actions{display:grid}.partner-direct-button,.partner-guide-button{width:100%!important;box-sizing:border-box}.partner-next-step-primary{padding:18px 16px!important}}
-
 /* ======================================================================
-   v526 — dark theme TOC text wrap fix
-   Prevent long TOC items in the right rail from spilling past the border.
+   v523 — dark source-page TOC: natural height + internal scroll only
+   Overrides the old v495 overflow:visible rule with higher specificity.
    ====================================================================== */
-html body.theme-dark .article-aside.enhanced-rail .rail-toc,
-html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail .rail-toc{
-  overflow:hidden!important;
-}
+@media (min-width:1051px){
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:10px!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:calc(100vh - var(--ref-topbar) - 30px)!important;
+    max-height:calc(100dvh - var(--ref-topbar) - 30px)!important;
+    overflow:hidden!important;
+    overflow-x:hidden!important;
+    overflow-y:hidden!important;
+    box-sizing:border-box!important;
+  }
 
-html body.theme-dark .article-aside.enhanced-rail .rail-toc ol,
-html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail .rail-toc ol{
-  padding-right:10px!important;
-  box-sizing:border-box!important;
-}
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > :not(.rail-toc){
+    flex:0 0 auto!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+  }
 
-html body.theme-dark .article-aside.enhanced-rail .rail-toc li,
-html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail .rail-toc li{
-  min-width:0!important;
-}
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc,
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc.rail-toc-scroll{
+    display:flex!important;
+    flex-direction:column!important;
+    flex:0 1 auto!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:72px!important;
+    max-height:none!important;
+    padding:12px 13px 10px!important;
+    overflow:hidden!important;
+    overflow-x:hidden!important;
+    overflow-y:hidden!important;
+    box-sizing:border-box!important;
+  }
 
-html body.theme-dark .article-aside.enhanced-rail .rail-toc a,
-html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail .rail-toc a,
-html body.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc a,
-html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc a{
-  width:100%!important;
-  max-width:100%!important;
-  min-width:0!important;
-  box-sizing:border-box!important;
-  grid-template-columns:20px minmax(0,1fr)!important;
-  column-gap:7px!important;
-  white-space:normal!important;
-  overflow-wrap:anywhere!important;
-  word-break:break-word!important;
-  hyphens:auto!important;
-  font-size:10.5px!important;
-  line-height:1.38!important;
-}
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > b,
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > .rail-progress{
+    flex:0 0 auto!important;
+  }
 
-html body.theme-dark .article-aside.enhanced-rail .rail-toc li a:before,
-html body.reference-ui-v99.theme-dark .article-aside.enhanced-rail .rail-toc li a:before,
-html body.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc li a:before,
-html body.reference-ui-v99.theme-dark.content-system-v103 main.source-playbook-page .article-aside.enhanced-rail .rail-toc li a:before{
-  width:20px!important;
-  min-width:20px!important;
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol,
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc.rail-toc-scroll > ol{
+    display:block!important;
+    flex:1 1 auto!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0 7px 2px 0!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    scrollbar-gutter:stable!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:#4a5660 transparent!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol > li{
+    display:block!important;
+    height:auto!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol > li > a{
+    margin:0!important;
+    padding-top:5px!important;
+    padding-bottom:5px!important;
+  }
+
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol > li:last-child > a{
+    padding-bottom:2px!important;
+  }
+
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol::-webkit-scrollbar{
+    width:5px!important;
+  }
+
+  html body.reference-ui-v99.theme-dark.content-system-v103
+  main.source-playbook-page > .wrap.article-layout
+  > aside.article-aside.enhanced-rail > nav.rail-toc > ol::-webkit-scrollbar-thumb{
+    background:#4a5660!important;
+    border-radius:999px!important;
+  }
 }
