@@ -3,9 +3,7 @@
   "include": [
     "/api/*",
     "/admin",
-    "/admin/*",
-    "/go/partner",
-    "/go/partner/*"
+    "/admin/*"
   ],
   "exclude": []
 }

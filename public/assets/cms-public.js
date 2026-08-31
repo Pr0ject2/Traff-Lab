@@ -99,7 +99,7 @@ function setupLibrary(data){
  document.dispatchEvent(new CustomEvent('al:modechange',{detail:{source:'cms'}}));
 }
 function installStyle(){const st=document.createElement('style');st.textContent='.global-sidebar .sidebar-menu a.cms-nav-item[data-cms-icon]::before{content:attr(data-cms-icon)!important}.cms-runtime-error{display:none!important}';document.head.appendChild(st)}
-function setupPartnerRedirect(){return}
+function setupPartnerRedirect(){if(!document.body?.hasAttribute('data-partner-redirect'))return;const p=new URLSearchParams(location.search);try{localStorage.setItem('al-last-affiliate-click',JSON.stringify({from:(p.get('from')||'unknown').slice(0,160),ts:Date.now()}))}catch{}setTimeout(()=>location.replace('https://1w.run/?p=4o8v'),350)}
 async function init(){setupPartnerRedirect();installStyle();const [nav,articles,sections]=await Promise.allSettled([j(BASE+'content/navigation.json?v='+Date.now()),j(BASE+'content/articles.json?v='+Date.now()),j(BASE+'content/sections.json?v='+Date.now())]);if(nav.status==='fulfilled')renderNav(cleanNavigation(nav.value,sections.status==='fulfilled'?sections.value:null));if(articles.status==='fulfilled')setupLibrary(articles.value)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init().catch(()=>{}));else init().catch(()=>{});
 })();
