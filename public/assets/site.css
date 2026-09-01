@@ -31941,3 +31941,100 @@ html body.reference-ui-v99 .service-mark.service-official-icon > img{
   html body .service-mark.service-official-icon > img,
   html body.reference-ui-v99 .service-mark.service-official-icon > img{width:26px!important;height:26px!important;}
 }
+
+
+/* v536 — reliable official branding for proxy providers whose favicon service failed */
+html body .service-mark.service-direct-brand,
+html body.reference-ui-v99 .service-mark.service-direct-brand{
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  width:52px!important;
+  height:52px!important;
+  flex:0 0 52px!important;
+  border-radius:14px!important;
+}
+html body .service-mark.service-direct-brand > img,
+html body.reference-ui-v99 .service-mark.service-direct-brand > img{
+  display:block!important;
+  max-width:40px!important;
+  max-height:30px!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+html body .service-direct-brand--proxyline,
+html body.reference-ui-v99 .service-direct-brand--proxyline{
+  background:#fff!important;
+  border:1px solid #d6e5df!important;
+}
+html body.theme-dark .service-direct-brand--proxyline,
+html body.reference-ui-v99.theme-dark .service-direct-brand--proxyline{
+  background:#fff!important;
+  border-color:#46525d!important;
+}
+html body .service-direct-brand--proxy6,
+html body.reference-ui-v99 .service-direct-brand--proxy6{
+  background:#111!important;
+  border:1px solid #303030!important;
+}
+html body .proxy6-wordmark,
+html body.reference-ui-v99 .proxy6-wordmark{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  gap:0!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:8px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:-.45px!important;
+  color:#fff!important;
+  white-space:nowrap!important;
+}
+html body .proxy6-wordmark b,
+html body.reference-ui-v99 .proxy6-wordmark b{
+  color:#e55a0a!important;
+  font:inherit!important;
+  font-size:11px!important;
+  margin-left:1px!important;
+}
+html body .service-direct-brand--proxy-solutions,
+html body.reference-ui-v99 .service-direct-brand--proxy-solutions{
+  background:#17263a!important;
+  border:1px solid #2e4665!important;
+}
+html body .service-direct-brand--proxy-solutions > img,
+html body.reference-ui-v99 .service-direct-brand--proxy-solutions > img{
+  max-width:42px!important;
+  max-height:30px!important;
+}
+html body .service-brand-fallback,
+html body.reference-ui-v99 .service-brand-fallback{
+  display:grid!important;
+  place-items:center!important;
+  width:30px!important;
+  height:30px!important;
+  border-radius:8px!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  letter-spacing:-.02em!important;
+  color:#fff!important;
+  background:#35506d!important;
+}
+html body .service-direct-brand--proxyline .service-brand-fallback,
+html body.reference-ui-v99 .service-direct-brand--proxyline .service-brand-fallback{
+  color:#172033!important;
+  background:#f0c53b!important;
+}
+@media (max-width:640px){
+  html body .service-mark.service-direct-brand,
+  html body.reference-ui-v99 .service-mark.service-direct-brand{
+    width:48px!important;
+    height:48px!important;
+    flex-basis:48px!important;
+  }
+}
