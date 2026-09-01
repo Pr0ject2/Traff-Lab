@@ -31802,3 +31802,103 @@ html body.reference-ui-v99.theme-dark.services-page .service-workflow-head>span{
     border-radius:999px!important;
   }
 }
+
+/* ======================================================================
+   v530 — mobile topbar: dedicated Home button
+   Uses the existing breadcrumb home link so every page gets the control
+   without duplicating navigation markup.
+   ====================================================================== */
+@media (max-width:900px){
+  html body.reference-ui-v99 .ref-topbar{
+    gap:8px!important;
+  }
+
+  html body.reference-ui-v99 .ref-mobile-brand{
+    flex:1 1 auto!important;
+    min-width:0!important;
+    max-width:none!important;
+  }
+
+  html body.reference-ui-v99 .ref-topbar-crumbs{
+    display:flex!important;
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    align-items:center!important;
+    gap:0!important;
+    overflow:visible!important;
+    white-space:nowrap!important;
+  }
+
+  html body.reference-ui-v99 .ref-topbar-crumbs > :not(.ref-top-home){
+    display:none!important;
+  }
+
+  html body.reference-ui-v99 .ref-topbar-crumbs > a.ref-top-home,
+  html body.reference-ui-v99 .ref-topbar-crumbs > a.ref-top-home:link,
+  html body.reference-ui-v99 .ref-topbar-crumbs > a.ref-top-home:visited{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:6px!important;
+    width:auto!important;
+    min-width:0!important;
+    height:36px!important;
+    min-height:36px!important;
+    padding:0 10px!important;
+    margin:0!important;
+    border:1px solid rgba(255,255,255,.18)!important;
+    border-radius:10px!important;
+    background:rgba(255,255,255,.10)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+    color:#fff!important;
+    -webkit-text-fill-color:#fff!important;
+    text-decoration:none!important;
+    font-size:11.5px!important;
+    font-weight:700!important;
+    line-height:1!important;
+    letter-spacing:.005em!important;
+  }
+
+  html body.reference-ui-v99 .ref-topbar-crumbs > a.ref-top-home::before{
+    content:""!important;
+    display:block!important;
+    width:13px!important;
+    height:13px!important;
+    flex:0 0 13px!important;
+    background:center/13px 13px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 10 8-6 8 6'/%3E%3Cpath d='M6.5 9.5V20h11V9.5'/%3E%3Cpath d='M10 20v-6h4v6'/%3E%3C/svg%3E")!important;
+    opacity:.94!important;
+  }
+
+  html body.reference-ui-v99 .ref-topbar-crumbs > a.ref-top-home:active{
+    transform:translateY(1px)!important;
+    background:rgba(255,255,255,.16)!important;
+  }
+
+  html body.reference-ui-v99 .ref-topbar-crumbs > a.ref-top-home:focus-visible{
+    outline:2px solid rgba(255,255,255,.88)!important;
+    outline-offset:2px!important;
+  }
+}
+
+@media (max-width:360px){
+  html body.reference-ui-v99 .ref-topbar{
+    padding-left:9px!important;
+    padding-right:9px!important;
+    gap:6px!important;
+  }
+  html body.reference-ui-v99 .ref-mobile-brand{
+    gap:6px!important;
+  }
+  html body.reference-ui-v99 .ref-mobile-brand b{
+    font-size:11.5px!important;
+  }
+  html body.reference-ui-v99 .ref-topbar-crumbs > a.ref-top-home{
+    height:34px!important;
+    min-height:34px!important;
+    padding:0 8px!important;
+    gap:5px!important;
+    font-size:11px!important;
+  }
+}
