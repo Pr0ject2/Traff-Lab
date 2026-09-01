@@ -32353,3 +32353,324 @@ html body.service-category-page-v539 .service-category-other-v538>.service-secti
   html body.service-category-page-v539 .service-category-other-v538>.service-section-inner-v539>div{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
   html body.service-category-page-v539 .service-category-other-v538>.service-section-inner-v539>div>a{width:100%!important;box-sizing:border-box!important}
 }
+
+/* v540 — service category pages use the same reading system as ordinary TrafficLab articles. */
+body.article-page .service-category-article-v540{
+  --svc-line:#dfe8e3;
+  --svc-soft:#f7faf8;
+}
+body.article-page .service-category-article-v540 .academy-article-hero{
+  margin-bottom:18px!important;
+  padding-bottom:18px!important;
+}
+body.article-page .service-category-article-v540 .academy-article-hero h1{
+  max-width:860px!important;
+}
+body.article-page .service-category-article-v540 .academy-article-hero .lead{
+  max-width:800px!important;
+  font-size:16px!important;
+  line-height:1.65!important;
+}
+body.article-page .service-category-article-v540 .logic-section-v103 :is(p,li,dd){
+  font-size:16px!important;
+  line-height:1.68!important;
+}
+body.article-page .service-category-article-v540 .logic-section-v103 p{
+  max-width:none!important;
+}
+body.article-page .service-category-article-v540 .service-category-fact-grid-v539{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:11px!important;
+  margin-top:16px!important;
+}
+body.article-page .service-category-article-v540 .service-category-fact-grid-v539>article,
+body.article-page .service-category-article-v540 .service-category-guide-grid-v539>article{
+  min-width:0!important;
+  padding:17px 18px!important;
+  border:1px solid var(--svc-line)!important;
+  border-radius:10px!important;
+  background:#fbfdfc!important;
+}
+body.article-page .service-category-article-v540 .service-category-fact-grid-v539 b{
+  display:block!important;
+  margin-bottom:6px!important;
+  color:#1c5945!important;
+  font-size:15px!important;
+  line-height:1.35!important;
+}
+body.article-page .service-category-article-v540 .service-category-fact-grid-v539 p{
+  margin:0!important;
+  color:#5d6c66!important;
+  font-size:14.5px!important;
+  line-height:1.58!important;
+}
+body.article-page .service-category-article-v540 .service-category-intro-v540{
+  margin:0 0 15px!important;
+}
+body.article-page .service-category-article-v540 .service-category-intro-v540 ol{
+  margin:0!important;
+  padding-left:24px!important;
+}
+body.article-page .service-category-article-v540 .service-category-intro-v540 li{
+  margin:6px 0!important;
+}
+body.article-page .service-category-article-v540 .service-tool-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  width:100%!important;
+  max-width:none!important;
+  margin-top:18px!important;
+}
+body.article-page .service-category-article-v540 .service-tool{
+  min-width:0!important;
+  padding:20px!important;
+  border-radius:12px!important;
+}
+body.article-page .service-category-article-v540 .service-tool-head{
+  margin-bottom:13px!important;
+}
+body.article-page .service-category-article-v540 .service-tool h3{
+  font-size:17px!important;
+  line-height:1.25!important;
+}
+body.article-page .service-category-article-v540 .service-tool>p,
+body.article-page .service-category-article-v540 .service-tool dd{
+  font-size:15px!important;
+  line-height:1.62!important;
+}
+body.article-page .service-category-article-v540 .service-tool dt{
+  font-size:11px!important;
+  line-height:1.35!important;
+}
+body.article-page .service-category-article-v540 .service-tool dl>div{
+  grid-template-columns:105px minmax(0,1fr)!important;
+  gap:12px!important;
+}
+body.article-page .service-category-article-v540 .service-open-link{
+  min-height:39px!important;
+  padding:9px 13px!important;
+  font-size:13px!important;
+}
+body.article-page .service-category-article-v540 .service-category-guide-grid-v539{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  margin-top:4px!important;
+}
+body.article-page .service-category-article-v540 .service-category-guide-grid-v539 h3{
+  margin:0 0 9px!important;
+  font-size:16px!important;
+  line-height:1.35!important;
+  color:#243a31!important;
+}
+body.article-page .service-category-article-v540 .service-category-guide-grid-v539 ul{
+  margin:0!important;
+  padding-left:20px!important;
+}
+body.article-page .service-category-article-v540 .service-category-guide-grid-v539 li{
+  margin:6px 0!important;
+  font-size:15px!important;
+  line-height:1.58!important;
+}
+body.article-page .service-category-article-v540 .service-category-practice-grid-v539{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.25fr) minmax(240px,.75fr)!important;
+  gap:14px!important;
+  align-items:start!important;
+  margin-top:14px!important;
+}
+body.article-page .service-category-article-v540 .service-category-steps-v539 ol{
+  margin:0!important;
+  padding-left:25px!important;
+}
+body.article-page .service-category-article-v540 .service-category-steps-v539 li{
+  position:static!important;
+  padding:6px 0!important;
+  border:0!important;
+}
+body.article-page .service-category-article-v540 .service-category-steps-v539 li::before{
+  display:none!important;
+}
+body.article-page .service-category-article-v540 .service-category-mistakes-v539{
+  margin:0!important;
+  padding:17px 18px!important;
+  border:1px solid #e3d8c7!important;
+  border-radius:10px!important;
+  background:#fffaf2!important;
+}
+body.article-page .service-category-article-v540 .service-category-mistakes-v539>b{
+  display:block!important;
+  margin-bottom:7px!important;
+  font-size:15px!important;
+  color:#775a2d!important;
+}
+body.article-page .service-category-article-v540 .service-category-mistakes-v539 ul{
+  margin:0!important;
+  padding-left:20px!important;
+}
+body.article-page .service-category-article-v540 .service-category-mistakes-v539 li{
+  margin:5px 0!important;
+  font-size:14.5px!important;
+  line-height:1.55!important;
+}
+body.article-page .service-category-article-v540 .service-category-faq-list-v539{
+  display:grid!important;
+  gap:8px!important;
+  margin-top:3px!important;
+}
+body.article-page .service-category-article-v540 .service-category-faq-list-v539 details{
+  width:100%!important;
+  margin:0!important;
+  border:1px solid var(--svc-line)!important;
+  border-radius:9px!important;
+  background:#fbfdfc!important;
+  overflow:hidden!important;
+}
+body.article-page .service-category-article-v540 .service-category-faq-list-v539 summary{
+  display:block!important;
+  width:100%!important;
+  padding:14px 16px!important;
+  font-size:15px!important;
+  line-height:1.42!important;
+  font-weight:760!important;
+  cursor:pointer!important;
+}
+body.article-page .service-category-article-v540 .service-category-faq-list-v539 details p{
+  width:auto!important;
+  margin:0!important;
+  padding:0 16px 16px!important;
+  font-size:15px!important;
+  line-height:1.62!important;
+}
+body.article-page .service-category-article-v540 .service-affiliate-note-v540 p{
+  margin-bottom:0!important;
+}
+body.article-page .service-category-article-v540 .related-reading-stable{
+  margin-top:22px!important;
+}
+body.article-page .service-category-article-v540 .article-exit-nav{
+  margin-top:16px!important;
+}
+body.article-page .service-category-article-v540 .article-exit-nav a{
+  white-space:normal!important;
+}
+.theme-dark body.article-page .service-category-article-v540 .service-category-fact-grid-v539>article,
+.theme-dark body.article-page .service-category-article-v540 .service-category-guide-grid-v539>article,
+.theme-dark body.article-page .service-category-article-v540 .service-category-faq-list-v539 details{
+  background:#20262e!important;
+  border-color:#37414c!important;
+}
+body.theme-dark.article-page .service-category-article-v540 .service-category-fact-grid-v539>article,
+body.theme-dark.article-page .service-category-article-v540 .service-category-guide-grid-v539>article,
+body.theme-dark.article-page .service-category-article-v540 .service-category-faq-list-v539 details{
+  background:#20262e!important;
+  border-color:#37414c!important;
+}
+body.theme-dark.article-page .service-category-article-v540 .service-category-fact-grid-v539 b,
+body.theme-dark.article-page .service-category-article-v540 .service-category-guide-grid-v539 h3{color:#d4e5df!important}
+body.theme-dark.article-page .service-category-article-v540 .service-category-fact-grid-v539 p,
+body.theme-dark.article-page .service-category-article-v540 .service-category-guide-grid-v539 li,
+body.theme-dark.article-page .service-category-article-v540 .service-category-faq-list-v539 details p{color:#bdc7c3!important}
+body.theme-dark.article-page .service-category-article-v540 .service-category-mistakes-v539{background:#292720!important;border-color:#474339!important}
+
+@media(max-width:760px){
+  body.article-page .service-category-article-v540 .academy-article-hero .lead{font-size:15px!important;line-height:1.62!important}
+  body.article-page .service-category-article-v540 .logic-section-v103{padding:18px 17px 19px!important}
+  body.article-page .service-category-article-v540 .logic-section-v103 :is(p,li,dd){font-size:15px!important;line-height:1.65!important}
+  body.article-page .service-category-article-v540 .service-category-fact-grid-v539,
+  body.article-page .service-category-article-v540 .service-tool-grid,
+  body.article-page .service-category-article-v540 .service-category-guide-grid-v539,
+  body.article-page .service-category-article-v540 .service-category-practice-grid-v539{grid-template-columns:1fr!important}
+  body.article-page .service-category-article-v540 .service-category-fact-grid-v539>article,
+  body.article-page .service-category-article-v540 .service-category-guide-grid-v539>article{padding:15px 16px!important}
+  body.article-page .service-category-article-v540 .service-tool{padding:17px 16px!important}
+  body.article-page .service-category-article-v540 .service-tool>p,
+  body.article-page .service-category-article-v540 .service-tool dd,
+  body.article-page .service-category-article-v540 .service-category-guide-grid-v539 li,
+  body.article-page .service-category-article-v540 .service-category-faq-list-v539 details p{font-size:14.5px!important;line-height:1.6!important}
+  body.article-page .service-category-article-v540 .service-tool dl>div{grid-template-columns:1fr!important;gap:4px!important}
+  body.article-page .service-category-article-v540 .service-category-mistakes-v539{padding:15px 16px!important}
+}
+
+/* v541 — service category pages use the same readable type scale as old TrafficLab articles */
+html body.reference-ui-v99.article-page .service-category-article-v540 .academy-article-hero .lead,
+html body.article-page .service-category-article-v540 .academy-article-hero .lead{
+  font-size:18px!important;
+  line-height:1.62!important;
+  max-width:78ch!important;
+}
+html body.reference-ui-v99.article-page .service-category-article-v540 .logic-section-v103 :is(p,li,dd),
+html body.article-page .service-category-article-v540 .logic-section-v103 :is(p,li,dd){
+  font-size:17px!important;
+  line-height:1.68!important;
+}
+html body.article-page .service-category-article-v540 .service-category-fact-grid-v539 b,
+html body.article-page .service-category-article-v540 .service-category-mistakes-v539>b{
+  font-size:16px!important;
+}
+html body.article-page .service-category-article-v540 .service-category-fact-grid-v539 p,
+html body.article-page .service-category-article-v540 .service-category-guide-grid-v539 li,
+html body.article-page .service-category-article-v540 .service-category-mistakes-v539 li{
+  font-size:16px!important;
+  line-height:1.64!important;
+}
+html body.article-page .service-category-article-v540 .service-tool h3{font-size:18px!important}
+html body.article-page .service-category-article-v540 .service-tool>p,
+html body.article-page .service-category-article-v540 .service-tool dd{
+  font-size:16px!important;
+  line-height:1.65!important;
+}
+html body.article-page .service-category-article-v540 .service-category-guide-grid-v539 h3{
+  font-size:17px!important;
+}
+html body.article-page .service-category-article-v540 .service-category-faq-list-v539 summary{
+  font-size:16.5px!important;
+  line-height:1.46!important;
+}
+html body.article-page .service-category-article-v540 .service-category-faq-list-v539 details p{
+  font-size:16px!important;
+  line-height:1.65!important;
+}
+/* Keep standard old-article continuation blocks wide; never squeeze links into narrow columns. */
+html body.article-page .service-category-article-v540 .related-reading-stable{
+  display:grid!important;
+  grid-template-columns:minmax(180px,.72fr) minmax(0,1.45fr) minmax(220px,.9fr)!important;
+  gap:16px!important;
+  align-items:stretch!important;
+  width:100%!important;
+}
+html body.article-page .service-category-article-v540 .related-reading-stable :is(.related-primary,.related-secondary){
+  min-width:0!important;
+  width:auto!important;
+}
+html body.article-page .service-category-article-v540 .related-reading-stable a{
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+@media(max-width:900px){
+  html body.reference-ui-v99.article-page .service-category-article-v540 .academy-article-hero .lead,
+  html body.article-page .service-category-article-v540 .academy-article-hero .lead{font-size:16.5px!important;line-height:1.62!important}
+  html body.reference-ui-v99.article-page .service-category-article-v540 .logic-section-v103 :is(p,li,dd),
+  html body.article-page .service-category-article-v540 .logic-section-v103 :is(p,li,dd){font-size:17px!important;line-height:1.66!important}
+  html body.article-page .service-category-article-v540 .service-tool>p,
+  html body.article-page .service-category-article-v540 .service-tool dd,
+  html body.article-page .service-category-article-v540 .service-category-guide-grid-v539 li,
+  html body.article-page .service-category-article-v540 .service-category-faq-list-v539 details p,
+  html body.article-page .service-category-article-v540 .service-category-fact-grid-v539 p,
+  html body.article-page .service-category-article-v540 .service-category-mistakes-v539 li{font-size:16.5px!important;line-height:1.64!important}
+  html body.article-page .service-category-article-v540 .related-reading-stable{grid-template-columns:1fr!important;gap:11px!important}
+  html body.article-page .service-category-article-v540 .related-reading-stable .related-head,
+  html body.article-page .service-category-article-v540 .related-reading-stable .related-primary,
+  html body.article-page .service-category-article-v540 .related-reading-stable .related-secondary{width:100%!important;max-width:none!important}
+}
+@media(max-width:640px){
+  html body.article-page .service-category-article-v540 .logic-section-v103{padding:18px 17px 19px!important}
+  html body.article-page .service-category-article-v540 .service-category-fact-grid-v539>article,
+  html body.article-page .service-category-article-v540 .service-category-guide-grid-v539>article,
+  html body.article-page .service-category-article-v540 .service-tool,
+  html body.article-page .service-category-article-v540 .service-category-mistakes-v539{padding:16px!important}
+  html body.article-page .service-category-article-v540 .service-category-faq-list-v539 summary{padding:15px 16px!important;font-size:16.5px!important}
+  html body.article-page .service-category-article-v540 .service-category-faq-list-v539 details p{padding:0 16px 16px!important}
+}
