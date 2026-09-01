@@ -1,1 +1,0 @@
-public/assets/tool-logos/profitads.svg
