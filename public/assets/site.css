@@ -32147,3 +32147,209 @@ html body.reference-ui-v99 .service-mark.service-local-logo>img{
   .logic-section-v103 h2,.academy-content-section h2{font-size:23px!important;line-height:1.2!important}
   .logic-index-v103{margin-right:7px!important}
 }
+
+
+/* v539 — richer service category pages + consistent safe padding */
+.service-category-page-v539 :is(.service-category-hero-v538,.service-category-quick-v539,.service-category-body-v538,.service-category-guide-v539,.service-category-practice-v539,.service-affiliate-note-v538,.service-category-faq-v539,.service-category-related-v538,.service-category-other-v538){
+  max-width:1120px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+.service-category-page-v539 .service-category-hero-v538{padding:36px 30px 24px!important}
+.service-category-page-v539 .service-category-body-v538{padding:0 30px 30px!important}
+.service-category-quick-v539,.service-category-guide-v539,.service-category-practice-v539,.service-category-faq-v539{padding:28px 30px;border-top:1px solid #d9dfdb}
+.service-category-quick-v539{padding-top:24px}
+.service-v539-heading{max-width:900px;margin-bottom:20px}
+.service-v539-heading>span{display:block;margin-bottom:6px;color:#587267;font-size:11px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+.service-v539-heading h2{margin:0;color:var(--ink);font-size:clamp(23px,2.5vw,31px);line-height:1.18;letter-spacing:-.018em}
+.service-v539-heading p{max-width:850px;margin:10px 0 0;color:var(--muted);font-size:15px;line-height:1.7}
+.service-category-fact-grid-v539{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.service-category-fact-grid-v539 article{min-width:0;padding:18px 19px;border:1px solid #d6dfd9;border-radius:13px;background:#fafcf9}
+.service-category-fact-grid-v539 b{display:block;margin-bottom:6px;color:#285a4c;font-size:14px}
+.service-category-fact-grid-v539 p{margin:0;color:#59645f;font-size:13.5px;line-height:1.62}
+.service-category-guide-grid-v539{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.service-category-guide-grid-v539 article{padding:22px 23px;border:1px solid #d6dfd9;border-radius:14px;background:#fff}
+.service-category-guide-grid-v539 h3{margin:0 0 13px;color:var(--ink);font-size:17px;line-height:1.3}
+.service-category-guide-grid-v539 ul,.service-category-mistakes-v539 ul{margin:0;padding-left:20px;display:grid;gap:9px;color:#48534e;line-height:1.58}
+.service-category-guide-grid-v539 li::marker,.service-category-mistakes-v539 li::marker{color:#568b78}
+.service-category-practice-grid-v539{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,.75fr);gap:18px;align-items:start}
+.service-category-steps-v539{counter-reset:service-step;min-width:0}
+.service-category-steps-v539 ol{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.service-category-steps-v539 li{counter-increment:service-step;position:relative;min-height:36px;padding:9px 14px 9px 50px;border-bottom:1px solid #e1e6e3;color:#46524d;line-height:1.58}
+.service-category-steps-v539 li::before{content:counter(service-step);position:absolute;left:4px;top:7px;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#eaf3ee;color:#245b4d;font-size:12px;font-weight:850}
+.service-category-mistakes-v539{padding:20px 21px;border:1px solid #e0d8c8;border-radius:14px;background:#fbf8f1}
+.service-category-mistakes-v539>b{display:block;margin-bottom:12px;color:#665333;font-size:14px}
+.service-category-faq-list-v539{display:grid;gap:9px;max-width:900px}
+.service-category-faq-list-v539 details{border:1px solid #d6dfd9;border-radius:12px;background:#fff;overflow:hidden}
+.service-category-faq-list-v539 summary{cursor:pointer;padding:15px 18px;color:var(--ink);font-weight:800;line-height:1.35;list-style:none}
+.service-category-faq-list-v539 summary::-webkit-details-marker{display:none}
+.service-category-faq-list-v539 summary::after{content:'+';float:right;margin-left:16px;color:#55816f;font-size:18px;line-height:1}
+.service-category-faq-list-v539 details[open] summary::after{content:'−'}
+.service-category-faq-list-v539 details p{margin:0;padding:0 18px 17px;color:#56625c;font-size:14px;line-height:1.65}
+.service-category-page-v539 .service-affiliate-note-v538{padding:22px 28px!important;margin-top:4px!important;margin-bottom:0!important;gap:24px!important}
+.service-category-page-v539 .service-affiliate-note-v538 b{padding-top:1px}
+.service-category-page-v539 .service-category-related-v538{padding:28px 30px!important}
+.service-category-page-v539 .service-category-other-v538{padding:0 30px 38px!important}
+.service-category-page-v539 .service-category-intro-v538{padding:24px 0 26px!important;gap:30px!important}
+.service-category-page-v539 .service-tool{padding:22px 20px!important}
+.theme-dark .service-category-fact-grid-v539 article,.theme-dark .service-category-guide-grid-v539 article,.theme-dark .service-category-faq-list-v539 details{background:#20262e;border-color:#37414c}
+.theme-dark .service-category-fact-grid-v539 b{color:#b9dfd2}.theme-dark .service-category-fact-grid-v539 p,.theme-dark .service-v539-heading p,.theme-dark .service-category-guide-grid-v539 ul,.theme-dark .service-category-mistakes-v539 ul,.theme-dark .service-category-faq-list-v539 details p,.theme-dark .service-category-steps-v539 li{color:#b7c0c8}
+.theme-dark .service-category-mistakes-v539{background:#292720;border-color:#474339}.theme-dark .service-category-mistakes-v539>b{color:#dbcaa7}.theme-dark .service-category-steps-v539 li{border-color:#37414c}.theme-dark .service-category-steps-v539 li::before{background:#263a34;color:#c9e4db}
+@media (max-width:900px){
+  .service-category-page-v539 :is(.service-category-hero-v538,.service-category-quick-v539,.service-category-body-v538,.service-category-guide-v539,.service-category-practice-v539,.service-affiliate-note-v538,.service-category-faq-v539,.service-category-related-v538,.service-category-other-v538){width:calc(100% - 28px)!important;max-width:none!important}
+  .service-category-page-v539 .service-category-hero-v538{padding:28px 22px 20px!important}
+  .service-category-page-v539 .service-category-body-v538{padding:0 22px 24px!important}
+  .service-category-quick-v539,.service-category-guide-v539,.service-category-practice-v539,.service-category-faq-v539{padding:24px 22px!important}
+  .service-category-fact-grid-v539{grid-template-columns:1fr!important}
+  .service-category-guide-grid-v539,.service-category-practice-grid-v539{grid-template-columns:1fr!important}
+  .service-category-page-v539 .service-affiliate-note-v538{padding:20px 22px!important;grid-template-columns:1fr!important;gap:8px!important}
+  .service-category-page-v539 .service-category-related-v538,.service-category-page-v539 .service-category-other-v538{padding-left:22px!important;padding-right:22px!important}
+}
+@media (max-width:640px){
+  .service-category-page-v539 :is(.service-category-hero-v538,.service-category-quick-v539,.service-category-body-v538,.service-category-guide-v539,.service-category-practice-v539,.service-affiliate-note-v538,.service-category-faq-v539,.service-category-related-v538,.service-category-other-v538){width:calc(100% - 20px)!important;margin-left:auto!important;margin-right:auto!important}
+  .service-category-page-v539 .service-category-hero-v538{padding:24px 18px 18px!important}
+  .service-category-page-v539 .service-category-body-v538{padding:0 18px 22px!important}
+  .service-category-quick-v539,.service-category-guide-v539,.service-category-practice-v539,.service-category-faq-v539{padding:22px 18px!important}
+  .service-category-page-v539 .service-category-intro-v538{padding:20px 0 22px!important;gap:12px!important}
+  .service-category-page-v539 .service-category-intro-v538 ol{padding-left:20px!important}
+  .service-category-fact-grid-v539 article{padding:16px 17px!important}
+  .service-category-guide-grid-v539 article{padding:18px 17px!important}
+  .service-category-page-v539 .service-tool{padding:20px 17px!important}
+  .service-category-page-v539 .service-affiliate-note-v538{padding:18px!important}
+  .service-category-page-v539 .service-category-related-v538,.service-category-page-v539 .service-category-other-v538{padding-left:18px!important;padding-right:18px!important}
+  .service-category-steps-v539 li{padding:8px 4px 11px 44px!important}
+  .service-category-steps-v539 li::before{left:0!important}
+  .service-category-mistakes-v539{padding:18px 17px!important}
+  .service-category-faq-list-v539 summary{padding:14px 16px!important}
+  .service-category-faq-list-v539 details p{padding:0 16px 16px!important}
+  .service-v539-heading h2{font-size:23px!important}
+  .service-v539-heading p{font-size:14.5px!important}
+}
+
+/* v539.1 — hard floor for horizontal breathing room on service category pages */
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-hero-v538,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-quick-v539,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-body-v538,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-guide-v539,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-practice-v539,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-affiliate-note-v538,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-faq-v539,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-related-v538,
+html body.service-category-page-v539 main.compact-main-v103 > nav.wrap.service-category-other-v538{
+  padding-left:30px!important;
+  padding-right:30px!important;
+}
+@media (max-width:900px){
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-hero-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-quick-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-body-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-guide-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-practice-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-affiliate-note-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-faq-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-related-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > nav.wrap.service-category-other-v538{
+    padding-left:22px!important;
+    padding-right:22px!important;
+  }
+}
+@media (max-width:640px){
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-hero-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-quick-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-body-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-guide-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-practice-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-affiliate-note-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-faq-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-related-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > nav.wrap.service-category-other-v538{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+}
+
+/* v539.2 — logical padding too, because older global mobile rules use padding-inline */
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-hero-v538,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-quick-v539,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-body-v538,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-guide-v539,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-practice-v539,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-affiliate-note-v538,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-faq-v539,
+html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-related-v538,
+html body.service-category-page-v539 main.compact-main-v103 > nav.wrap.service-category-other-v538{padding-inline:30px!important}
+@media (max-width:900px){
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-hero-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-quick-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-body-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-guide-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-practice-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-affiliate-note-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-faq-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-related-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > nav.wrap.service-category-other-v538{padding-inline:22px!important}
+}
+@media (max-width:640px){
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-hero-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-quick-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-body-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-guide-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-practice-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-affiliate-note-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-faq-v539,
+  html body.service-category-page-v539 main.compact-main-v103 > section.wrap.service-category-related-v538,
+  html body.service-category-page-v539 main.compact-main-v103 > nav.wrap.service-category-other-v538{padding-inline:18px!important}
+}
+
+/* v539.3 — protected inner gutters. Old global .wrap rules cannot collapse these. */
+html body.service-category-page-v539 .service-section-inner-v539{
+  box-sizing:border-box!important;
+  width:100%!important;
+  padding-inline:30px!important;
+}
+html body.service-category-page-v539 .service-category-hero-v538>.service-section-inner-v539{padding-top:36px!important;padding-bottom:24px!important}
+html body.service-category-page-v539 .service-category-quick-v539>.service-section-inner-v539,
+html body.service-category-page-v539 .service-category-guide-v539>.service-section-inner-v539,
+html body.service-category-page-v539 .service-category-practice-v539>.service-section-inner-v539,
+html body.service-category-page-v539 .service-category-faq-v539>.service-section-inner-v539{padding-top:28px!important;padding-bottom:28px!important}
+html body.service-category-page-v539 .service-category-body-v538>.service-section-inner-v539{padding-top:0!important;padding-bottom:30px!important}
+html body.service-category-page-v539 .service-affiliate-note-v538>.service-section-inner-v539{display:grid!important;grid-template-columns:180px minmax(0,1fr)!important;gap:24px!important;padding-top:22px!important;padding-bottom:22px!important}
+html body.service-category-page-v539 .service-category-related-v538>.service-section-inner-v539{display:grid!important;grid-template-columns:minmax(220px,.8fr) minmax(0,1.6fr)!important;gap:28px!important;padding-top:28px!important;padding-bottom:28px!important}
+html body.service-category-page-v539 .service-category-other-v538>.service-section-inner-v539{padding-top:0!important;padding-bottom:38px!important}
+@media (max-width:900px){
+  html body.service-category-page-v539 .service-section-inner-v539{padding-inline:22px!important}
+  html body.service-category-page-v539 .service-category-hero-v538>.service-section-inner-v539{padding-top:28px!important;padding-bottom:20px!important}
+  html body.service-category-page-v539 .service-category-quick-v539>.service-section-inner-v539,
+  html body.service-category-page-v539 .service-category-guide-v539>.service-section-inner-v539,
+  html body.service-category-page-v539 .service-category-practice-v539>.service-section-inner-v539,
+  html body.service-category-page-v539 .service-category-faq-v539>.service-section-inner-v539{padding-top:24px!important;padding-bottom:24px!important}
+  html body.service-category-page-v539 .service-category-body-v538>.service-section-inner-v539{padding-bottom:24px!important}
+  html body.service-category-page-v539 .service-affiliate-note-v538>.service-section-inner-v539{grid-template-columns:1fr!important;gap:8px!important;padding-top:20px!important;padding-bottom:20px!important}
+  html body.service-category-page-v539 .service-category-related-v538>.service-section-inner-v539{grid-template-columns:1fr!important;gap:14px!important;padding-top:24px!important;padding-bottom:24px!important}
+}
+@media (max-width:640px){
+  html body.service-category-page-v539 .service-section-inner-v539{padding-inline:18px!important}
+  html body.service-category-page-v539 .service-category-hero-v538>.service-section-inner-v539{padding-top:24px!important;padding-bottom:18px!important}
+  html body.service-category-page-v539 .service-category-quick-v539>.service-section-inner-v539,
+  html body.service-category-page-v539 .service-category-guide-v539>.service-section-inner-v539,
+  html body.service-category-page-v539 .service-category-practice-v539>.service-section-inner-v539,
+  html body.service-category-page-v539 .service-category-faq-v539>.service-section-inner-v539{padding-top:22px!important;padding-bottom:22px!important}
+  html body.service-category-page-v539 .service-category-body-v538>.service-section-inner-v539{padding-bottom:22px!important}
+  html body.service-category-page-v539 .service-affiliate-note-v538>.service-section-inner-v539{padding-top:18px!important;padding-bottom:18px!important}
+  html body.service-category-page-v539 .service-category-related-v538>.service-section-inner-v539{padding-top:22px!important;padding-bottom:22px!important}
+  html body.service-category-page-v539 .service-category-other-v538>.service-section-inner-v539{padding-bottom:32px!important}
+}
+
+/* v539.4 — preserve the original related/other-category layouts inside protected gutters */
+html body.service-category-page-v539 .service-category-related-v538>.service-section-inner-v539>div:last-child{display:flex!important;flex-wrap:wrap!important;gap:9px!important;align-content:start!important}
+html body.service-category-page-v539 .service-category-related-v538>.service-section-inner-v539>div:first-child>span,
+html body.service-category-page-v539 .service-category-other-v538>.service-section-inner-v539>span{display:block!important;color:#587267!important;font-size:12px!important;font-weight:800!important;letter-spacing:.08em!important;text-transform:uppercase!important;margin-bottom:6px!important}
+html body.service-category-page-v539 .service-category-other-v538>.service-section-inner-v539{display:block!important}
+html body.service-category-page-v539 .service-category-other-v538>.service-section-inner-v539>div{display:flex!important;flex-wrap:wrap!important;gap:8px!important;margin-top:8px!important}
+@media (max-width:640px){
+  html body.service-category-page-v539 .service-category-related-v538>.service-section-inner-v539>div:last-child{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+  html body.service-category-page-v539 .service-category-related-v538>.service-section-inner-v539>div:last-child>a{width:100%!important;box-sizing:border-box!important}
+  html body.service-category-page-v539 .service-category-other-v538>.service-section-inner-v539>div{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+  html body.service-category-page-v539 .service-category-other-v538>.service-section-inner-v539>div>a{width:100%!important;box-sizing:border-box!important}
+}
