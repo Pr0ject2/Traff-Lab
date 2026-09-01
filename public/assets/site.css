@@ -31920,3 +31920,24 @@ html body.reference-ui-v99.theme-dark.services-page .service-workflow-head>span{
     font-size:11px!important;
   }
 }
+
+/* v535 — use the official favicon of each service; remove generated monograms */
+html body .service-mark.service-official-icon > img,
+html body.reference-ui-v99 .service-mark.service-official-icon > img{
+  display:block!important;
+  width:30px!important;
+  height:30px!important;
+  object-fit:contain!important;
+  border:0!important;
+  border-radius:6px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+@media (max-width:900px){
+  html body .service-mark.service-official-icon > img,
+  html body.reference-ui-v99 .service-mark.service-official-icon > img{width:28px!important;height:28px!important;}
+}
+@media (max-width:640px){
+  html body .service-mark.service-official-icon > img,
+  html body.reference-ui-v99 .service-mark.service-official-icon > img{width:26px!important;height:26px!important;}
+}

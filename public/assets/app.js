@@ -1981,7 +1981,7 @@
         mark.classList.add('tool-mark--'+key,'tool-logo-inline');
         mark.dataset.tool = key;
         mark.setAttribute('aria-label', title);
-        if(iconSvg[key] && !mark.querySelector('svg')) mark.innerHTML=iconSvg[key];
+        if(iconSvg[key] && !mark.querySelector('svg,img')) mark.innerHTML=iconSvg[key];
       }
     });
     document.querySelectorAll('.playbook-card').forEach(card=>{
