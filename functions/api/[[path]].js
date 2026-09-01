@@ -15,7 +15,7 @@ const EVENT_ALLOWLIST=new Set([
   'page_view','read_depth','bookmark','affiliate_cta_click','search',
   'source_wizard_open','source_wizard_answer','source_wizard_result_open',
   'diagnostic_problem','diagnostic_answer','tool_action','navigation','feedback','article_reached_end',
-  'audience_mode_change','entry_mode','first_meaningful_action'
+  'audience_mode_change','entry_mode','first_meaningful_action','service_click'
 ]);
 
 function json(data,status=200){
@@ -111,6 +111,7 @@ function eventDetail(event,data){
     case 'read_depth': return JSON.stringify({percent:Math.max(0,Math.min(100,Number(d.percent)||0))});
     case 'bookmark': return JSON.stringify({state:cleanText(d.state,16)});
     case 'affiliate_cta_click': return JSON.stringify({from:cleanText(d.from,48)});
+    case 'service_click': return JSON.stringify({service:cleanText(d.service,64),category:cleanText(d.category,48),placement:cleanText(d.placement,48)});
     case 'search': return JSON.stringify({surface:cleanText(d.surface,32),query:cleanSearchQuery(d.query)});
     case 'source_wizard_answer': return JSON.stringify({answer:cleanText(d.answer,80)});
     case 'source_wizard_result_open': return JSON.stringify({href:cleanText(d.href,180)});
@@ -186,12 +187,13 @@ async function handleStats(context){
   const days=Math.max(1,Math.min(365,Number(url.searchParams.get('days'))||30));
   const since=new Date(Date.now()-(days-1)*86400000).toISOString().slice(0,10);
   const db=context.env.DB;
-  const [summary,topPages,reads90,bookmarks,searches,ratings,daily]=await Promise.all([
+  const [summary,topPages,reads90,bookmarks,searches,serviceClicks,ratings,daily]=await Promise.all([
     db.prepare(`SELECT event,SUM(count) AS count FROM events_daily WHERE day>=?1 GROUP BY event`).bind(since).all(),
     db.prepare(`SELECT path,SUM(count) AS views FROM events_daily WHERE day>=?1 AND event='page_view' GROUP BY path ORDER BY views DESC LIMIT 80`).bind(since).all(),
     db.prepare(`SELECT path,SUM(count) AS count FROM events_daily WHERE day>=?1 AND event='read_depth' AND detail='{"percent":90}' GROUP BY path ORDER BY count DESC LIMIT 80`).bind(since).all(),
     db.prepare(`SELECT path,detail,SUM(count) AS count FROM events_daily WHERE day>=?1 AND event='bookmark' GROUP BY path,detail ORDER BY count DESC LIMIT 120`).bind(since).all(),
     db.prepare(`SELECT detail,SUM(count) AS count FROM events_daily WHERE day>=?1 AND event='search' GROUP BY detail ORDER BY count DESC LIMIT 40`).bind(since).all(),
+    db.prepare(`SELECT detail,SUM(count) AS count FROM events_daily WHERE day>=?1 AND event='service_click' GROUP BY detail ORDER BY count DESC LIMIT 80`).bind(since).all(),
     db.prepare(`SELECT article_path AS path,up,down FROM article_rating_counts ORDER BY (up+down) DESC,up DESC LIMIT 100`).all(),
     db.prepare(`SELECT day,SUM(count) AS views FROM events_daily WHERE day>=?1 AND event='page_view' GROUP BY day ORDER BY day ASC`).bind(since).all()
   ]);
@@ -202,6 +204,7 @@ async function handleStats(context){
     reads90:reads90.results||[],
     bookmarks:bookmarks.results||[],
     searches:searches.results||[],
+    serviceClicks:serviceClicks.results||[],
     ratings:ratings.results||[],
     daily:daily.results||[]
   });

@@ -67,6 +67,7 @@ function renderStats(){
  const bookmarkAdds=(data.bookmarks||[]).filter(x=>parseDetail(x.detail).state==='saved').reduce((sum,x)=>sum+Number(x.count||0),0);
  const affiliate=statsEventCount('affiliate_cta_click');
  const searchesTotal=statsEventCount('search');
+ const serviceClicksTotal=statsEventCount('service_click');
  const totalUp=(data.ratings||[]).reduce((sum,x)=>sum+Number(x.up||0),0);
  const totalDown=(data.ratings||[]).reduce((sum,x)=>sum+Number(x.down||0),0);
  $('#statsCards').innerHTML=[
@@ -74,6 +75,7 @@ function renderStats(){
    ['Дочитали до 90%',read90,'срабатываний'],
    ['Добавили в закладки',bookmarkAdds,'добавлений'],
    ['Переходы в партнёрку',affiliate,'кликов'],
+   ['Клики по сервисам',serviceClicksTotal,'переходов'],
    ['Поиски по сайту',searchesTotal,'запросов'],
    ['Оценки статей',totalUp+totalDown,`👍 ${statNum(totalUp)} · 👎 ${statNum(totalDown)}`]
  ].map(x=>`<article class="stats-card"><span>${esc(x[0])}</span><b>${statNum(x[1])}</b><small>${esc(x[2])}</small></article>`).join('');
@@ -83,6 +85,8 @@ function renderStats(){
  $('#statsArticles').innerHTML=pages.length?pages.map(x=>{const r=ratingMap.get(x.path)||{};return `<tr><td><a href="${esc(safeInternalHref(x.path))}" target="_blank" rel="noopener noreferrer">${esc(articleTitle(x.path))}</a><small>${esc(x.path)}</small></td><td>${statNum(x.views)}</td><td>${statNum(readMap.get(x.path)||0)}</td><td>${statNum(r.up||0)}</td><td>${statNum(r.down||0)}</td></tr>`}).join(''):'<tr><td colspan="5">Пока нет данных.</td></tr>';
  const searches=(data.searches||[]).map(x=>({...parseDetail(x.detail),count:Number(x.count||0)})).filter(x=>x.query).slice(0,30);
  $('#statsSearches').innerHTML=searches.length?searches.map(x=>`<div class="stats-list-row"><span>${esc(x.query)}</span><b>${statNum(x.count)}</b></div>`).join(''):'<div class="stats-list-empty">Поисковых запросов пока нет.</div>';
+ const serviceClicks=(data.serviceClicks||[]).map(x=>({...parseDetail(x.detail),count:Number(x.count||0)})).filter(x=>x.service).slice(0,40);
+ $('#statsServices').innerHTML=serviceClicks.length?serviceClicks.map(x=>`<div class="stats-list-row stats-service-row-v538"><span><b>${esc(x.service)}</b><small>${esc([x.category,x.placement].filter(Boolean).join(' · '))}</small></span><b>${statNum(x.count)}</b></div>`).join(''):'<div class="stats-list-empty">Кликов по сервисам пока нет.</div>';
  $('#statsDaily').innerHTML=(data.daily||[]).length?(data.daily||[]).slice().reverse().map(x=>`<tr><td>${esc(x.day)}</td><td>${statNum(x.views)}</td></tr>`).join(''):'<tr><td colspan="2">Пока нет данных.</td></tr>';
  $('#statsEmpty').hidden=true;$('#statsView').hidden=false;
 }
