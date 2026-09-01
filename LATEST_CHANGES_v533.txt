@@ -1,0 +1,43 @@
+TrafficLab v533 — последние изменения
+
+1. Прокси
+- Удалены IPRoyal и Proxy-Seller.
+- Оставлен Proxys.io.
+- Добавлены ProxyLine, Proxy6 и Proxy Solutions.
+- Для всех четырёх прокси проставлены реферальные ссылки владельца TrafficLab.
+
+2. Трекеры
+- Удалён Keitaro.
+- Оставлены AdsBridge и Binom.
+- Проставлены реферальные ссылки AdsBridge и Binom.
+
+3. VDS / VPS
+- Удалён Timeweb Cloud.
+- Оставлены Aéza и RUVDS.
+- Проставлены реферальные ссылки Aéza и RUVDS.
+
+4. Агентские кабинеты / пополнение
+- Раздел удалён полностью.
+- Удалены RentAcc, YeezyPay и Uproas.
+- Удалены ссылки и упоминания этого блока из материалов про платный трафик.
+
+5. Реферальные ссылки
+- Multilogin
+- GoLogin
+- AdsPower
+- Proxys.io
+- ProxyLine
+- Proxy6
+- Proxy Solutions
+- OnlineSIM
+- GrizzlySMS
+- SMS-Man
+- AccsMarket
+- DarkStore
+- Spy.House
+- AdsBridge
+- Binom
+- Aéza
+- RUVDS
+
+Anstrex и BigSpy оставлены с обычными ссылками, так как реферальные ссылки не были предоставлены.
