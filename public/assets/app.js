@@ -1412,23 +1412,51 @@ suggestionIndex.unshift(...glossarySuggestions);
 
 
 
-/* v538 — aggregate outbound service clicks by service/category/placement. */
+/* v543 — stable service click analytics: fixed IDs, no DOM text, no synthetic/bot clicks. */
 (function(){try{
- const sent=new WeakSet();
- const classify=(el)=>{
-   const card=el.closest('.service-tool'); if(!card)return null;
-   const service=(card.querySelector('h3')?.textContent||'').trim().slice(0,64);
-   const category=(card.querySelector('.service-kicker')?.textContent||'').trim().slice(0,48);
-   const placement=location.pathname.startsWith('/services/')?(location.pathname==='/services/'?'services_overview':'service_category'):'contextual';
-   return {card,service,category,placement};
+ const services=[
+   {id:'multilogin',category:'antidetect',hosts:['multilogin.com']},
+   {id:'gologin',category:'antidetect',hosts:['gologin.com']},
+   {id:'adspower',category:'antidetect',hosts:['adspower-ru.com','adspower.com']},
+   {id:'proxys-io',category:'proxies',hosts:['proxys.io']},
+   {id:'proxyline',category:'proxies',hosts:['proxyline.net']},
+   {id:'proxy6',category:'proxies',hosts:['proxy6.net']},
+   {id:'proxy-solutions',category:'proxies',hosts:['proxy-solutions.net']},
+   {id:'onlinesim',category:'sms',hosts:['onlinesim.io']},
+   {id:'grizzlysms',category:'sms',hosts:['grizzlysms.com']},
+   {id:'sms-man',category:'sms',hosts:['sms-man.com']},
+   {id:'darkstore',category:'digital_assets',hosts:['dark.shopping']},
+   {id:'accsmarket',category:'digital_assets',hosts:['accsmarket.com']},
+   {id:'spy-house',category:'spy',hosts:['spy.house']},
+   {id:'anstrex',category:'spy',hosts:['anstrex.com']},
+   {id:'bigspy',category:'spy',hosts:['bigspy.com']},
+   {id:'adsbridge',category:'trackers',hosts:['adsbridge.com']},
+   {id:'binom',category:'trackers',hosts:['binom.org']},
+   {id:'aeza',category:'vps',hosts:['aeza.net']},
+   {id:'ruvds',category:'vps',hosts:['ruvds.com']}
+ ];
+ const botRe=/(?:googlebot|google-inspectiontool|bingbot|yandex(?:bot|images)|baiduspider|duckduckbot|applebot|slurp|petalbot|bytespider|semrushbot|ahrefsbot|mj12bot|dotbot|facebookexternalhit|twitterbot|linkedinbot|lighthouse|pagespeed|crawler|spider)/i;
+ const isLikelyAutomation=()=>navigator.webdriver===true||botRe.test(navigator.userAgent||'');
+ const metaForHref=(href)=>{
+   if(!href)return null;
+   try{
+     const u=new URL(href,location.href); const host=u.hostname.toLowerCase().replace(/^www\./,'');
+     return services.find(x=>x.hosts.some(h=>host===h||host.endsWith('.'+h)))||null;
+   }catch{return null;}
  };
+ const placement=()=>location.pathname.startsWith('/services/')?(location.pathname==='/services/'?'services_overview':'service_category'):'contextual';
+ const sent=new WeakSet();
  document.addEventListener('click',e=>{
+   if(e.isTrusted===false||isLikelyAutomation())return;
    const direct=e.target.closest('.service-open-link');
-   const cardClick=!direct && e.target.closest('.service-tool[data-card-link]') && !e.target.closest('a,button,input,select,textarea,label,summary');
-   const target=direct||cardClick; if(!target)return;
-   const info=classify(target); if(!info||sent.has(info.card))return;
-   sent.add(info.card); setTimeout(()=>sent.delete(info.card),250);
-   window.alTrack&&window.alTrack('service_click',{service:info.service,category:info.category,placement:info.placement});
+   const card=e.target.closest('.service-tool[data-card-link]');
+   const cardClick=!direct&&card&&!e.target.closest('a,button,input,select,textarea,label,summary');
+   const target=direct||(cardClick?card:null); if(!target)return;
+   const href=direct?.href||card?.dataset.cardLink||card?.querySelector('.service-open-link')?.href||'';
+   const meta=metaForHref(href); if(!meta)return;
+   const dedupeTarget=card||direct; if(dedupeTarget&&sent.has(dedupeTarget))return;
+   if(dedupeTarget){sent.add(dedupeTarget);setTimeout(()=>sent.delete(dedupeTarget),250);}
+   window.alTrack&&window.alTrack('service_click',{service:meta.id,placement:placement()});
  },true);
 }catch(e){console.error('TrafficLab service click analytics error',e);}})();
 

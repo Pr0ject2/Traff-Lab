@@ -59,6 +59,35 @@ function renderArticles(){const q=($('#articleSearch').value||'').toLowerCase(),
 function statNum(v){return new Intl.NumberFormat('ru-RU').format(Number(v)||0)}
 function parseDetail(value){try{return JSON.parse(value||'{}')}catch{return {}}}
 function statsEventCount(name){const row=(state.stats?.summary||[]).find(x=>x.event===name);return Number(row?.count||0)}
+const SERVICE_STATS_META=Object.freeze({
+ 'multilogin':['Multilogin','Антидетект-браузеры'],'gologin':['GoLogin','Антидетект-браузеры'],'adspower':['AdsPower','Антидетект-браузеры'],
+ 'proxys-io':['Proxys.io','Прокси'],'proxyline':['ProxyLine','Прокси'],'proxy6':['Proxy6','Прокси'],'proxy-solutions':['Proxy Solutions','Прокси'],
+ 'onlinesim':['OnlineSim','Виртуальные номера'],'grizzlysms':['GrizzlySMS','Виртуальные номера'],'sms-man':['SMS-Man','Виртуальные номера'],
+ 'darkstore':['DarkStore','Цифровые активы'],'accsmarket':['AccsMarket','Цифровые активы'],
+ 'spy-house':['Spy.House','Spy-сервисы'],'anstrex':['Anstrex','Spy-сервисы'],'bigspy':['BigSpy','Spy-сервисы'],
+ 'adsbridge':['AdsBridge','Трекеры'],'binom':['Binom','Трекеры'],'aeza':['Aéza','VDS / VPS'],'ruvds':['RUVDS','VDS / VPS']
+});
+const SERVICE_STATS_ALIASES=Object.freeze({
+ 'multilogin':'multilogin','gologin':'gologin','adspower':'adspower','广告力量':'adspower','proxys.io':'proxys-io','proxys-io':'proxys-io',
+ 'proxyline':'proxyline','proxy6':'proxy6','proxy solutions':'proxy-solutions','proxy-solutions':'proxy-solutions','onlinesim':'onlinesim',
+ 'grizzlysms':'grizzlysms','sms-man':'sms-man','sms man':'sms-man','darkstore':'darkstore','accsmarket':'accsmarket','spy.house':'spy-house',
+ 'spy house':'spy-house','spy-house':'spy-house','anstrex':'anstrex','bigspy':'bigspy','adsbridge':'adsbridge','binom':'binom','aéza':'aeza','aeza':'aeza','ruvds':'ruvds'
+});
+const SERVICE_PLACEMENT_LABELS=Object.freeze({services_overview:'Каталог сервисов',service_category:'Страница категории',contextual:'В статье'});
+function normalizeServiceStatsId(value){const raw=String(value||'').trim().toLowerCase();return SERVICE_STATS_META[raw]?raw:(SERVICE_STATS_ALIASES[raw]||'')}
+function normalizedServiceClicks(rows){
+ const grouped=new Map();
+ (rows||[]).forEach(row=>{
+   const d=parseDetail(row.detail),id=normalizeServiceStatsId(d.service),meta=SERVICE_STATS_META[id];
+   const name=meta?.[0]||String(d.service||'Неизвестный сервис').trim();
+   const category=meta?.[1]||String(d.category||'').trim();
+   const placementId=SERVICE_PLACEMENT_LABELS[d.placement]?d.placement:'contextual';
+   const key=(id||name)+'|'+placementId;
+   const prev=grouped.get(key)||{id,name,category,placement:SERVICE_PLACEMENT_LABELS[placementId],count:0};
+   prev.count+=Number(row.count||0); grouped.set(key,prev);
+ });
+ return [...grouped.values()].sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'ru')).slice(0,40);
+}
 function articleTitle(path){const all=[...state.articles,...state.sections];const item=all.find(x=>safeInternalHref(x.url,'')===path);return item?.title||path}
 function renderStats(){
  const data=state.stats;if(!data)return;
@@ -85,8 +114,8 @@ function renderStats(){
  $('#statsArticles').innerHTML=pages.length?pages.map(x=>{const r=ratingMap.get(x.path)||{};return `<tr><td><a href="${esc(safeInternalHref(x.path))}" target="_blank" rel="noopener noreferrer">${esc(articleTitle(x.path))}</a><small>${esc(x.path)}</small></td><td>${statNum(x.views)}</td><td>${statNum(readMap.get(x.path)||0)}</td><td>${statNum(r.up||0)}</td><td>${statNum(r.down||0)}</td></tr>`}).join(''):'<tr><td colspan="5">Пока нет данных.</td></tr>';
  const searches=(data.searches||[]).map(x=>({...parseDetail(x.detail),count:Number(x.count||0)})).filter(x=>x.query).slice(0,30);
  $('#statsSearches').innerHTML=searches.length?searches.map(x=>`<div class="stats-list-row"><span>${esc(x.query)}</span><b>${statNum(x.count)}</b></div>`).join(''):'<div class="stats-list-empty">Поисковых запросов пока нет.</div>';
- const serviceClicks=(data.serviceClicks||[]).map(x=>({...parseDetail(x.detail),count:Number(x.count||0)})).filter(x=>x.service).slice(0,40);
- $('#statsServices').innerHTML=serviceClicks.length?serviceClicks.map(x=>`<div class="stats-list-row stats-service-row-v538"><span><b>${esc(x.service)}</b><small>${esc([x.category,x.placement].filter(Boolean).join(' · '))}</small></span><b>${statNum(x.count)}</b></div>`).join(''):'<div class="stats-list-empty">Кликов по сервисам пока нет.</div>';
+ const serviceClicks=normalizedServiceClicks(data.serviceClicks||[]);
+ $('#statsServices').innerHTML=serviceClicks.length?serviceClicks.map(x=>`<div class="stats-list-row stats-service-row-v538"><span><b class="notranslate" translate="no">${esc(x.name)}</b><small>${esc([x.category,x.placement].filter(Boolean).join(' · '))}</small></span><b>${statNum(x.count)}</b></div>`).join(''):'<div class="stats-list-empty">Кликов по сервисам пока нет.</div>';
  $('#statsDaily').innerHTML=(data.daily||[]).length?(data.daily||[]).slice().reverse().map(x=>`<tr><td>${esc(x.day)}</td><td>${statNum(x.views)}</td></tr>`).join(''):'<tr><td colspan="2">Пока нет данных.</td></tr>';
  $('#statsEmpty').hidden=true;$('#statsView').hidden=false;
 }

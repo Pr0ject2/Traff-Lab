@@ -18,6 +18,50 @@ const EVENT_ALLOWLIST=new Set([
   'audience_mode_change','entry_mode','first_meaningful_action','service_click'
 ]);
 
+
+const SERVICE_META=Object.freeze({
+  'multilogin':{name:'Multilogin',category:'antidetect'},
+  'gologin':{name:'GoLogin',category:'antidetect'},
+  'adspower':{name:'AdsPower',category:'antidetect'},
+  'proxys-io':{name:'Proxys.io',category:'proxies'},
+  'proxyline':{name:'ProxyLine',category:'proxies'},
+  'proxy6':{name:'Proxy6',category:'proxies'},
+  'proxy-solutions':{name:'Proxy Solutions',category:'proxies'},
+  'onlinesim':{name:'OnlineSim',category:'sms'},
+  'grizzlysms':{name:'GrizzlySMS',category:'sms'},
+  'sms-man':{name:'SMS-Man',category:'sms'},
+  'darkstore':{name:'DarkStore',category:'digital_assets'},
+  'accsmarket':{name:'AccsMarket',category:'digital_assets'},
+  'spy-house':{name:'Spy.House',category:'spy'},
+  'anstrex':{name:'Anstrex',category:'spy'},
+  'bigspy':{name:'BigSpy',category:'spy'},
+  'adsbridge':{name:'AdsBridge',category:'trackers'},
+  'binom':{name:'Binom',category:'trackers'},
+  'aeza':{name:'Aéza',category:'vps'},
+  'ruvds':{name:'RUVDS',category:'vps'}
+});
+const SERVICE_ALIASES=Object.freeze({
+  'multilogin':'multilogin','gologin':'gologin','adspower':'adspower','广告力量':'adspower',
+  'proxys.io':'proxys-io','proxys-io':'proxys-io','proxyline':'proxyline','proxy6':'proxy6',
+  'proxy solutions':'proxy-solutions','proxy-solutions':'proxy-solutions','onlinesim':'onlinesim',
+  'grizzlysms':'grizzlysms','sms-man':'sms-man','sms man':'sms-man','darkstore':'darkstore',
+  'accsmarket':'accsmarket','spy.house':'spy-house','spy house':'spy-house','spy-house':'spy-house',
+  'anstrex':'anstrex','bigspy':'bigspy','adsbridge':'adsbridge','binom':'binom','aéza':'aeza','aeza':'aeza','ruvds':'ruvds'
+});
+const SERVICE_PLACEMENTS=new Set(['services_overview','service_category','contextual']);
+const BOT_UA_RE=/(?:googlebot|google-inspectiontool|bingbot|yandex(?:bot|images)|baiduspider|duckduckbot|applebot|slurp|petalbot|bytespider|semrushbot|ahrefsbot|mj12bot|dotbot|facebookexternalhit|twitterbot|linkedinbot|lighthouse|pagespeed|crawler|spider)/i;
+function normalizeServiceId(value){
+  const raw=cleanText(value,64).toLowerCase();
+  return SERVICE_META[raw]?raw:(SERVICE_ALIASES[raw]||'');
+}
+function normalizeServicePlacement(value){
+  const raw=cleanText(value,48);
+  return SERVICE_PLACEMENTS.has(raw)?raw:'contextual';
+}
+function isLikelyBotRequest(request){
+  return BOT_UA_RE.test(request.headers.get('user-agent')||'');
+}
+
 function json(data,status=200){
   return new Response(JSON.stringify(data),{status,headers:JSON_HEADERS});
 }
@@ -111,7 +155,7 @@ function eventDetail(event,data){
     case 'read_depth': return JSON.stringify({percent:Math.max(0,Math.min(100,Number(d.percent)||0))});
     case 'bookmark': return JSON.stringify({state:cleanText(d.state,16)});
     case 'affiliate_cta_click': return JSON.stringify({from:cleanText(d.from,48)});
-    case 'service_click': return JSON.stringify({service:cleanText(d.service,64),category:cleanText(d.category,48),placement:cleanText(d.placement,48)});
+    case 'service_click': { const service=normalizeServiceId(d.service); const meta=SERVICE_META[service]; return meta?JSON.stringify({service,category:meta.category,placement:normalizeServicePlacement(d.placement)}):''; }
     case 'search': return JSON.stringify({surface:cleanText(d.surface,32),query:cleanSearchQuery(d.query)});
     case 'source_wizard_answer': return JSON.stringify({answer:cleanText(d.answer,80)});
     case 'source_wizard_result_open': return JSON.stringify({href:cleanText(d.href,180)});
@@ -134,9 +178,11 @@ async function ratingCounts(db,path){
 async function handleEvent(context){
   if(context.request.method!=='POST')return json({error:'method_not_allowed'},405);
   if(!sameOrigin(context.request))return json({error:'origin_rejected'},403);
+  if(isLikelyBotRequest(context.request))return json({ok:true,ignored:'bot'});
   let payload;try{payload=await bodyJson(context.request)}catch{return json({error:'invalid_request'},400)}
   const event=cleanText(payload?.event,50);
   if(!EVENT_ALLOWLIST.has(event))return json({error:'event_rejected'},400);
+  if(event==='service_click'&&!normalizeServiceId(payload?.data?.service))return json({ok:true,ignored:'unknown_service'});
   const path=cleanPath(payload?.path);
   const detail=eventDetail(event,payload?.data);
   const now=new Date();
