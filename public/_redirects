@@ -1,3 +1,5 @@
 # TrafficLab legacy paths retained for crawl continuity.
 /guides/1win-rules/* /guides/partner-program-rules/:splat 301
 /guides/1win-rules /guides/partner-program-rules/ 301
+/services/assets /services/digital-assets/ 301
+/services/assets/ /services/digital-assets/ 301
