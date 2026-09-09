@@ -1,0 +1,26 @@
+name: Locate source page render overrides
+on:
+  push:
+    branches: [fix/yandex-low-value-pages-20260909]
+    paths: [.github/workflows/find-render-overrides.yml]
+permissions:
+  contents: read
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Find hardcoded rendered copy
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '--- paid lead ---'
+          grep -RFn --exclude='find-render-overrides.yml' 'Пошаговая схема теста рекламной связки с лимитами, трекингом и контролем качества.' public || true
+          echo '--- youtube lead ---'
+          grep -RFn --exclude='find-render-overrides.yml' 'От подготовки канала и первого формата до разметки, аналитики и первых FTD.' public || true
+          echo '--- CTR description ---'
+          grep -RFn --exclude='find-render-overrides.yml' 'CTR в описании' public || true
+          echo '--- paid h1 assignment candidates ---'
+          grep -RFn --exclude='find-render-overrides.yml' "Платный трафик'" public/assets public/traffic/sources/paid || true
