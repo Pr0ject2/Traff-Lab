@@ -1,0 +1,261 @@
+name: Finish Yandex page quality fixes
+
+on:
+  push:
+    branches:
+      - fix/yandex-low-value-pages-20260909
+    paths:
+      - .github/workflows/finish-yandex-page-quality.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Apply focused content and runtime fixes
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          const read = p => fs.readFileSync(p, 'utf8');
+          const write = (p, s) => fs.writeFileSync(p, s);
+          const must = (cond, msg) => { if (!cond) throw new Error(msg); };
+          const replaceOnce = (text, before, after, label) => {
+            must(text.includes(before), `Missing marker: ${label}`);
+            return text.replace(before, after);
+          };
+
+          // 1) Shared JS must not overwrite editorial copy on the two Yandex-flagged source pages.
+          const appPath = 'public/assets/app.js';
+          let app = read(appPath);
+          app = replaceOnce(
+            app,
+            "const structuredV101=article.classList.contains('guide-structured-v101');\n      const slug=",
+            "const structuredV101=article.classList.contains('guide-structured-v101');\n      const preserveSourceCopy=article.dataset.preserveSourceCopy==='true';\n      const slug=",
+            'app preserve flag'
+          );
+          app = replaceOnce(
+            app,
+            "const h1=article.querySelector('h1'); if(h1)h1.textContent=data.title;\n      const lead=article.querySelector('.source-hero-shell>.lead'); if(lead)lead.textContent=data.subtitle;",
+            "if(!preserveSourceCopy){\n        const h1=article.querySelector('h1'); if(h1)h1.textContent=data.title;\n        const lead=article.querySelector('.source-hero-shell>.lead'); if(lead)lead.textContent=data.subtitle;\n      }",
+            'app h1/lead override'
+          );
+          app = replaceOnce(
+            app,
+            "const oldFacts=article.querySelector('.playbook-facts');\n      if(oldFacts){oldFacts.innerHTML=`<div><dt>Сложность</dt><dd>${data.difficulty}</dd></div><div><dt>Старт</dt><dd>${data.start}</dd></div><div><dt>Трафик</dt><dd>${data.traffic}</dd></div><div><dt>GEO</dt><dd>${data.geo}</dd></div><div><dt>Результат</dt><dd>${data.time}</dd></div>`;}",
+            "const oldFacts=article.querySelector('.playbook-facts');\n      if(oldFacts&&!preserveSourceCopy){oldFacts.innerHTML=`<div><dt>Сложность</dt><dd>${data.difficulty}</dd></div><div><dt>Старт</dt><dd>${data.start}</dd></div><div><dt>Трафик</dt><dd>${data.traffic}</dd></div><div><dt>GEO</dt><dd>${data.geo}</dd></div><div><dt>Результат</dt><dd>${data.time}</dd></div>`;}",
+            'app fact override'
+          );
+          app = replaceOnce(
+            app,
+            "if(!structuredV101&&tracking&&metrics&&!article.querySelector('.ref-summary-grid')){",
+            "if(!structuredV101&&!preserveSourceCopy&&tracking&&metrics&&!article.querySelector('.ref-summary-grid')){",
+            'app generic metric strip'
+          );
+
+          // Keep fallback data truthful even if the opt-out is removed later.
+          app = app.replace(
+            "youtube:{title:'YouTube: длинные видео',subtitle:'От подготовки канала и первого формата до разметки, аналитики и первых FTD.',difficulty:'Средняя',start:'от 1 дня',traffic:'органический',geo:'все разрешённые',time:'2–4 недели',accent:'#ff2b25'},",
+            "youtube:{title:'YouTube как источник трафика: канал, длинные видео и первый тест',subtitle:'Практика длинного YouTube: формат, поиск и рекомендации, удержание, разметка ссылок и проверка пути до действий после перехода.',difficulty:'Средняя',start:'после подготовки канала',traffic:'органический',geo:'по правилам оффера',time:'по данным серии',accent:'#ff2b25'},"
+          );
+          app = app.replace(
+            "paid:{title:'Платный трафик',subtitle:'Пошаговая схема теста рекламной связки с лимитами, трекингом и контролем качества.',difficulty:'Высокая',start:'от 1 дня',traffic:'платный',geo:'строго по офферу',time:'1–7 дней',accent:'#ef8b28'},",
+            "paid:{title:'Платный трафик как источник: запуск, диагностика и масштабирование',subtitle:'Полный разбор источника: допуск площадки, структура кампании, сверка расхода, диагностика воронки и решение о масштабировании.',difficulty:'Высокая',start:'после проверки допуска',traffic:'платный',geo:'по правилам площадки и оффера',time:'по данным теста',accent:'#ef8b28'},"
+          );
+
+          const suggestionReplacements = [
+            [
+              'Правила партнёрской программы: выплаты и актуальные GEO',
+              'Правила партнёрской программы: что проверить до запуска трафика'
+            ],
+            [
+              'Основной пример для новичка в TrafficLab: RevShare 50%, широкий список GEO, выплаты, правила и понятный путь от клика до FTD.',
+              'Практический аудит уже выбранной программы: GEO, разрешённые источники, модель выплаты, брендовые ограничения и подтверждение условий до первого клика.'
+            ],
+            [
+              'YouTube: длинные видео — от канала до первого FTD',
+              'YouTube как источник трафика: канал, длинные видео и первый тест'
+            ],
+            [
+              '3–5 длинных видео одного формата: отдельная метка на ролик, замеры через 24 часа, 7 и 14 дней, сверка просмотров с регистрациями и FTD.',
+              'Длинные ролики как отдельный источник: поиск и рекомендации, удержание, метки на выпуски и сверка внешних переходов с действиями после клика.'
+            ],
+            [
+              'Платный трафик: пошаговый тест без бесконтрольного расхода',
+              'Платный трафик как источник: запуск, диагностика и масштабирование'
+            ],
+            [
+              'Одна гипотеза, фиксированный лимит и раздельный трекинг до первого расхода.',
+              'Допуск площадки, структура кампании, сверка расхода, диагностика воронки и масштабирование только после проверяемого результата.'
+            ],
+            [
+              'AdsBridge: как создать первую кампанию',
+              'AdsBridge: первая кампания от клика до тестовой конверсии'
+            ],
+            [
+              'Пошаговая настройка кампании: домен, источник, SubID, оффер, лендинг, постбэк и тестовая ссылка.',
+              'Один проверяемый маршрут: источник, SubID, Click ID, оффер, постбэк и контроль того, что тестовый клик связывается с итоговым событием.'
+            ]
+          ];
+          for (const [before, after] of suggestionReplacements) {
+            must(app.includes(before), `Missing app search copy: ${before}`);
+            app = app.replaceAll(before, after);
+          }
+          write(appPath, app);
+
+          // 2) Paid traffic: preserve authored copy and add source-specific data reconciliation guidance.
+          const paidPath = 'public/traffic/sources/paid/index.html';
+          let paid = read(paidPath);
+          paid = replaceOnce(
+            paid,
+            '<article class="article source-playbook-article" data-cms-id="traffic--sources--paid"',
+            '<article class="article source-playbook-article" data-preserve-source-copy="true" data-cms-id="traffic--sources--paid"',
+            'paid article marker'
+          );
+          if (!paid.includes('id="paid-reconciliation"')) {
+            const anchor = '<section class="playbook-decision" id="decision">';
+            const block = `
+<section class="playbook-measurement" id="paid-reconciliation"><h2>Сначала сверить расход и открутку, потом сравнивать объявления</h2>
+<p>Платная кампания отличается от органики тем, что источник сам распределяет показы и расход. Поэтому два объявления нельзя объявлять победителем и проигравшим только по числу регистраций: сначала убедитесь, что они получили сопоставимую возможность собрать данные.</p>
+<table class="rules-table"><thead><tr><th>Что видно</th><th>Как читать</th><th>Что делать</th></tr></thead><tbody>
+<tr><td>Расход в рекламном кабинете не совпадает с расходом в трекере</td><td>Экономику кампании пока нельзя считать надёжной.</td><td>Сверьте период, валюту, модель стоимости и передачу параметров. До этого не принимайте решение по ROI.</td></tr>
+<tr><td>Одно объявление получило заметно больше показов и расхода</td><td>Сырые конверсии несопоставимы: алгоритм дал вариантам разный объём данных.</td><td>Смотрите стоимость клика и действий на одинаковом участке воронки; вариант с малой откруткой не выключайте только за меньшее число событий.</td></tr>
+<tr><td>Клики сходятся, но визитов на лендинге заметно меньше</td><td>Потеря происходит до продукта, а не в креативе.</td><td>Проверьте редирект, скорость страницы, мобильный путь и GEO.</td></tr>
+<tr><td>Расход и клики сходятся, но нижняя воронка различается</td><td>Только теперь есть смысл сравнивать качество аудитории и связку.</td><td>Сопоставьте регистрации, FTD и стоимость нужного действия на одном временном окне.</td></tr>
+</tbody></table>
+<div class="inline-note"><b>Правило сравнения:</b> сначала подтвердите корректность учёта и объём данных у каждого варианта. Иначе можно «оптимизировать» кампанию по ошибке измерения или по неравной открутке.</div>
+</section>
+`;
+            must(paid.includes(anchor), 'Paid decision anchor missing');
+            paid = paid.replace(anchor, block + anchor);
+          }
+          write(paidPath, paid);
+
+          // 3) YouTube: preserve authored copy and add long-video-specific interpretation.
+          const ytPath = 'public/traffic/sources/youtube/index.html';
+          let yt = read(ytPath);
+          yt = replaceOnce(
+            yt,
+            '<article class="article source-playbook-article"',
+            '<article class="article source-playbook-article" data-preserve-source-copy="true"',
+            'youtube article marker'
+          );
+          if (!yt.includes('id="youtube-studio-reading"')) {
+            const anchor = '<section class="guide-v101-section" id="partner-analytics">';
+            const block = `
+<section class="guide-v101-section" id="youtube-studio-reading"><h2>Как читать поиск, рекомендации и удержание отдельно</h2>
+<p>Одинаковое число просмотров может означать разные сценарии. Для длинного YouTube сначала определите, откуда пришёл зритель, а уже затем ищите причину роста или просадки.</p>
+<div class="guide-v101-grid three">
+<div><h3>Поиск YouTube</h3><p>Смотрите, по каким запросам и темам появились показы, затем связывайте CTR с соответствием заголовка и превью поисковому намерению. Низкий результат здесь не доказывает, что ролик плохо работает в рекомендациях.</p></div>
+<div><h3>Главная и рекомендации</h3><p>Здесь важнее упаковка ролика и реакция аудитории после клика. Сравнивайте близкие видео внутри одного формата, а не смешивайте их с поисковыми просмотрами.</p></div>
+<div><h3>Удержание</h3><p>Резкий спад в начале часто указывает на разрыв между обещанием заголовка/превью и началом ролика. Просадка возле перехода к офферу — повод проверить, насколько естественно он встроен в содержание.</p></div>
+</div>
+<div class="guide-v101-callout"><b>Граница атрибуции</b><p>YouTube Studio показывает, как зритель нашёл и смотрел видео. Внешний клик, регистрацию и FTD подтверждают уже метка, трекер и партнёрская статистика. Связать конкретный выпуск с действием после ухода с YouTube можно только настолько точно, насколько отдельной сделана его ссылка или метка.</p></div>
+<p class="guide-v101-inline-link"><a href="/traffic/sources/short-video/">Shorts и другие короткие форматы считать отдельным тестом →</a></p>
+</section>
+`;
+            must(yt.includes(anchor), 'YouTube partner analytics anchor missing');
+            yt = yt.replace(anchor, block + anchor);
+          }
+          write(ytPath, yt);
+
+          // 4) AdsBridge: make the one-click chain explicit without inventing provider macro names.
+          const adsPath = 'public/guides/adsbridge-campaign/index.html';
+          let ads = read(adsPath);
+          if (!ads.includes('data-adsbridge-click-chain')) {
+            const marker = '<table class="rules-table"><thead><tr><th>Проверка</th><th>Что должно быть видно</th><th>Если результата нет</th></tr></thead><tbody>';
+            const chain = `<div class="code-example" data-adsbridge-click-chain><b>Логика одного проверяемого клика</b><pre>источник / публикация
+→ AdsBridge сохраняет метку источника
+→ трекер фиксирует идентификатор перехода
+→ идентификатор передаётся дальше в партнёрскую ссылку, если это поддерживает связка
+→ событие возвращается в трекер через настроенный постбэк
+→ конверсия связывается с исходным переходом</pre></div>
+<p>Названия параметров и макросов зависят от конкретного источника и партнёрской программы. Проверяйте их в интерфейсе вашей связки; здесь важна сама проверяемая цепочка, а не универсальное имя параметра.</p>
+`;
+            must(ads.includes(marker), 'AdsBridge table marker missing');
+            ads = ads.replace(marker, chain + marker);
+          }
+          write(adsPath, ads);
+
+          // 5) Partner-program rules: remove unsupported/stale promotional snapshot numbers.
+          const rulesPath = 'public/guides/partner-program-rules/index.html';
+          let rules = read(rulesPath);
+          const snapshotStart = '<!-- TL-V523-GEO-LEGAL-NOTE -->';
+          const accountStart = '<section class="academy-content-section logic-section-v103 logic-action-v103"><h2 id="account">';
+          if (rules.includes(snapshotStart)) {
+            const s = rules.indexOf(snapshotStart);
+            const e = rules.indexOf(accountStart, s);
+            must(e > s, 'Partner snapshot/account boundary missing');
+            const replacement = `<div class="inline-note rules-source-note"><b>Как использовать страницу:</b><p>Не переносите ставку, список GEO или график выплат из чужого примера в свой запуск. Зафиксируйте условия именно своего кабинета на дату старта: модель расчёта, квалификацию действия, доступные страны, разрешённый источник, ограничения бренда и порядок выплат. Если формулировка неоднозначна, сохраните подтверждение менеджера до трафика.</p></div>\n`;
+            rules = rules.slice(0, s) + replacement + rules.slice(e);
+          }
+
+          const modelsStart = '<section class="academy-content-section logic-section-v103 logic-explain-v103"><h2 id="models">';
+          const forbiddenStart = '<section class="academy-content-section logic-section-v103 logic-explain-v103"><h2 id="forbidden-methods">';
+          {
+            const s = rules.indexOf(modelsStart);
+            const e = rules.indexOf(forbiddenStart, s);
+            must(s >= 0 && e > s, 'Partner models boundary missing');
+            const replacement = `<section class="academy-content-section logic-section-v103 logic-explain-v103"><h2 id="models"><span class="logic-index-v103">02</span>RS и CPA: какие условия выписать из своего оффера</h2>
+<div class="rules-model-grid">
+<section><span class="rule-model-badge">RS</span><h3>Revenue Share</h3><ul><li>От какой базы считается доля: GGR, NGR или другая формула.</li><li>Есть ли отрицательный перенос, срок холда и условия пересмотра процента.</li><li>Какие действия или статусы игрока влияют на начисление.</li><li>Какой график выплат, минимальная сумма и доступные способы вывода указаны именно в вашем кабинете.</li></ul></section>
+<section><span class="rule-model-badge">CPA</span><h3>Cost Per Action</h3><ul><li>Как программа определяет квалифицированное действие и FTD.</li><li>Какие GEO, источники и рекламные форматы разрешены для конкретного оффера.</li><li>Есть ли тестовый период, холд, KPI качества или основания для отклонения конверсии.</li><li>Нужно ли предварительное согласование кампании и что именно требуется показать менеджеру.</li></ul></section>
+</div>
+<div class="inline-note"><b>Не сохраняйте только рекламную ставку.</b><p>Для рабочего решения важнее формула зачёта, ограничения и подтверждение условий. Если эти пункты не зафиксированы, одна цифра выплаты не позволяет сравнить программы или доказать, что запуск соответствовал правилам.</p></div>
+</section>`;
+            rules = rules.slice(0, s) + replacement + rules.slice(e);
+          }
+
+          rules = rules.replace(
+            'Во время проверки выплаты могут быть приостановлены на срок до двух месяцев. Трафик, который проверку не прошёл, не учитывается при расчёте вознаграждения. В соглашении также указано, что программа может не раскрывать доказательства выявленного нарушения и принимает решение на основании собственного внутреннего анализа. За нарушение правил программа может пересмотреть условия сотрудничества, заблокировать кабинет и приостановить или прекратить выплаты.',
+            'Во время проверки выплаты могут быть временно приостановлены, а спорные конверсии могут не попасть в расчёт до завершения проверки. Поэтому храните SubID, даты размещений, ссылки и подтверждения менеджера. Если программа запрашивает источник трафика, передавайте фактические данные о размещении и сверяйте дальнейшие действия с актуальным соглашением конкретного кабинета.'
+          );
+          write(rulesPath, rules);
+          NODE
+
+      - name: Validate production changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          node -e "JSON.parse(require('fs').readFileSync('public/content/articles.json','utf8')); console.log('articles.json OK')"
+          grep -q 'data-preserve-source-copy="true"' public/traffic/sources/paid/index.html
+          grep -q 'data-preserve-source-copy="true"' public/traffic/sources/youtube/index.html
+          grep -q 'id="paid-reconciliation"' public/traffic/sources/paid/index.html
+          grep -q 'id="youtube-studio-reading"' public/traffic/sources/youtube/index.html
+          grep -q 'data-adsbridge-click-chain' public/guides/adsbridge-campaign/index.html
+          grep -q 'RS и CPA: какие условия выписать из своего оффера' public/guides/partner-program-rules/index.html
+          ! grep -q 'Базовая ставка на старте — 50% GGR' public/guides/partner-program-rules/index.html
+          ! grep -q '10 депозиторов + \$70' public/guides/partner-program-rules/index.html
+          ! grep -q 'Выплаты — еженедельно по вторникам' public/guides/partner-program-rules/index.html
+          ! grep -q 'до двух месяцев' public/guides/partner-program-rules/index.html
+          grep -q "preserveSourceCopy=article.dataset.preserveSourceCopy==='true'" public/assets/app.js
+          grep -q "!structuredV101&&!preserveSourceCopy&&tracking&&metrics" public/assets/app.js
+
+      - name: Commit production fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            public/assets/app.js \
+            public/guides/adsbridge-campaign/index.html \
+            public/guides/partner-program-rules/index.html \
+            public/traffic/sources/paid/index.html \
+            public/traffic/sources/youtube/index.html
+          if git diff --cached --quiet; then
+            echo 'No production changes to commit'
+            exit 0
+          fi
+          git commit -m "Preserve source-page intent and deepen Yandex fixes"
+          git push origin HEAD:${{ github.ref_name }}
