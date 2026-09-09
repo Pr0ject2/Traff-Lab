@@ -1,0 +1,54 @@
+name: Refine paid traffic page distinction
+
+on:
+  push:
+    branches:
+      - fix/yandex-low-value-pages-20260909
+    paths:
+      - .github/workflows/seo-yandex-paid-dedupe.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - name: Remove duplicated diagnosis and keep scope distinction
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const file = 'public/traffic/sources/paid/index.html';
+          let html = fs.readFileSync(file, 'utf8');
+          const startMarker = '\n<section class="playbook-decision" id="stop-or-continue">';
+          const endMarker = '<section class="playbook-decision" id="decision">';
+          const start = html.indexOf(startMarker);
+          const end = html.indexOf(endMarker, start + 1);
+          if (start < 0 || end < 0) throw new Error('Temporary decision section markers not found');
+          const scope = `\n<div class="inline-note" id="paid-source-scope"><b>Роль этой страницы:</b> здесь платный трафик разбирается как источник целиком — от допуска площадки и структуры кампании до диагностики и масштабирования. Если задача только в том, чтобы заранее задать лимит и критерий первого теста, используйте отдельный <a href="/guides/paid-traffic/">гайд по планированию первого теста</a>.</div>\n`;
+          html = html.slice(0, start) + scope + html.slice(end);
+          html = html.replaceAll('Практический playbook платного трафика:', 'Практический план платного трафика:');
+          if (html.includes('id="stop-or-continue"')) throw new Error('Duplicate section remained');
+          if (!html.includes('id="paid-source-scope"')) throw new Error('Scope note missing');
+          fs.writeFileSync(file, html);
+
+          const articlesFile = 'public/content/articles.json';
+          let articles = fs.readFileSync(articlesFile, 'utf8');
+          articles = articles.replaceAll('Практический playbook платного трафика:', 'Практический план платного трафика:');
+          JSON.parse(articles);
+          fs.writeFileSync(articlesFile, articles);
+          NODE
+          git diff --check
+      - name: Commit refinement
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/traffic/sources/paid/index.html public/content/articles.json
+          git commit -m "Separate paid traffic source intent from beginner guide"
+          git push origin HEAD:${{ github.ref_name }}
