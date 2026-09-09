@@ -20,6 +20,22 @@ jobs:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
 
+      - name: Match current YouTube article class in temporary patcher
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          p = 'scripts/finish-yandex-page-quality.mjs'
+          s = open(p, encoding='utf-8').read()
+          marker = '// YouTube: add opt-out and long-video-specific interpretation.'
+          head, tail = s.split(marker, 1)
+          old = '<article class="article source-playbook-article"'
+          new = '<article class="article source-playbook-article guide-structured-v101"'
+          if tail.count(old) < 2:
+              raise SystemExit('YouTube patch markers not found')
+          tail = tail.replace(old, new, 2)
+          open(p, 'w', encoding='utf-8').write(head + marker + tail)
+          PY
+
       - name: Apply focused content and runtime fixes
         run: node scripts/finish-yandex-page-quality.mjs
 
