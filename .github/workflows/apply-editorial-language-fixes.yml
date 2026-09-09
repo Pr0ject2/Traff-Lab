@@ -25,14 +25,21 @@ jobs:
         run: |
           node -e "JSON.parse(require('fs').readFileSync('public/content/articles.json','utf8')); console.log('articles.json OK')"
           git diff --check
-          ! grep -Fqi 'запрещает самореклама' public/traffic/sources/reddit/index.html
-          ! grep -Fqi 'к самореклама' public/traffic/sources/reddit/index.html
-          ! grep -Fqi 'самореклама ограничен или запрещён' public/traffic/sources/reddit/index.html
-          grep -Fqi 'самореклама ограничена или запрещена' public/traffic/sources/reddit/index.html
-          ! grep -Fqi 'Начни с стабильного' public/traffic/sources/mailing/index.html
-          ! grep -Fqi 'Для гемблинг платёжный' public/guides/geo/index.html
-          ! grep -Fqi 'временно приостановлены' public/guides/partner-program-rules/index.html
-          ! grep -Fqi 'Серверный Постбэк' public/guides/tracker-for-beginner/index.html
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const checks=[
+            ['public/guides/partner-program-rules/index.html','Во время проверки выплаты могут быть временно приостановлены','Во время проверки выплаты могут быть приостановлены'],
+            ['public/guides/tracker-for-beginner/index.html','Серверный Постбэк передаёт событие между системами без зависимости от браузерных куки.','Серверный постбэк передаёт событие между системами и не зависит от cookie в браузере.'],
+            ['public/traffic/sources/mailing/index.html','Начни с стабильного умеренного ритма','Начни со стабильного умеренного ритма'],
+            ['public/traffic/sources/reddit/index.html','запрещает самореклама или gambling-ссылки','запрещает саморекламу или gambling-ссылки'],
+            ['public/traffic/sources/reddit/index.html','отношение к самореклама.','отношение к саморекламе.'],
+            ['public/traffic/sources/reddit/index.html','самореклама ограничен или запрещён.','самореклама ограничена или запрещена.'],
+            ['public/guides/geo/index.html','Для гемблинг платёжный путь особенно важен:','В гемблинге платёжный путь особенно важен:']
+          ];
+          const failures=[];
+          for(const [file,oldText,newText] of checks){const s=fs.readFileSync(file,'utf8');if(s.includes(oldText))failures.push(`${file}: old phrase remains: ${oldText}`);if(!s.includes(newText))failures.push(`${file}: replacement missing: ${newText}`)}
+          console.log(`Editorial exact-check issues: ${failures.length}`);if(failures.length){console.error(failures.join('\n'));process.exit(1)}
+          NODE
       - name: Audit internal HTML links and anchors
         run: |
           node --input-type=module <<'NODE'
