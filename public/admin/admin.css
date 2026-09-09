@@ -32,3 +32,14 @@
 @media(max-width:800px){.stats-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.visitor-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.visitor-timeline article{grid-template-columns:1fr;gap:4px}.visitor-sessions article>div{display:grid;gap:2px}}
 
 .stats-service-row-v538 span{display:flex;min-width:0;flex-direction:column;gap:2px}.stats-service-row-v538 span>b{font-size:13px}.stats-service-row-v538 span>small{color:#667085;font-size:11px;overflow-wrap:anywhere}
+
+/* v544 — compact admin header for 320px devices */
+@media(max-width:360px){
+  .adm-top{padding:0 8px;gap:6px}
+  .adm-brand{gap:7px;min-width:0;flex:0 1 auto}
+  .adm-brand img{width:34px;height:34px;padding:4px;border-radius:9px}
+  .adm-brand span{display:none}
+  .adm-top-actions{gap:5px;min-width:0;flex:0 0 auto}
+  .adm-top-actions #openSettings,.adm-top-actions .admin-logout-form .ghost{min-height:36px;padding:0 8px;font-size:11px}
+  .adm-nav{max-width:100vw;overscroll-behavior-x:contain}
+}
