@@ -1,0 +1,25 @@
+name: Audit SEO content integrity
+
+on:
+  push:
+    branches:
+      - fix/yandex-low-value-pages-20260909
+    paths:
+      - scripts/audit-seo-content-integrity.mjs
+      - .github/workflows/audit-seo-content-integrity.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/yandex-low-value-pages-20260909
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Audit catalog article SEO and content integrity
+        run: node scripts/audit-seo-content-integrity.mjs
