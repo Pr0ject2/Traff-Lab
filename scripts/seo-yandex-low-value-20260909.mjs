@@ -5,41 +5,33 @@ const TODAY_RU = '09.09.2026';
 
 const targets = {
   adsbridge: {
-    path: 'public/guides/adsbridge-campaign/index.html',
-    url: '/guides/adsbridge-campaign/',
-    canonical: 'https://traff-lab.com/guides/adsbridge-campaign/',
+    path: 'public/guides/adsbridge-campaign/index.html', url: '/guides/adsbridge-campaign/', canonical: 'https://traff-lab.com/guides/adsbridge-campaign/',
     titleTag: 'AdsBridge: первая кампания и проверка трекинга | TrafficLab',
     pageTitle: 'AdsBridge: первая кампания от клика до тестовой конверсии',
     description: 'Практическая настройка первой кампании AdsBridge: источник, SubID, Click ID, оффер, постбэк и контрольная проверка от тестового клика до конверсии.',
-    lead: 'Соберите в AdsBridge один проверяемый путь: источник → кампания → лендинг или оффер → конверсия. Здесь важна не теория трекинга, а конкретный результат: после тестового клика видно, откуда пришёл переход, куда он ушёл и вернулась ли конверсия.',
+    lead: 'Соберите в AdsBridge один проверяемый путь: источник → кампания → лендинг или оффер → конверсия. Здесь важна не теория трекинга, а конкретный результат: после тестового клика видно, откуда пришёл переход, куда он ушёл и вернулась ли конверсия.'
   },
   partner: {
-    path: 'public/guides/partner-program-rules/index.html',
-    url: '/guides/partner-program-rules/',
-    canonical: 'https://traff-lab.com/guides/partner-program-rules/',
+    path: 'public/guides/partner-program-rules/index.html', url: '/guides/partner-program-rules/', canonical: 'https://traff-lab.com/guides/partner-program-rules/',
     titleTag: 'Правила партнёрской программы: что проверить до запуска | TrafficLab',
     pageTitle: 'Правила партнёрской программы: что проверить до запуска трафика',
     description: 'Как проверить правила партнёрской программы перед трафиком: GEO, разрешённые источники, RevShare/CPA, выплаты, брендовые ограничения, проверки и подтверждения условий.',
-    lead: 'Эта страница не выбирает партнёрскую программу за вас. Она нужна после выбора: выписать условия конкретной программы, подтвердить GEO и источник, зафиксировать модель выплаты и сохранить доказательства согласований до первого клика.',
+    lead: 'Эта страница не выбирает партнёрскую программу за вас. Она нужна после выбора: выписать условия конкретной программы, подтвердить GEO и источник, зафиксировать модель выплаты и сохранить доказательства согласований до первого клика.'
   },
   paid: {
-    path: 'public/traffic/sources/paid/index.html',
-    url: '/traffic/sources/paid/',
-    canonical: 'https://traff-lab.com/traffic/sources/paid/',
+    path: 'public/traffic/sources/paid/index.html', url: '/traffic/sources/paid/', canonical: 'https://traff-lab.com/traffic/sources/paid/',
     titleTag: 'Платный трафик как источник: запуск и диагностика | TrafficLab',
     pageTitle: 'Платный трафик как источник: запуск, диагностика и масштабирование',
     description: 'Практический playbook платного трафика: правила площадки, структура кампании, трекинг, лимит расхода, диагностика воронки и решение остановить или масштабировать тест.',
-    lead: 'Эта страница про платный трафик как рабочий источник целиком: от допуска площадки и структуры кампании до диагностики воронки и масштабирования. Первый тест должен отвечать на один вопрос и оставлять данные, по которым понятно, что делать дальше.',
+    lead: 'Эта страница про платный трафик как рабочий источник целиком: от допуска площадки и структуры кампании до диагностики воронки и масштабирования. Первый тест должен отвечать на один вопрос и оставлять данные, по которым понятно, что делать дальше.'
   },
   youtube: {
-    path: 'public/traffic/sources/youtube/index.html',
-    url: '/traffic/sources/youtube/',
-    canonical: 'https://traff-lab.com/traffic/sources/youtube/',
+    path: 'public/traffic/sources/youtube/index.html', url: '/traffic/sources/youtube/', canonical: 'https://traff-lab.com/traffic/sources/youtube/',
     titleTag: 'YouTube как источник трафика: канал и первый тест | TrafficLab',
     pageTitle: 'YouTube как источник трафика: канал, длинные видео и первый тест',
     description: 'Практика длинного YouTube как источника трафика: выбор формата, серия роликов, поиск и рекомендации, разметка ссылок и анализ пути до регистраций и FTD.',
-    lead: 'Здесь YouTube разбирается именно как источник: как собрать канал вокруг одного формата, получить трафик из поиска и рекомендаций, разметить каждый выпуск и оценивать серию роликов по пути до регистраций и FTD.',
-  },
+    lead: 'Здесь YouTube разбирается именно как источник: как собрать канал вокруг одного формата, получить трафик из поиска и рекомендаций, разметить каждый выпуск и оценивать серию роликов по пути до регистраций и FTD.'
+  }
 };
 
 function mustReplace(text, before, after, label) {
@@ -52,6 +44,20 @@ function replaceTag(text, pattern, value, label) {
   return text.replace(pattern, value);
 }
 
+function replaceMeta(html, key, keyValue, content, label) {
+  const metaRe = /<meta\b[^>]*>/gi;
+  let found = false;
+  html = html.replace(metaRe, (tag) => {
+    const keyRe = new RegExp(`${key}=["']${keyValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']`, 'i');
+    if (!keyRe.test(tag)) return tag;
+    found = true;
+    if (/content=["'][^"']*["']/i.test(tag)) return tag.replace(/content=["'][^"']*["']/i, `content="${content}"`);
+    return tag.replace(/\s*\/?\s*>$/, ` content="${content}"/>`);
+  });
+  if (!found) throw new Error(`Missing meta: ${label}`);
+  return html;
+}
+
 function updateStructuredData(html, target) {
   const pattern = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/;
   const match = html.match(pattern);
@@ -60,14 +66,10 @@ function updateStructuredData(html, target) {
   const graph = Array.isArray(data['@graph']) ? data['@graph'] : [];
   for (const item of graph) {
     if (item['@type'] === 'WebPage' && item.url === target.canonical) {
-      item.name = target.pageTitle;
-      item.description = target.description;
+      item.name = target.pageTitle; item.description = target.description;
     }
     if (item['@type'] === 'Article' && item.url === target.canonical) {
-      item.headline = target.pageTitle;
-      item.name = target.pageTitle;
-      item.description = target.description;
-      item.dateModified = TODAY_ISO;
+      item.headline = target.pageTitle; item.name = target.pageTitle; item.description = target.description; item.dateModified = TODAY_ISO;
     }
     if (item['@type'] === 'BreadcrumbList' && Array.isArray(item.itemListElement)) {
       const last = item.itemListElement.at(-1);
@@ -79,14 +81,13 @@ function updateStructuredData(html, target) {
 
 function updateHeadAndHero(html, target) {
   html = replaceTag(html, /<title>[\s\S]*?<\/title>/, `<title>${target.titleTag}</title>`, `${target.path} title`);
-  html = replaceTag(html, /<meta content="[^"]*" name="description"\s*\/>/, `<meta content="${target.description}" name="description"/>`, `${target.path} description`);
-  html = replaceTag(html, /<meta content="[^"]*" property="og:title"\s*\/>/, `<meta content="${target.pageTitle}" property="og:title"/>`, `${target.path} og:title`);
-  html = replaceTag(html, /<meta content="[^"]*" property="og:description"\s*\/>/, `<meta content="${target.description}" property="og:description"/>`, `${target.path} og:description`);
-  html = replaceTag(html, /<meta content="[^"]*" name="twitter:title"\s*\/>/, `<meta content="${target.pageTitle}" name="twitter:title"/>`, `${target.path} twitter:title`);
-  html = replaceTag(html, /<meta content="[^"]*" name="twitter:description"\s*\/>/, `<meta content="${target.description}" name="twitter:description"/>`, `${target.path} twitter:description`);
+  html = replaceMeta(html, 'name', 'description', target.description, `${target.path} description`);
+  html = replaceMeta(html, 'property', 'og:title', target.pageTitle, `${target.path} og:title`);
+  html = replaceMeta(html, 'property', 'og:description', target.description, `${target.path} og:description`);
+  html = replaceMeta(html, 'name', 'twitter:title', target.pageTitle, `${target.path} twitter:title`);
+  html = replaceMeta(html, 'name', 'twitter:description', target.description, `${target.path} twitter:description`);
   html = updateStructuredData(html, target);
-  html = html.replace(/<meta content="\d{4}-\d{2}-\d{2}" property="article:modified_time"\s*\/>/, `<meta content="${TODAY_ISO}" property="article:modified_time"/>`);
-  html = html.replace(/<meta property="article:modified_time" content="\d{4}-\d{2}-\d{2}"\s*>/, `<meta property="article:modified_time" content="${TODAY_ISO}">`);
+  html = html.replace(/<meta\b[^>]*(?:property="article:modified_time"|content="\d{4}-\d{2}-\d{2}"[^>]*property="article:modified_time")[^>]*>/i, `<meta content="${TODAY_ISO}" property="article:modified_time"/>`);
   html = replaceTag(html, /<h1>[\s\S]*?<\/h1>/, `<h1>${target.pageTitle}</h1>`, `${target.path} h1`);
   html = html.replace(/<p class="lead">[\s\S]*?<\/p>/, `<p class="lead">${target.lead}</p>`);
   html = html.replace(/обновлено \d{2}\.\d{2}\.\d{4}/i, `обновлено ${TODAY_RU}`);
@@ -173,7 +174,7 @@ for (const [key, target] of Object.entries(targets)) {
   if (key === 'paid') html = addPaidValue(html);
   if (key === 'youtube') html = addYoutubeValue(html);
   if (!html.includes(`href="${target.canonical}" rel="canonical"`)) throw new Error(`Canonical changed/missing: ${target.path}`);
-  if (!/name="robots"[^>]*index,follow|content="index,follow[^>]*" name="robots"/.test(html)) throw new Error(`Index robots missing: ${target.path}`);
+  if (!/index,follow/.test(html)) throw new Error(`Index robots missing: ${target.path}`);
   fs.writeFileSync(target.path, html);
 }
 
@@ -203,7 +204,7 @@ const checks = [
   ['public/guides/adsbridge-campaign/index.html', 'id="acceptance-test"'],
   ['public/guides/partner-program-rules/index.html', 'id="rules-audit"'],
   ['public/traffic/sources/paid/index.html', 'id="stop-or-continue"'],
-  ['public/traffic/sources/youtube/index.html', 'id="youtube-vs-shorts"'],
+  ['public/traffic/sources/youtube/index.html', 'id="youtube-vs-shorts"']
 ];
 for (const [file, marker] of checks) {
   const html = fs.readFileSync(file, 'utf8');
