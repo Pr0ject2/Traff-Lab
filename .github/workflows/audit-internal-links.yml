@@ -1,0 +1,26 @@
+name: Audit internal links
+
+on:
+  push:
+    branches:
+      - fix/yandex-low-value-pages-20260909
+    paths:
+      - .github/workflows/audit-internal-links.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Audit links and anchors
+        run: node scripts/audit-internal-links.mjs
