@@ -5,18 +5,6 @@ const sourcePath = 'scripts/improve-quality-batch-2.mjs';
 const runtimePath = '/tmp/improve-quality-batch-2-runtime.mjs';
 let source = fs.readFileSync(sourcePath, 'utf8');
 
-const before = `function enrich(file, id, block, tocNeedle, tocItems){
-  let html = read(file);
-  must(!html.includes(\`id=\\"\${id}\\"\`), \`\${file}: \${id} already exists\`);
-  const end = '<!-- TL-CMS:ARTICLE_BODY_END -->';
-  must(html.includes(end), \`\${file}: body end marker missing\`);
-  html = html.replace(end, \`\${block}\\n\${end}\`);
-  must(html.includes(tocNeedle), \`\${file}: TOC marker missing\`);
-  html = html.replace(tocNeedle, \`\${tocItems}\${tocNeedle}\`);
-  html = updateDates(html);
-  write(file, html);
-}`;
-
 const after = `function enrich(file, id, block, tocNeedle, tocItems){
   let html = read(file);
   must(!html.includes(\`id=\\"\${id}\\"\`), \`\${file}: \${id} already exists\`);
@@ -38,9 +26,8 @@ const after = `function enrich(file, id, block, tocNeedle, tocItems){
   write(file, html);
 }`;
 
-if (!source.includes(before)) {
-  throw new Error('Expected enrich() implementation not found');
-}
-source = source.replace(before, after);
+const pattern = /function enrich\(file, id, block, tocNeedle, tocItems\)\{[\s\S]*?\n\}/;
+if (!pattern.test(source)) throw new Error('Expected enrich() implementation not found');
+source = source.replace(pattern, after);
 fs.writeFileSync(runtimePath, source);
 await import(pathToFileURL(runtimePath).href + `?v=${Date.now()}`);
