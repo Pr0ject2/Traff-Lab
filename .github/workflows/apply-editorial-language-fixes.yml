@@ -1,0 +1,65 @@
+name: Apply editorial language fixes
+
+on:
+  push:
+    branches:
+      - fix/yandex-low-value-pages-20260909
+  workflow_dispatch:
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/yandex-low-value-pages-20260909
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Apply editorial fixes
+        run: node scripts/apply-editorial-language-fixes.mjs
+      - name: Static validation
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('public/content/articles.json','utf8')); console.log('articles.json OK')"
+          git diff --check
+          ! grep -Rqi 'запрещает самореклама' public/traffic/sources/reddit/index.html
+          ! grep -Rqi 'к самореклама' public/traffic/sources/reddit/index.html
+          ! grep -Rqi 'самореклама ограничен' public/traffic/sources/reddit/index.html
+          ! grep -Rqi 'Начни с стабильного' public/traffic/sources/mailing/index.html
+          ! grep -Rqi 'Для гемблинг платёжный' public/guides/geo/index.html
+          ! grep -Rqi 'временно приостановлены' public/guides/partner-program-rules/index.html
+          ! grep -Rqi 'Серверный Постбэк' public/guides/tracker-for-beginner/index.html
+      - name: Audit internal HTML links and anchors
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';import path from 'node:path';
+          const root='public',files=[];const walk=d=>{for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())walk(p);else if(e.isFile()&&e.name.endsWith('.html'))files.push(p)}};walk(root);
+          const toUrl=f=>{let r=f.slice(root.length).replace(/\\/g,'/');if(r==='/index.html')return '/';if(r.endsWith('/index.html'))return r.slice(0,-10);return r};const by=new Map(files.map(f=>[toUrl(f),f]));const resolve=u=>by.get(u)||by.get(u.endsWith('/')?u.slice(0,-1):u+'/')||null;const broken=[];
+          for(const f of files){const html=fs.readFileSync(f,'utf8'),src=toUrl(f);for(const m of html.matchAll(/<a\b[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)){const href=m[1].trim();if(!href||/^(?:https?:|mailto:|tel:|javascript:)/i.test(href)||href.startsWith('/assets/')||href.startsWith('/favicon')||href.startsWith('/go/')||href.startsWith('?'))continue;let pathname,hash='';if(href.startsWith('#')){pathname=src;hash=href.slice(1)}else if(href.startsWith('/')){const parts=href.split('#');pathname=parts[0].split('?')[0]||'/';hash=parts[1]||''}else continue;const target=resolve(pathname);if(!target){broken.push(`${src} -> ${href} missing page`);continue}if(hash){let h=hash;try{h=decodeURIComponent(h)}catch{}const th=target===f?html:fs.readFileSync(target,'utf8');const esc=h.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');if(!new RegExp(`(?:id|name)=["']${esc}["']`,'i').test(th))broken.push(`${src} -> ${href} missing anchor`)}}}
+          console.log(`HTML pages scanned: ${files.length}`);console.log(`Broken internal links/anchors: ${broken.length}`);if(broken.length){console.error(broken.join('\n'));process.exit(1)}
+          NODE
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start static site
+        run: |
+          python3 -m http.server 4173 --directory public >/tmp/trafficlab-editorial.log 2>&1 &
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/traffic/sources/reddit/ >/dev/null && exit 0; sleep 1; done
+          cat /tmp/trafficlab-editorial.log; exit 1
+      - name: Verify changed pages
+        run: |
+          node --input-type=module <<'NODE'
+          import { chromium } from 'playwright';
+          const browser=await chromium.launch({headless:true});const failures=[];const paths=['/guides/partner-program-rules/','/guides/tracker-for-beginner/','/guides/geo/','/traffic/sources/mailing/','/traffic/sources/reddit/'];
+          for(const vp of [{name:'320',width:320,height:760},{name:'390',width:390,height:844},{name:'1440',width:1440,height:900}]){const ctx=await browser.newContext({viewport:{width:vp.width,height:vp.height}});for(const p of paths){const page=await ctx.newPage();const errs=[];page.on('pageerror',e=>errs.push(String(e)));await page.goto('http://127.0.0.1:4173'+p,{waitUntil:'networkidle'});const info=await page.evaluate(()=>({h1:document.querySelectorAll('h1').length,canonical:document.querySelectorAll('link[rel="canonical"]').length,overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+2}));if(errs.length||info.h1!==1||info.canonical!==1||info.overflow)failures.push(`${vp.name} ${p}: ${JSON.stringify(info)} ${errs.join('; ')}`);await page.close()}await ctx.close()}await browser.close();if(failures.length){console.error(failures.join('\n'));process.exit(1)}console.log('Editorial changed-page render verification OK');
+          NODE
+      - name: Commit production changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public
+          if git diff --cached --quiet; then echo "No production changes"; else git commit -m "Fix final Russian editorial issues"; git push origin HEAD:fix/yandex-low-value-pages-20260909; fi
