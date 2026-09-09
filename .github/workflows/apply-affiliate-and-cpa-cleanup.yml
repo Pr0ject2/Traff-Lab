@@ -1,0 +1,69 @@
+name: Apply affiliate link and CPA terms cleanup
+
+on:
+  push:
+    branches:
+      - fix/yandex-low-value-pages-20260909
+    paths:
+      - scripts/fix-affiliate-links-and-cpa-terms.mjs
+      - .github/workflows/apply-affiliate-and-cpa-cleanup.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/yandex-low-value-pages-20260909
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Apply cleanup
+        run: node scripts/fix-affiliate-links-and-cpa-terms.mjs
+      - name: Validate affiliate links and static files
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('public/content/articles.json','utf8')); console.log('articles.json OK')"
+          git diff --check
+          ! grep -q 'базовый RS начинается с 50% GGR' public/guides/cpa-vs-revshare/index.html
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs'; import path from 'node:path';
+          const expected={'dark.shopping':'https://dark.shopping/?p=211598','ruvds.com':'https://ruvds.com/pr105265','multilogin.com':'https://multilogin.com?a_aid=Affiliate_Lab','gologin.com':'https://gologin.com/join/TrafficLab-IQKLOHF','adspower-ru.com':'https://www.adspower-ru.com/share/YyE22MlGFTGU5sX','proxyline.net':'https://proxyline.net?line=287684','proxy6.net':'https://proxy6.net/c/644669','proxy-solutions.net':'https://proxy-solutions.net/?rc=mLToyhpFmc','proxys.io':'https://proxys.io/?refid=432979','onlinesim.io':'https://onlinesim.io/?bref=4472420','grizzlysms.com':'https://grizzlysms.com/ru/?r=1811078','sms-man.com':'https://sms-man.com/ru?ref=AETjb6uYtb1z','accsmarket.com':'https://accsmarket.com/ru/mPnZBvxv','spy.house':'https://spy.house?partner=FWLUV4PA','partner.adsbridge.com':'https://partner.adsbridge.com/registration?hash=a5c1a89826c57dc7','aeza.net':'https://aeza.net/?ref=917380','cp.binom.org':'https://cp.binom.org/aff/go/megafon'};
+          const files=[];const walk=d=>{for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())walk(p);else if(e.isFile()&&e.name.endsWith('.html'))files.push(p)}};walk('public');const bad=[];
+          for(const f of files){const h=fs.readFileSync(f,'utf8');for(const m of h.matchAll(/<a\b[^>]*\bhref=["'](https?:\/\/[^"']+)["'][^>]*>/gi)){let u;try{u=new URL(m[1])}catch{continue}const host=u.hostname.replace(/^www\./,'');const key=Object.keys(expected).find(x=>host===x||host.endsWith('.'+x));if(!key)continue;if(m[1]!==expected[key])bad.push(`${f}: wrong href ${m[1]}`);const rel=m[0].match(/\brel=["']([^"']*)["']/i)?.[1]||'';for(const token of ['sponsored','nofollow','noopener','noreferrer'])if(!rel.split(/\s+/).includes(token))bad.push(`${f}: ${m[1]} missing rel ${token}`)}}
+          console.log(`Affiliate validation issues: ${bad.length}`);if(bad.length){console.error(bad.join('\n'));process.exit(1)}
+          NODE
+      - name: Audit internal HTML links and anchors
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs'; import path from 'node:path';
+          const root='public', files=[];const walk=d=>{for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())walk(p);else if(e.isFile()&&e.name.endsWith('.html'))files.push(p)}};walk(root);
+          const toUrl=f=>{let r=f.slice(root.length).replace(/\\/g,'/');if(r==='/index.html')return '/';if(r.endsWith('/index.html'))return r.slice(0,-10);return r};const by=new Map(files.map(f=>[toUrl(f),f]));const resolve=u=>by.get(u)||by.get(u.endsWith('/')?u.slice(0,-1):u+'/')||null;const broken=[];
+          for(const f of files){const html=fs.readFileSync(f,'utf8'),src=toUrl(f);for(const m of html.matchAll(/<a\b[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)){const href=m[1].trim();if(!href||/^(?:https?:|mailto:|tel:|javascript:)/i.test(href)||href.startsWith('/assets/')||href.startsWith('/favicon')||href.startsWith('/go/')||href.startsWith('?'))continue;let pathname,hash='';if(href.startsWith('#')){pathname=src;hash=href.slice(1)}else if(href.startsWith('/')){const parts=href.split('#');pathname=parts[0].split('?')[0]||'/';hash=parts[1]||''}else continue;const target=resolve(pathname);if(!target){broken.push(`${src} -> ${href} missing page`);continue}if(hash){let h=hash;try{h=decodeURIComponent(h)}catch{}const th=target===f?html:fs.readFileSync(target,'utf8');const esc=h.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');if(!new RegExp(`(?:id|name)=["']${esc}["']`,'i').test(th))broken.push(`${src} -> ${href} missing anchor`)}}}
+          console.log(`HTML pages scanned: ${files.length}`);console.log(`Broken internal links/anchors: ${broken.length}`);if(broken.length){console.error(broken.join('\n'));process.exit(1)}
+          NODE
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start static site
+        run: |
+          python3 -m http.server 4173 --directory public >/tmp/trafficlab-affiliate.log 2>&1 &
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/services/ >/dev/null && exit 0; sleep 1; done
+          cat /tmp/trafficlab-affiliate.log; exit 1
+      - name: Verify representative pages
+        run: |
+          node --input-type=module <<'NODE'
+          import { chromium } from 'playwright';
+          const paths=['/guides/cpa-vs-revshare/','/services/','/guides/content-sites/','/traffic/sources/youtube/'];const browser=await chromium.launch({headless:true});const failures=[];
+          for(const vp of [{name:'desktop',width:1440,height:900},{name:'mobile',width:390,height:844}]){const ctx=await browser.newContext({viewport:{width:vp.width,height:vp.height}});for(const p of paths){const page=await ctx.newPage();const errs=[];page.on('pageerror',e=>errs.push(String(e)));await page.goto('http://127.0.0.1:4173'+p,{waitUntil:'networkidle'});const info=await page.evaluate(()=>({h1:document.querySelectorAll('h1').length,canonical:document.querySelectorAll('link[rel="canonical"]').length,overflow:document.body.scrollWidth>document.documentElement.clientWidth+2}));if(errs.length||info.h1!==1||info.canonical!==1||info.overflow)failures.push(`${vp.name} ${p}: ${JSON.stringify(info)} ${errs.join('; ')}`);await page.close()}await ctx.close()}await browser.close();if(failures.length){console.error(failures.join('\n'));process.exit(1)}console.log('Representative render verification OK');
+          NODE
+      - name: Commit production changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public
+          if git diff --cached --quiet; then echo "No production changes"; else git commit -m "Normalize affiliate links and remove stale CPA example"; git push origin HEAD:fix/yandex-low-value-pages-20260909; fi
