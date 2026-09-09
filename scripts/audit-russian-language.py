@@ -1,4 +1,4 @@
-import json, os, re, sys, html as htmlmod
+import json, re, html as htmlmod
 from pathlib import Path
 import language_tool_python
 
@@ -25,22 +25,34 @@ ignore_words={w.lower() for w in '''TrafficLab AdsBridge SubID Click ID FTD CPA 
 skip_categories={'TYPOGRAPHY','PUNCTUATION','CASING','STYLE','REDUNDANCY'}
 skip_rule_fragments=('WHITESPACE','DASH','QUOTE','COMMA','HYPHEN','EN_UNPAIRED_BRACKETS','UPPERCASE_SENTENCE_START')
 
+def attr(obj,*names,default=None):
+    for name in names:
+        try:
+            value=getattr(obj,name)
+        except AttributeError:
+            continue
+        if value is not None:
+            return value
+    return default
+
 tool=language_tool_python.LanguageTool('ru-RU')
 rows=[]
 for art in article_catalog:
     p=ROOT/art['path']
     if not p.exists(): continue
     text=visible_text(p.read_text(encoding='utf-8'))
-    # Cap pathological pages but normally bodies are below this.
     for m in tool.check(text):
-        rule=getattr(m,'rule_id','') or ''
-        cat=str(getattr(m,'category','') or '')
+        rule=str(attr(m,'rule_id','ruleId',default='') or '')
+        cat=str(attr(m,'category',default='') or '')
         if cat in skip_categories or any(x in rule.upper() for x in skip_rule_fragments): continue
-        token=text[m.offset:m.offset+m.error_length].strip()
+        offset=int(attr(m,'offset',default=0) or 0)
+        err_len=int(attr(m,'error_length','errorLength',default=0) or 0)
+        token=text[offset:offset+err_len].strip()
         if token.lower() in ignore_words: continue
-        ctx=text[max(0,m.offset-90):min(len(text),m.offset+m.error_length+120)]
-        reps=list(getattr(m,'replacements',[]) or [])[:6]
-        rows.append({'url':art['url'],'rule':rule,'category':cat,'message':m.message,'token':token,'replacements':reps,'context':ctx})
+        ctx=text[max(0,offset-90):min(len(text),offset+err_len+120)]
+        reps=list(attr(m,'replacements',default=[]) or [])[:6]
+        message=str(attr(m,'message',default='') or '')
+        rows.append({'url':art['url'],'rule':rule,'category':cat,'message':message,'token':token,'replacements':reps,'context':ctx})
 
 tool.close()
 print(f'Catalog articles checked: {len(article_catalog)}')
