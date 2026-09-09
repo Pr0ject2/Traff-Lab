@@ -18,21 +18,14 @@ def visible_text(raw):
     raw=re.sub(r'\s+', ' ', raw).strip()
     return raw
 
-# Domain-specific words that should not create noise.
-ignore_words={w.lower() for w in '''TrafficLab AdsBridge SubID Click ID FTD CPA RevShare GGR NGR GEO postback постбэк оффер оффера офферы офферов лендинг лендинга лендинги трекер трекера трекеры креатив креатива креативы антидетект прокси iGaming Google TikTok Reddit YouTube Telegram Multilogin Proxys RUVDS YeezyPay Libermall Spy House USDT Visa Mastercard Cloudflare CTR CPC UTM URL API webhook вебхук webhooks publisher advertiser'''.split()}
-
-# Only categories/rules useful for editorial cleanup. Skip typography/style nags.
-skip_categories={'TYPOGRAPHY','PUNCTUATION','CASING','STYLE','REDUNDANCY'}
-skip_rule_fragments=('WHITESPACE','DASH','QUOTE','COMMA','HYPHEN','EN_UNPAIRED_BRACKETS','UPPERCASE_SENTENCE_START')
+skip_categories={'TYPOGRAPHY','PUNCTUATION','CASING','STYLE','REDUNDANCY','TYPOS'}
+skip_rule_fragments=('WHITESPACE','DASH','QUOTE','COMMA','HYPHEN','EN_UNPAIRED_BRACKETS','UPPERCASE_SENTENCE_START','WORD_REPEAT_RULE')
 
 def attr(obj,*names,default=None):
     for name in names:
-        try:
-            value=getattr(obj,name)
-        except AttributeError:
-            continue
-        if value is not None:
-            return value
+        try: value=getattr(obj,name)
+        except AttributeError: continue
+        if value is not None: return value
     return default
 
 tool=language_tool_python.LanguageTool('ru-RU')
@@ -48,14 +41,12 @@ for art in article_catalog:
         offset=int(attr(m,'offset',default=0) or 0)
         err_len=int(attr(m,'error_length','errorLength',default=0) or 0)
         token=text[offset:offset+err_len].strip()
-        if token.lower() in ignore_words: continue
-        ctx=text[max(0,offset-90):min(len(text),offset+err_len+120)]
-        reps=list(attr(m,'replacements',default=[]) or [])[:6]
+        ctx=text[max(0,offset-120):min(len(text),offset+err_len+170)]
+        reps=list(attr(m,'replacements',default=[]) or [])[:8]
         message=str(attr(m,'message',default='') or '')
         rows.append({'url':art['url'],'rule':rule,'category':cat,'message':message,'token':token,'replacements':reps,'context':ctx})
 
 tool.close()
 print(f'Catalog articles checked: {len(article_catalog)}')
-print(f'LanguageTool editorial candidates: {len(rows)}')
-for r in rows[:250]: print('LT',json.dumps(r,ensure_ascii=False))
-if len(rows)>250: print(f'LT omitted: {len(rows)-250}')
+print(f'Grammar/logic candidates: {len(rows)}')
+for r in rows: print('LT',json.dumps(r,ensure_ascii=False))
