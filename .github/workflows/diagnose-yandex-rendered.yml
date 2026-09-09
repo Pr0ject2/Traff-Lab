@@ -1,0 +1,87 @@
+name: Diagnose rendered Yandex pages
+
+on:
+  push:
+    branches:
+      - fix/yandex-low-value-pages-20260909
+    paths:
+      - .github/workflows/diagnose-yandex-rendered.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start static site
+        run: |
+          python3 -m http.server 4173 -d public >/tmp/trafficlab-http.log 2>&1 &
+          echo $! > /tmp/trafficlab-http.pid
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && break; sleep 1; done
+      - name: Inspect rendered desktop and mobile DOM
+        run: |
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          const pages = [
+            '/guides/adsbridge-campaign/',
+            '/guides/partner-program-rules/',
+            '/traffic/sources/paid/',
+            '/traffic/sources/youtube/'
+          ];
+          const viewports = [
+            {name:'desktop', width:1440, height:900},
+            {name:'mobile', width:390, height:844}
+          ];
+          (async()=>{
+            const browser = await chromium.launch({headless:true});
+            let failed = false;
+            for (const vp of viewports) {
+              const context = await browser.newContext({viewport:{width:vp.width,height:vp.height}});
+              for (const path of pages) {
+                const page = await context.newPage();
+                const errors=[];
+                page.on('pageerror',e=>errors.push(String(e)));
+                await page.goto('http://127.0.0.1:4173'+path,{waitUntil:'networkidle'});
+                const info = await page.evaluate(()=>{
+                  const h1=document.querySelector('h1')?.textContent?.trim()||'';
+                  const lead=document.querySelector('p.lead')?.textContent?.trim()||'';
+                  const text=document.querySelector('main')?.innerText||'';
+                  const bodyWidth=document.body.scrollWidth;
+                  const viewportWidth=document.documentElement.clientWidth;
+                  return {
+                    h1,lead,
+                    bodyWidth,viewportWidth,
+                    horizontalOverflow:bodyWidth>viewportWidth+2,
+                    ctrDescription:/CTR\s+в\s+описани/i.test(text),
+                    resultPromise:/результат.{0,20}(дн|час|нед)/i.test(text),
+                    duplicateH1:document.querySelectorAll('h1').length,
+                    canonicalCount:document.querySelectorAll('link[rel="canonical"]').length,
+                    sourceScope:document.querySelectorAll('#paid-source-scope').length,
+                    youtubeScope:document.querySelectorAll('#youtube-vs-shorts').length,
+                    acceptanceTest:document.querySelectorAll('#acceptance-test').length,
+                    rulesAudit:document.querySelectorAll('#rules-audit').length
+                  };
+                });
+                console.log(JSON.stringify({viewport:vp.name,path,errors,info}));
+                if (info.horizontalOverflow || info.duplicateH1!==1 || info.canonicalCount!==1 || errors.length) failed=true;
+                await page.close();
+              }
+              await context.close();
+            }
+            await browser.close();
+            if (failed) process.exitCode=1;
+          })();
+          NODE
