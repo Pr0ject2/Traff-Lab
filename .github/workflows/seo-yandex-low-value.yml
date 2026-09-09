@@ -1,0 +1,65 @@
+name: Yandex page quality patch
+
+on:
+  push:
+    branches:
+      - fix/yandex-low-value-pages-20260909
+    paths:
+      - .github/workflows/seo-yandex-low-value.yml
+      - scripts/seo-yandex-low-value-20260909.mjs
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Patch four pages
+        run: node scripts/seo-yandex-low-value-20260909.mjs
+
+      - name: Validate changed markup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          node -e "JSON.parse(require('fs').readFileSync('public/content/articles.json','utf8')); console.log('articles.json OK')"
+          grep -q 'id="acceptance-test"' public/guides/adsbridge-campaign/index.html
+          grep -q 'id="rules-audit"' public/guides/partner-program-rules/index.html
+          grep -q 'id="stop-or-continue"' public/traffic/sources/paid/index.html
+          grep -q 'id="youtube-vs-shorts"' public/traffic/sources/youtube/index.html
+          for f in public/guides/adsbridge-campaign/index.html public/guides/partner-program-rules/index.html public/traffic/sources/paid/index.html public/traffic/sources/youtube/index.html; do
+            test "$(grep -o 'rel="canonical"' "$f" | wc -l)" -eq 1
+          done
+
+      - name: Commit page improvements
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            public/guides/adsbridge-campaign/index.html \
+            public/guides/partner-program-rules/index.html \
+            public/traffic/sources/paid/index.html \
+            public/traffic/sources/youtube/index.html \
+            public/content/articles.json \
+            public/sitemap.xml
+          if git diff --cached --quiet; then
+            echo "No page changes to commit"
+            exit 0
+          fi
+          git commit -m "Improve pages flagged by Yandex"
+          git push origin HEAD:${{ github.ref_name }}
