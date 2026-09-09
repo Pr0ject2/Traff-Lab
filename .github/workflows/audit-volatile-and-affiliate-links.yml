@@ -1,0 +1,25 @@
+name: Audit volatile content and affiliate links
+
+on:
+  push:
+    branches:
+      - fix/yandex-low-value-pages-20260909
+    paths:
+      - scripts/audit-volatile-and-affiliate-links.mjs
+      - .github/workflows/audit-volatile-and-affiliate-links.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/yandex-low-value-pages-20260909
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Scan production HTML
+        run: node scripts/audit-volatile-and-affiliate-links.mjs
