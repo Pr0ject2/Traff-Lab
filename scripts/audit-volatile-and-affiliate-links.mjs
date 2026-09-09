@@ -29,6 +29,8 @@ const referrals={
 const affiliateIssues=[];
 const volatile=[];
 const seen=new Set();
+const volatileRe=/(?:[$€₽]\s*\d|\d[\d\s.,]*\s*(?:[$€₽]|USD|EUR|руб\.?|%)|минимальн(?:ая|ый)\s+(?:выплата|депозит)|холд\s+\d|депозитор(?:ов|а)?\s*\d)/i;
+
 for(const file of files){
   const html=fs.readFileSync(file,'utf8');
   for(const m of html.matchAll(/<a\b[^>]*\bhref=["'](https?:\/\/[^"']+)["'][^>]*>/gi)){
@@ -42,7 +44,7 @@ for(const file of files){
   const body=bodyStart>=0&&bodyEnd>bodyStart?html.slice(bodyStart,bodyEnd):html;
   const text=body.replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/&[a-zA-Z#0-9]+;/g,' ').replace(/\s+/g,' ').trim();
   for(const sentence of text.split(/(?<=[.!?])\s+/)){
-    if(!/(?:\$\s*\d|€\s*\d|₽\s*\d|\d[\d\s.,]*\s*(?:\$|€|₽|USD|EUR|руб\.?|%\s*(?:GGR|NGR)?))|минимальн(?:ая|ый)\s+(?:выплата|депозит)|холд\s+\d|депозитор(?:ов|а)?\s*\d)/i.test(sentence)) continue;
+    if(!volatileRe.test(sentence)) continue;
     const clean=sentence.slice(0,360);
     const k=`${file}|${clean}`; if(seen.has(k))continue; seen.add(k); volatile.push(`${file}: ${clean}`);
   }
