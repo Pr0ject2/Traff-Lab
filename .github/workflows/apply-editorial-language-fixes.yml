@@ -25,13 +25,14 @@ jobs:
         run: |
           node -e "JSON.parse(require('fs').readFileSync('public/content/articles.json','utf8')); console.log('articles.json OK')"
           git diff --check
-          ! grep -Rqi 'запрещает самореклама' public/traffic/sources/reddit/index.html
-          ! grep -Rqi 'к самореклама' public/traffic/sources/reddit/index.html
-          ! grep -Rqi 'самореклама ограничен' public/traffic/sources/reddit/index.html
-          ! grep -Rqi 'Начни с стабильного' public/traffic/sources/mailing/index.html
-          ! grep -Rqi 'Для гемблинг платёжный' public/guides/geo/index.html
-          ! grep -Rqi 'временно приостановлены' public/guides/partner-program-rules/index.html
-          ! grep -Rqi 'Серверный Постбэк' public/guides/tracker-for-beginner/index.html
+          ! grep -Fqi 'запрещает самореклама' public/traffic/sources/reddit/index.html
+          ! grep -Fqi 'к самореклама' public/traffic/sources/reddit/index.html
+          ! grep -Fqi 'самореклама ограничен или запрещён' public/traffic/sources/reddit/index.html
+          grep -Fqi 'самореклама ограничена или запрещена' public/traffic/sources/reddit/index.html
+          ! grep -Fqi 'Начни с стабильного' public/traffic/sources/mailing/index.html
+          ! grep -Fqi 'Для гемблинг платёжный' public/guides/geo/index.html
+          ! grep -Fqi 'временно приостановлены' public/guides/partner-program-rules/index.html
+          ! grep -Fqi 'Серверный Постбэк' public/guides/tracker-for-beginner/index.html
       - name: Audit internal HTML links and anchors
         run: |
           node --input-type=module <<'NODE'
