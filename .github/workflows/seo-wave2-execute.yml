@@ -60,7 +60,6 @@ jobs:
                   return pages[url]["desc"]
               return (article_by_url.get(url) or {}).get("description") or fallback
 
-          # suggestionIndex is a JSON array embedded in app.js.
           m = re.search(r'(const suggestionIndex=)(\[.*?\])(;\n suggestionIndex\.unshift)', app, re.S)
           if not m:
               raise RuntimeError("suggestionIndex block not found in app.js")
@@ -74,7 +73,6 @@ jobs:
           suggestion_json = json.dumps(suggestions, ensure_ascii=False, separators=(",", ":"))
           app = app[:m.start(2)] + suggestion_json + app[m.end(2):]
 
-          # Reading-history catalog is also JSON and must not retain consolidated guide URLs.
           m = re.search(r'(const ARTICLE_CATALOG=)(\[.*?\])(;\n const get=)', app, re.S)
           if not m:
               raise RuntimeError("ARTICLE_CATALOG block not found in app.js")
@@ -87,12 +85,10 @@ jobs:
           catalog_json = json.dumps(catalog, ensure_ascii=False, separators=(",", ":"))
           app = app[:m.start(2)] + catalog_json + app[m.end(2):]
 
-          # Any remaining old links in JS (for example learning-path cards) point to the canonical target.
           for old, new in redirects.items():
               app = app.replace(old, new)
           app_path.write_text(app, encoding="utf-8")
 
-          # Rewrite any remaining old URL references in public text assets, except the redirect table itself.
           redirects_path_for_cleanup = Path("public/_redirects")
           for p in Path("public").rglob("*"):
               if not p.is_file() or p == redirects_path_for_cleanup or p.suffix.lower() not in {".html", ".json", ".js", ".xml", ".txt"}:
@@ -113,6 +109,7 @@ jobs:
           exec(compile(script, '<wave2>', 'exec'), {'__name__': '__main__'})
           PY
 
+          sed -i 's/[[:space:]]\+$//' public/sitemap.xml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A public
