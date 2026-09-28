@@ -23,39 +23,37 @@ jobs:
           from pathlib import Path
           p = Path('.github/workflows/seo-wave2.yml')
           text = p.read_text(encoding='utf-8')
-          old_lead = '''              text, n = re.subn(r'<p class="lead">.*?</p>', '<p class="lead">' + html.escape(lead) + '</p>', text, count=1, flags=re.S)
-              if n != 1: raise RuntimeError(f"{p}: lead")'''
-          new_lead = '''              text, n = re.subn(r'<p class="lead">.*?</p>', '<p class="lead">' + html.escape(lead) + '</p>', text, count=1, flags=re.S)
-              if n != 1 and cfg["path"] == "public/traffic/compare/index.html":
-                  text, n = re.subn(r'(</h1>)<p>.*?</p>', lambda m: m.group(1) + '<p class="lead">' + html.escape(lead) + '</p>', text, count=1, flags=re.S)
-              if n != 1: raise RuntimeError(f"{p}: lead")'''
-          old_insert = '''              elif '<!-- TL-CMS:ARTICLE_BODY_START -->' in text:
-                  text = text.replace('<!-- TL-CMS:ARTICLE_BODY_START -->', '<!-- TL-CMS:ARTICLE_BODY_START -->\\n' + block, 1)
-              else:
-                  text, n = re.subn(r'(</header>)', r'\\1\\n' + block, text, count=1)
-                  if n != 1: raise RuntimeError(f"{p}: insert")'''
-          new_insert = '''              elif '<!-- TL-CMS:ARTICLE_BODY_START -->' in text:
-                  text = text.replace('<!-- TL-CMS:ARTICLE_BODY_START -->', '<!-- TL-CMS:ARTICLE_BODY_START -->\\n' + block, 1)
-              elif cfg["path"] == "public/traffic/compare/index.html":
-                  needle = '<p class="lead">' + html.escape(lead) + '</p>'
-                  if needle not in text:
-                      raise RuntimeError(f"{p}: compare lead insert point")
-                  text = text.replace(needle, needle + block, 1)
-              else:
-                  text, n = re.subn(r'(</header>)', r'\\1\\n' + block, text, count=1)
-                  if n != 1: raise RuntimeError(f"{p}: insert")'''
-          changed = False
-          if old_lead in text:
-              text = text.replace(old_lead, new_lead, 1)
-              changed = True
-          if old_insert in text:
-              text = text.replace(old_insert, new_insert, 1)
-              changed = True
-          if changed:
-              p.write_text(text, encoding='utf-8')
-          else:
-              if 'compare lead insert point' not in text:
-                  raise SystemExit('Expected patch targets not found')
+          if 'compare lead insert point' in text:
+              raise SystemExit(0)
+          lines = text.splitlines()
+
+          lead_i = next((i for i, line in enumerate(lines) if "text, n = re.subn(r'<p class=\"lead\">.*?</p>'" in line), None)
+          if lead_i is None:
+              raise SystemExit('Lead updater line not found')
+          indent = lines[lead_i][:len(lines[lead_i]) - len(lines[lead_i].lstrip())]
+          if lead_i + 1 >= len(lines) or 'if n != 1: raise RuntimeError' not in lines[lead_i + 1]:
+              raise SystemExit('Lead guard line not found')
+          lines[lead_i + 1:lead_i + 1] = [
+              indent + 'if n != 1 and cfg["path"] == "public/traffic/compare/index.html":',
+              indent + '    text, n = re.subn(r\'(</h1>)<p>.*?</p>\', lambda m: m.group(1) + \'<p class="lead">\' + html.escape(lead) + \'</p>\', text, count=1, flags=re.S)',
+          ]
+
+          body_i = next((i for i, line in enumerate(lines) if "elif '<!-- TL-CMS:ARTICLE_BODY_START -->' in text:" in line), None)
+          if body_i is None:
+              raise SystemExit('CMS body branch not found')
+          else_i = next((i for i in range(body_i + 1, min(body_i + 8, len(lines))) if lines[i].strip() == 'else:'), None)
+          if else_i is None:
+              raise SystemExit('Fallback insert branch not found')
+          bindent = lines[else_i][:len(lines[else_i]) - len(lines[else_i].lstrip())]
+          lines[else_i:else_i] = [
+              bindent + 'elif cfg["path"] == "public/traffic/compare/index.html":',
+              bindent + '    needle = \'<p class="lead">\' + html.escape(lead) + \'</p>\'',
+              bindent + '    if needle not in text:',
+              bindent + '        raise RuntimeError(f"{p}: compare lead insert point")',
+              bindent + '    text = text.replace(needle, needle + block, 1)',
+          ]
+
+          p.write_text('\n'.join(lines) + '\n', encoding='utf-8')
           PY
           if git diff --quiet -- .github/workflows/seo-wave2.yml; then
             echo 'Already patched; nothing to push.'
