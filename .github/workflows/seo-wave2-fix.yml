@@ -1,0 +1,68 @@
+name: Patch SEO wave 2
+
+on:
+  push:
+    branches:
+      - seo-low-demand-wave2-20260928
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: seo-low-demand-wave2-20260928
+          fetch-depth: 0
+      - name: Patch compare-page intro handling
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('.github/workflows/seo-wave2.yml')
+          text = p.read_text(encoding='utf-8')
+          old_lead = '''              text, n = re.subn(r'<p class="lead">.*?</p>', '<p class="lead">' + html.escape(lead) + '</p>', text, count=1, flags=re.S)
+              if n != 1: raise RuntimeError(f"{p}: lead")'''
+          new_lead = '''              text, n = re.subn(r'<p class="lead">.*?</p>', '<p class="lead">' + html.escape(lead) + '</p>', text, count=1, flags=re.S)
+              if n != 1 and cfg["path"] == "public/traffic/compare/index.html":
+                  text, n = re.subn(r'(</h1>)<p>.*?</p>', lambda m: m.group(1) + '<p class="lead">' + html.escape(lead) + '</p>', text, count=1, flags=re.S)
+              if n != 1: raise RuntimeError(f"{p}: lead")'''
+          old_insert = '''              elif '<!-- TL-CMS:ARTICLE_BODY_START -->' in text:
+                  text = text.replace('<!-- TL-CMS:ARTICLE_BODY_START -->', '<!-- TL-CMS:ARTICLE_BODY_START -->\\n' + block, 1)
+              else:
+                  text, n = re.subn(r'(</header>)', r'\\1\\n' + block, text, count=1)
+                  if n != 1: raise RuntimeError(f"{p}: insert")'''
+          new_insert = '''              elif '<!-- TL-CMS:ARTICLE_BODY_START -->' in text:
+                  text = text.replace('<!-- TL-CMS:ARTICLE_BODY_START -->', '<!-- TL-CMS:ARTICLE_BODY_START -->\\n' + block, 1)
+              elif cfg["path"] == "public/traffic/compare/index.html":
+                  needle = '<p class="lead">' + html.escape(lead) + '</p>'
+                  if needle not in text:
+                      raise RuntimeError(f"{p}: compare lead insert point")
+                  text = text.replace(needle, needle + block, 1)
+              else:
+                  text, n = re.subn(r'(</header>)', r'\\1\\n' + block, text, count=1)
+                  if n != 1: raise RuntimeError(f"{p}: insert")'''
+          changed = False
+          if old_lead in text:
+              text = text.replace(old_lead, new_lead, 1)
+              changed = True
+          if old_insert in text:
+              text = text.replace(old_insert, new_insert, 1)
+              changed = True
+          if changed:
+              p.write_text(text, encoding='utf-8')
+          else:
+              if 'compare lead insert point' not in text:
+                  raise SystemExit('Expected patch targets not found')
+          PY
+          if git diff --quiet -- .github/workflows/seo-wave2.yml; then
+            echo 'Already patched; nothing to push.'
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/seo-wave2.yml
+          git commit -m "Fix SEO wave 2 compare-page updater"
+          git push origin HEAD:seo-low-demand-wave2-20260928
