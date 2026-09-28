@@ -1,0 +1,167 @@
+name: Dzen low-demand SEO update
+
+on:
+  push:
+    branches:
+      - seo-low-demand-dzen-20260928
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: seo-low-demand-dzen-20260928
+          fetch-depth: 0
+      - name: Refine Dzen page intent
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, re, html
+          from pathlib import Path
+
+          URL = "/traffic/sources/dzen/"
+          DATE_ISO = "2026-09-28"
+          DATE_RU = "28.09.2026"
+          TITLE = "Дзен как источник трафика: как тестировать статьи и рекомендации"
+          DESC = "Как проверить Дзен как источник трафика: выбрать один формат, собрать серию материалов и измерить показы, дочитывания, внешние клики, регистрации и FTD."
+          LEAD = "Для первого теста Дзена не смешивай статьи и короткие посты. Выбери один формат, одну тему и серию сопоставимых публикаций, а затем считай путь от показа и дочитывания до внешнего клика, регистрации и FTD."
+          NOTE = '<div class="inline-note article-purpose-note"><b>Что проверяем именно здесь</b><p>Эта страница про органический тест Дзена как отдельного источника: публикация → показ → дочитывание или реакция → внешний клик → регистрация → FTD. Общий контентный сайт и другие социальные площадки считаются отдельно.</p></div>'
+
+          page = Path("public/traffic/sources/dzen/index.html")
+          text = page.read_text(encoding="utf-8")
+
+          def replace_once(pattern, repl, label, flags=0):
+              global text
+              text, n = re.subn(pattern, repl, text, count=1, flags=flags)
+              if n != 1:
+                  raise RuntimeError(f"{label}: expected 1 replacement, got {n}")
+
+          replace_once(r'<title>.*?</title>', '<title>' + html.escape(TITLE) + ' | TrafficLab</title>', 'title', re.S)
+
+          def set_meta(attr, key, value):
+              global text
+              pattern = re.compile(r'<meta[^>]*\b' + re.escape(attr) + r'=["\']' + re.escape(key) + r'["\'][^>]*>', re.I)
+              m = pattern.search(text)
+              if not m:
+                  raise RuntimeError(f"meta {attr}={key} not found")
+              tag = m.group(0)
+              escaped = html.escape(value, quote=True)
+              if re.search(r'\bcontent=["\']', tag, re.I):
+                  tag2 = re.sub(r'\bcontent=(["\']).*?\1', 'content="' + escaped + '"', tag, count=1, flags=re.I)
+              else:
+                  close = '/>' if tag.endswith('/>') else '>'
+                  base = tag[:-2] if close == '/>' else tag[:-1]
+                  tag2 = base + ' content="' + escaped + '"' + close
+              text = text[:m.start()] + tag2 + text[m.end():]
+
+          set_meta('name', 'description', DESC)
+          set_meta('property', 'og:title', TITLE)
+          set_meta('property', 'og:description', DESC)
+          set_meta('name', 'twitter:title', TITLE)
+          set_meta('name', 'twitter:description', DESC)
+          set_meta('property', 'article:modified_time', DATE_ISO)
+
+          replace_once(r'<h1>.*?</h1>', '<h1>' + html.escape(TITLE) + '</h1>', 'h1', re.S)
+          replace_once(r'<p class="lead">.*?</p>', '<p class="lead">' + html.escape(LEAD) + '</p>', 'lead', re.S)
+          text = re.sub(r'(Пошаговое обучение · обновлено )\d{2}\.\d{2}\.\d{4}', r'\g<1>' + DATE_RU, text, count=1)
+
+          if 'class="inline-note article-purpose-note"' in text:
+              text, n = re.subn(r'<div class="inline-note article-purpose-note">.*?</div>', NOTE, text, count=1, flags=re.S)
+              if n != 1:
+                  raise RuntimeError('purpose note replace failed')
+          else:
+              marker = '<!-- TL-CMS:ARTICLE_BODY_START -->'
+              if marker not in text:
+                  raise RuntimeError('CMS body marker not found')
+              text = text.replace(marker, marker + '\n' + NOTE, 1)
+
+          m = re.search(r'<script type="application/ld\+json">(.*?)</script>', text, re.S)
+          if not m:
+              raise RuntimeError('JSON-LD not found')
+          data = json.loads(m.group(1))
+          for node in data.get('@graph', []):
+              t = node.get('@type')
+              if t == 'WebPage':
+                  node['name'] = TITLE
+                  node['description'] = DESC
+              elif t == 'Article':
+                  node['headline'] = TITLE
+                  node['name'] = TITLE
+                  node['description'] = DESC
+                  node['dateModified'] = DATE_ISO
+              elif t == 'BreadcrumbList':
+                  items = node.get('itemListElement') or []
+                  if items:
+                      items[-1]['name'] = TITLE
+          packed = json.dumps(data, ensure_ascii=False, separators=(',', ':'))
+          text = text[:m.start(1)] + packed + text[m.end(1):]
+          page.write_text(text, encoding='utf-8')
+
+          # Public article catalog.
+          ap = Path('public/content/articles.json')
+          obj = json.loads(ap.read_text(encoding='utf-8'))
+          matched = 0
+          for item in obj.get('articles', []):
+              if item.get('url') == URL:
+                  item['title'] = TITLE
+                  item['description'] = DESC
+                  item['lead'] = LEAD
+                  item['date'] = DATE_RU
+                  matched += 1
+          if matched != 1:
+              raise RuntimeError(f'articles.json: expected 1 Dzen entry, got {matched}')
+          ap.write_text(json.dumps(obj, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # Synchronize the two hardcoded app.js indexes when the Dzen item is present.
+          appp = Path('public/assets/app.js')
+          app = appp.read_text(encoding='utf-8')
+          for pattern, end_marker in [
+              (r'(const suggestionIndex=)(\[.*?\])(;\n suggestionIndex\.unshift)', 'suggestionIndex'),
+              (r'(const ARTICLE_CATALOG=)(\[.*?\])(;\n const get=)', 'ARTICLE_CATALOG'),
+          ]:
+              mm = re.search(pattern, app, re.S)
+              if not mm:
+                  raise RuntimeError(end_marker + ' block not found')
+              arr = json.loads(mm.group(2))
+              seen = 0
+              for item in arr:
+                  if item.get('url') == URL:
+                      item['title'] = TITLE
+                      if end_marker == 'suggestionIndex':
+                          item['desc'] = DESC
+                      seen += 1
+              if seen != 1:
+                  raise RuntimeError(f'{end_marker}: expected 1 Dzen entry, got {seen}')
+              packed_arr = json.dumps(arr, ensure_ascii=False, separators=(',', ':'))
+              app = app[:mm.start(2)] + packed_arr + app[mm.end(2):]
+          appp.write_text(app, encoding='utf-8')
+
+          # Sitemap lastmod.
+          sp = Path('public/sitemap.xml')
+          sitemap = sp.read_text(encoding='utf-8')
+          loc = 'https://traff-lab.com' + URL
+          pat = re.compile(r'(<url><loc>' + re.escape(loc) + r'</loc><lastmod>)\d{4}-\d{2}-\d{2}(</lastmod></url>)')
+          sitemap, n = pat.subn(r'\g<1>' + DATE_ISO + r'\2', sitemap, count=1)
+          if n != 1:
+              raise RuntimeError('Dzen sitemap entry not found')
+          sp.write_text(sitemap, encoding='utf-8')
+
+          # Validation.
+          check = page.read_text(encoding='utf-8')
+          if check.count('<h1>') != 1 or TITLE not in check or DESC not in check:
+              raise RuntimeError('page validation failed')
+          jm = re.search(r'<script type="application/ld\+json">(.*?)</script>', check, re.S)
+          json.loads(jm.group(1))
+          print('Dzen SEO refinement completed')
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/traffic/sources/dzen/index.html public/content/articles.json public/assets/app.js public/sitemap.xml
+          git diff --cached --check
+          git commit -m "SEO: sharpen Dzen source intent [skip ci]"
+          git push origin HEAD:seo-low-demand-dzen-20260928
