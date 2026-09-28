@@ -1,0 +1,120 @@
+name: Execute SEO low-demand wave 2 safely
+
+on:
+  push:
+    branches:
+      - seo-low-demand-wave2-20260928
+
+permissions:
+  contents: write
+
+jobs:
+  execute:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: seo-low-demand-wave2-20260928
+          fetch-depth: 0
+      - name: Execute corrected wave 2 script
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, re, textwrap
+          from pathlib import Path
+
+          workflow = Path('.github/workflows/seo-wave2-run.yml').read_text(encoding='utf-8')
+          start_marker = "          python - <<'PY'\n"
+          end_marker = "\n          PY\n"
+          start = workflow.find(start_marker)
+          if start < 0:
+              raise SystemExit('Embedded wave2 Python start marker not found')
+          start += len(start_marker)
+          end = workflow.find(end_marker, start)
+          if end < 0:
+              raise SystemExit('Embedded wave2 Python end marker not found')
+          script = textwrap.dedent(workflow[start:end])
+
+          injection = r'''
+# Synchronize hardcoded JS catalogs and remove references to consolidated guide URLs.
+app_path = Path("public/assets/app.js")
+app = app_path.read_text(encoding="utf-8")
+article_data = json.loads(Path("public/content/articles.json").read_text(encoding="utf-8"))
+article_by_url = {a.get("url"): a for a in article_data.get("articles", [])}
+first_wave_urls = {
+    "/guides/partner-dashboard/", "/guides/partner-program-rules/", "/guides/statistics/",
+    "/guides/statistics-mismatch/", "/guides/clicks-no-registrations/", "/guides/tracker-for-beginner/",
+    "/guides/adsbridge-campaign/", "/guides/cpa-vs-revshare/", "/guides/landing-page/",
+    "/services/proxies/", "/services/trackers/", "/services/vps/"
+}
+sync_urls = set(pages) | first_wave_urls
+
+def desired_title(url, fallback):
+    if url in pages:
+        return pages[url]["title"]
+    return (article_by_url.get(url) or {}).get("title") or fallback
+
+def desired_desc(url, fallback):
+    if url in pages:
+        return pages[url]["desc"]
+    return (article_by_url.get(url) or {}).get("description") or fallback
+
+# suggestionIndex is a JSON array embedded in app.js.
+m = re.search(r'(const suggestionIndex=)(\[.*?\])(;\n suggestionIndex\.unshift)', app, re.S)
+if not m:
+    raise RuntimeError("suggestionIndex block not found in app.js")
+suggestions = json.loads(m.group(2))
+suggestions = [item for item in suggestions if item.get("url") not in redirects]
+for item in suggestions:
+    url = item.get("url")
+    if url in sync_urls:
+        item["title"] = desired_title(url, item.get("title", ""))
+        item["desc"] = desired_desc(url, item.get("desc", ""))
+suggestion_json = json.dumps(suggestions, ensure_ascii=False, separators=(",", ":"))
+app = app[:m.start(2)] + suggestion_json + app[m.end(2):]
+
+# Reading-history catalog is also JSON and must not retain consolidated guide URLs.
+m = re.search(r'(const ARTICLE_CATALOG=)(\[.*?\])(;\n const get=)', app, re.S)
+if not m:
+    raise RuntimeError("ARTICLE_CATALOG block not found in app.js")
+catalog = json.loads(m.group(2))
+catalog = [item for item in catalog if item.get("url") not in redirects]
+for item in catalog:
+    url = item.get("url")
+    if url in sync_urls:
+        item["title"] = desired_title(url, item.get("title", ""))
+catalog_json = json.dumps(catalog, ensure_ascii=False, separators=(",", ":"))
+app = app[:m.start(2)] + catalog_json + app[m.end(2):]
+
+# Any remaining old links in JS (for example learning-path cards) point to the canonical target.
+for old, new in redirects.items():
+    app = app.replace(old, new)
+app_path.write_text(app, encoding="utf-8")
+
+# Rewrite any remaining old URL references in public text assets, except the redirect table itself.
+redirects_path_for_cleanup = Path("public/_redirects")
+for p in Path("public").rglob("*"):
+    if not p.is_file() or p == redirects_path_for_cleanup or p.suffix.lower() not in {".html", ".json", ".js", ".xml", ".txt"}:
+        continue
+    text = p.read_text(encoding="utf-8", errors="ignore")
+    original = text
+    for old, new in redirects.items():
+        text = text.replace(old, new)
+    if text != original:
+        p.write_text(text, encoding="utf-8")
+'''
+
+          marker = '# Validation.'
+          if marker not in script:
+              raise SystemExit('Validation marker not found in embedded wave2 script')
+          script = script.replace(marker, injection + '\n' + marker, 1)
+          exec(compile(script, '<wave2>', 'exec'), {'__name__': '__main__'})
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A public
+          git diff --cached --check
+          git commit -m "SEO: consolidate duplicate intents and refine remaining pages [skip ci]"
+          git push origin HEAD:seo-low-demand-wave2-20260928
