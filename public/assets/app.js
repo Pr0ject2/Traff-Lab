@@ -1466,7 +1466,7 @@ suggestionIndex.unshift(...glossarySuggestions);
  document.addEventListener('click',function(e){
    const bookmark=e.target.closest('[data-bookmark-button]');
    if(bookmark){setTimeout(()=>track('bookmark',{state:bookmark.getAttribute('aria-pressed')==='true'?'saved':'removed'}),0);return;}
-   const affiliate=e.target.closest('.partner-next-step a,[href^="/go/partner/"]');
+   const affiliate=e.target.closest('[href^="/go/partner/"]');
    if(affiliate){
      const affiliateUrl=new URL(affiliate.href,location.href);
      const parts=affiliateUrl.pathname.split('/').filter(Boolean);
