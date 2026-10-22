@@ -12,6 +12,12 @@
           "icon": "○"
         },
         {
+          "id": "partners",
+          "title": "Партнёрские программы",
+          "href": "/guides/choose-program/",
+          "icon": "⇄"
+        },
+        {
           "id": "traffic",
           "title": "Источники трафика",
           "href": "/traffic/",
