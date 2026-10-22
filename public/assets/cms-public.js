@@ -119,7 +119,7 @@ async function setupPartnerOptions(){
    try{
      const data=await j(BASE+'api/partner-availability?partner='+encodeURIComponent(partner));
      if(data.available){
-       status.textContent='Доступна для текущего GEO';
+       status.textContent='Переход доступен. GEO программы уточните перед запуском';
        card.classList.add('is-available');
        return;
      }
