@@ -1,7 +1,7 @@
 const PARTNERS = {
   "1win": {
     name: "1win Partners",
-    url: "https://1w.run/?p=4o8v",
+    url: "https://viazento.link/1w",
     blockedCountries: new Set(["RU"])
   },
   "poshfriends": {
