@@ -5,7 +5,7 @@ const j=(u)=>fetch(u,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.sta
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function safeInternalHref(value,fallback=BASE){try{const raw=String(value||'').trim();if(raw.startsWith('#'))return raw;const u=new URL(raw,location.origin);if(u.origin!==location.origin||!u.pathname.startsWith(BASE))return fallback;return u.pathname+u.search+u.hash}catch{return fallback}}
 function currentPath(){let p=location.pathname;return p.endsWith('/')?p:p+'/'}
-const CORE_NAV_IDS=new Set(['start','traffic','compare','practice','diagnostics','analytics','tools','services','library','basics','glossary','notes','history','saved','about','help','privacy','terms','path','economics']);
+const CORE_NAV_IDS=new Set(['start','partners','traffic','compare','practice','diagnostics','analytics','tools','services','library','basics','glossary','notes','history','saved','about','help','privacy','terms','path','economics']);
 function cleanNavigation(data,sectionsData){if(!data?.groups||!sectionsData?.sections)return data;const validIds=new Set(sectionsData.sections.map(s=>String(s.id||'')));const groups=data.groups.map(g=>({...g,items:(g.items||[]).filter(it=>{const id=String(it.id||'');if(CORE_NAV_IDS.has(id)||validIds.has(id))return true;const href=safeInternalHref(it.href,'');if(!href)return true;let parts=[];try{parts=new URL(href,location.origin).pathname.split('/').filter(Boolean).map(decodeURIComponent)}catch{return true}return !(parts.length===1&&parts[0]===id)})}));return {...data,groups}}
 function renderNav(data){
   const sidebar=document.querySelector('.global-sidebar'); if(!sidebar||!data?.groups)return;
@@ -16,12 +16,13 @@ function renderNav(data){
      from the CMS data instead of appending a second legacy navigation below it. */
   if(refHost){
     const iconMap={
-      start:'compass',traffic:'route',compare:'scaling',practice:'book-open',
+      start:'compass',partners:'handshake',traffic:'route',compare:'scaling',practice:'book-open',
       services:'package-2',analytics:'line-chart',diagnostics:'circle-alert',tools:'calculator',
       library:'layout-template',basics:'map',glossary:'whole-word',notes:'pen-square',history:'history'
     };
     const navIconShapes={
       compass:'<path d="m15.2 8.8-2.7 8.1-8.1 2.7 2.7-8.1 8.1-2.7Z"/><circle cx="12" cy="12" r="8.8"/>',
+      handshake:'<path d="M2.5 12.4 7 7.9l3.1.6 2.4-1.4 4.1.6 4.8 4.8-4.2 4.2-2.7-.3-2.7 1.9-3.5-1.6-3-.3Z"/><path d="m8.3 11.5 3.4 3m.3-4.2 4.1 4"/>',
       route:'<circle cx="6" cy="18" r="2.5"/><path d="M8.5 18h7.6a3.2 3.2 0 0 0 0-6.4H7.3a3.2 3.2 0 0 1 0-6.4H15"/><circle cx="18" cy="5.2" r="2.5"/>',
       scaling:'<path d="M5 19h14a1.5 1.5 0 0 0 1.5-1.5V5"/><path d="M9 15h4v-4"/><path d="M19 5h-5"/><path d="M19 5 9 15"/>',
       'book-open':'<path d="M12 7v12"/><path d="M4 17V5a1 1 0 0 1 1-1h4a4 4 0 0 1 3 1.3A4 4 0 0 1 15 4h4a1 1 0 0 1 1 1v12h-5a3.5 3.5 0 0 0-3 1.5A3.5 3.5 0 0 0 9 17Z"/>',
