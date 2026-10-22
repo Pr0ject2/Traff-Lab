@@ -99,7 +99,41 @@ function setupLibrary(data){
  document.dispatchEvent(new CustomEvent('al:modechange',{detail:{source:'cms'}}));
 }
 function installStyle(){const st=document.createElement('style');st.textContent='.global-sidebar .sidebar-menu a.cms-nav-item[data-cms-icon]::before{content:attr(data-cms-icon)!important}.cms-runtime-error{display:none!important}';document.head.appendChild(st)}
-function setupPartnerRedirect(){if(!document.body?.hasAttribute('data-partner-redirect'))return;const p=new URLSearchParams(location.search);try{localStorage.setItem('al-last-affiliate-click',JSON.stringify({from:(p.get('from')||'unknown').slice(0,160),ts:Date.now()}))}catch{}setTimeout(()=>location.replace('https://1w.run/?p=4o8v'),350)}
-async function init(){setupPartnerRedirect();installStyle();const [nav,articles,sections]=await Promise.allSettled([j(BASE+'content/navigation.json?v='+Date.now()),j(BASE+'content/articles.json?v='+Date.now()),j(BASE+'content/sections.json?v='+Date.now())]);if(nav.status==='fulfilled')renderNav(cleanNavigation(nav.value,sections.status==='fulfilled'?sections.value:null));if(articles.status==='fulfilled')setupLibrary(articles.value)}
+function setupPartnerCards(){
+ document.querySelectorAll('.ref-partner-card').forEach(card=>{
+   const title=card.querySelector('b'),copy=card.querySelector('span'),action=card.querySelector('em');
+   if(title)title.textContent='Партнёрские программы';
+   if(copy)copy.textContent='1win и PoshFriends: условия, GEO и регистрация.';
+   if(action)action.innerHTML='Сравнить программы <span>→</span>';
+ });
+}
+async function setupPartnerOptions(){
+ const cards=[...document.querySelectorAll('[data-partner-option]')];
+ if(!cards.length)return;
+ await Promise.all(cards.map(async card=>{
+   const partner=String(card.dataset.partnerOption||'').trim().toLowerCase();
+   const status=card.querySelector('[data-partner-status]');
+   const link=card.querySelector('a[data-partner-link]');
+   if(!partner||!status)return;
+   try{
+     const data=await j(BASE+'api/partner-availability?partner='+encodeURIComponent(partner));
+     if(data.available){
+       status.textContent='Доступна для текущего GEO';
+       card.classList.add('is-available');
+       return;
+     }
+     if(data.reason==='blocked_geo'){
+       status.textContent='Недоступна для текущего GEO';
+       card.classList.add('is-unavailable');
+       if(link){link.removeAttribute('href');link.removeAttribute('target');link.setAttribute('aria-disabled','true');}
+       return;
+     }
+     status.textContent='Доступность GEO проверится при переходе';
+   }catch{
+     status.textContent='Доступность GEO проверится при переходе';
+   }
+ }));
+}
+async function init(){installStyle();setupPartnerCards();setupPartnerOptions().catch(()=>{});const [nav,articles,sections]=await Promise.allSettled([j(BASE+'content/navigation.json?v='+Date.now()),j(BASE+'content/articles.json?v='+Date.now()),j(BASE+'content/sections.json?v='+Date.now())]);if(nav.status==='fulfilled')renderNav(cleanNavigation(nav.value,sections.status==='fulfilled'?sections.value:null));if(articles.status==='fulfilled')setupLibrary(articles.value)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init().catch(()=>{}));else init().catch(()=>{});
 })();
