@@ -197,8 +197,41 @@ html body a.partner-direct-button:active{
 
 <style id="tl-partner-program-grid-v610">
 .partner-program-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}
-.partner-program-grid .partner-next-step{margin:0}
-.partner-program-grid .partner-next-step>span{display:block;margin-bottom:6px}
+.partner-program-grid .partner-program-card{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  min-width:0;
+  margin:0;
+  padding:22px;
+  text-align:left;
+}
+.partner-program-grid .partner-program-card>span{
+  display:block;
+  margin:0 0 12px;
+}
+.partner-program-grid .partner-program-card>p{
+  flex:1 1 auto;
+  margin:0 0 20px;
+  line-height:1.6;
+}
+.partner-program-grid .partner-program-card>a.partner-direct-button{
+  display:inline-flex;
+  align-self:flex-start;
+  align-items:center;
+  margin-top:auto;
+  margin-bottom:0;
+  padding:0;
+  min-height:0;
+  width:auto;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  text-align:left;
+}
+.partner-program-grid .partner-program-status[hidden]{display:none!important}
+.partner-program-grid .partner-program-card.is-unavailable .partner-program-status:not([hidden]){margin:12px 0 0}
 html body .partner-program-card a.partner-direct-button,
 html body .partner-program-card a.partner-direct-button:link,
 html body .partner-program-card a.partner-direct-button:visited,
@@ -251,8 +284,8 @@ html body.theme-dark .partner-program-card a.partner-direct-button:active{
 <h2><span class="logic-index-v103">00</span>Два равноправных варианта</h2>
 <p>Здесь можно выбрать между 1win и PoshFriends. Сравни GEO, разрешённые источники трафика и условия выплат — они могут отличаться.</p>
 <div class="partner-program-grid">
-<aside class="partner-next-step partner-next-step-primary partner-program-card" data-partner-option="1win" aria-label="1win Partners"><span>1win Partners</span><p>Программа для тех, кто собирается привлекать игроков в 1win. Перед запуском уточни доступные GEO, разрешённые источники и условия выплат.</p><a class="partner-direct-button" data-partner-link data-track="affiliate_cta" href="/go/partner/1win/?from=choose-program" rel="sponsored nofollow noopener noreferrer" target="_blank">Перейти в 1win</a><small class="partner-program-status" data-partner-status>Доступность зависит от GEO</small></aside>
-<aside class="partner-next-step partner-next-step-primary partner-program-card" data-partner-option="poshfriends" aria-label="PoshFriends"><span>PoshFriends</span><p>У PoshFriends несколько казино, в том числе RamenBet, Casino-X и Joycasino. Выбирай проект под свою аудиторию и проверяй его GEO, правила трафика и модель выплат.</p><a class="partner-direct-button" data-partner-link data-track="affiliate_cta" href="/go/partner/poshfriends/?from=choose-program" rel="sponsored nofollow noopener noreferrer" target="_blank">Перейти в PoshFriends</a><small class="partner-program-status" data-partner-status>Доступность зависит от GEO</small></aside>
+<aside class="partner-next-step partner-next-step-primary partner-program-card" data-partner-option="1win" aria-label="1win Partners"><span>1win Partners</span><p>1win Partners — партнёрская программа бренда 1win с казино и спортивными ставками. Работаешь с одним брендом, а результаты отслеживаешь в партнёрском кабинете.</p><a class="partner-direct-button" data-partner-link data-track="affiliate_cta" href="/go/partner/1win/?from=choose-program" rel="sponsored nofollow noopener noreferrer" target="_blank">Перейти в 1win</a><small class="partner-program-status" data-partner-status hidden aria-live="polite"></small></aside>
+<aside class="partner-next-step partner-next-step-primary partner-program-card" data-partner-option="poshfriends" aria-label="PoshFriends"><span>PoshFriends</span><p>PoshFriends объединяет несколько казино, включая RamenBet, Casino-X и Joycasino. Можно выбрать проект под свою аудиторию, а GEO и условия работы уточнить для выбранного бренда.</p><a class="partner-direct-button" data-partner-link data-track="affiliate_cta" href="/go/partner/poshfriends/?from=choose-program" rel="sponsored nofollow noopener noreferrer" target="_blank">Перейти в PoshFriends</a><small class="partner-program-status" data-partner-status hidden aria-live="polite"></small></aside>
 </div>
 <div class="inline-note partner-program-note"><strong>Важно:</strong> у разных казино в PoshFriends могут отличаться доступные страны и требования к трафику. Перед запуском уточни условия выбранного проекта у менеджера.</div>
 </section>
