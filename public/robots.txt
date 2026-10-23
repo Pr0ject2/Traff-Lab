@@ -4,11 +4,8 @@ Disallow: /go/
 Disallow: /_local/
 Disallow: /admin/
 
+# Exclude all pages from Yandex Search. Google and other bots retain their rules above.
 User-agent: Yandex
-Allow: /
-Disallow: /go/
-Disallow: /_local/
-Disallow: /admin/
-Clean-param: q /guides/
+Disallow: /
 
 Sitemap: https://traff-lab.com/sitemap.xml
