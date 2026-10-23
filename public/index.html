@@ -129,6 +129,15 @@
 
 <style id="tl-home-partners-discovery-v1">
 .home-partners-discovery{padding:26px 0 36px}
+html body.home-shell-v256 main.home-page .home-partners-discovery > .wrap{
+  width:min(calc(100% - 40px),960px)!important;
+  max-width:960px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  box-sizing:border-box!important;
+}
 .home-partners-discovery .home-section-title{margin-bottom:18px}
 .home-partner-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .home-partner-option{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:22px 24px;border:1px solid #d8dfd9;border-radius:14px;background:#fffdf9;color:#17342d}
@@ -145,6 +154,12 @@ html body.theme-dark .home-partner-option{background:#24332e;color:#eff5ef;borde
 html body.theme-dark .home-partner-option p,html body.theme-dark .home-partner-option small{color:#c2d0c6}
 html body.theme-dark .home-partner-option a[data-partner-link]{color:#95d5b5}
 @media(max-width:760px){.home-partners-discovery{padding:20px 0 28px}.home-partner-options{grid-template-columns:1fr;gap:12px}.home-partner-option{padding:18px}.home-partners-guide{text-align:left}}
+@media(max-width:650px){
+  html body.home-shell-v256 main.home-page .home-partners-discovery > .wrap{
+    width:calc(100% - 20px)!important;
+    max-width:none!important;
+  }
+}
 </style>
 </head><body class="content-system-v103 home-shell-v256 tl-unified-v287 reference-ui-v99" data-release="20260829-v436"><a class="skip-link" href="#main-content">К основному содержанию</a>
 <header class="site-header"><div class="ref-topbar">
