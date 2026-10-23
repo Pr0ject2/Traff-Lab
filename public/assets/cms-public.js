@@ -119,19 +119,19 @@ async function setupPartnerOptions(){
    try{
      const data=await j(BASE+'api/partner-availability?partner='+encodeURIComponent(partner));
      if(data.available){
-       status.textContent='Переход доступен. GEO программы уточните перед запуском';
+       status.textContent='Ссылка доступна. Перед запуском проверь GEO и условия.';
        card.classList.add('is-available');
        return;
      }
      if(data.reason==='blocked_geo'){
-       status.textContent='Недоступна для текущего GEO';
+       status.textContent='Переход недоступен из текущей страны';
        card.classList.add('is-unavailable');
        if(link){link.removeAttribute('href');link.removeAttribute('target');link.setAttribute('aria-disabled','true');}
        return;
      }
-     status.textContent='Доступность GEO проверится при переходе';
+     status.textContent='Доступность проверится при переходе';
    }catch{
-     status.textContent='Доступность GEO проверится при переходе';
+     status.textContent='Доступность проверится при переходе';
    }
  }));
 }
